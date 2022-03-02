@@ -7,6 +7,7 @@ import uz.pdp.pdp_food_delivery.rest.dto.meal.MealUpdateDto;
 import uz.pdp.pdp_food_delivery.rest.mapper.meal.MealMapper;
 import uz.pdp.pdp_food_delivery.rest.repository.meal.MealRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
+import uz.pdp.pdp_food_delivery.rest.service.base.BaseService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Service
 public class MealService  extends AbstractService<MealMapper, MealRepository>
-        implements GenericCrudService<MealCreateDto, MealUpdateDto>, GenericService<MealDto> {
+        implements GenericCrudService<MealCreateDto, MealUpdateDto>, GenericService<MealDto>, BaseService {
 
     public MealService(MealMapper mapper, MealRepository repository) {
         super(mapper, repository);

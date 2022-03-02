@@ -7,6 +7,7 @@ import uz.pdp.pdp_food_delivery.rest.dto.feedback.FeedbackUpdateDto;
 import uz.pdp.pdp_food_delivery.rest.mapper.feedback.FeedbackMapper;
 import uz.pdp.pdp_food_delivery.rest.repository.feedback.FeedbackRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
+import uz.pdp.pdp_food_delivery.rest.service.base.BaseService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Service
 public class FeedbackService extends AbstractService<FeedbackMapper, FeedbackRepository>
-        implements GenericCrudService<FeedbackCreateDto, FeedbackUpdateDto> , GenericService<FeedbackDto> {
+        implements GenericCrudService<FeedbackCreateDto, FeedbackUpdateDto>, GenericService<FeedbackDto>, BaseService {
 
     public FeedbackService(FeedbackMapper mapper, FeedbackRepository repository) {
         super(mapper, repository);

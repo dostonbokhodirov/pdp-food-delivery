@@ -5,6 +5,8 @@ import lombok.Getter;
 @Getter
 public enum Type {
 
-    GOOD, BAD
+    COMPLAIN //normmas degani esli cho
+    , ADVICE // maslahat ma'nosida
+    , THANKS // thanksda bu
 
 }
