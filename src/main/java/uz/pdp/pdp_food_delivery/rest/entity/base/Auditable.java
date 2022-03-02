@@ -20,16 +20,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class Auditable implements BaseEntity  {
+public abstract class Auditable implements BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private Long id;
 
     @CreatedDate
     @CreationTimestamp
-    @Column(name = "created_at",columnDefinition = "TIMESTAMP default NOW()")
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP default NOW()")
     private LocalDateTime createdAt;
 
     @Column(name = "created_by")
@@ -42,6 +42,9 @@ public abstract class Auditable implements BaseEntity  {
 
     @Column(name = "updated_by")
     private Long updatedBy;
+
+
+    private boolean deleted;
 
 
 }
