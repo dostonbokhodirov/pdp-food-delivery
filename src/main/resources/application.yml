@@ -1,6 +1,6 @@
-#bot:
-#  name: "PDP Food Delivery Bot"
-#  token: "@pdpfood_bot"
+bot:
+  name: "PDP Food Delivery Bot"
+  token: "@pdpfood_bot"
 
 spring:
   datasource:
@@ -11,7 +11,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   messages:
