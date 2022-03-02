@@ -6,6 +6,15 @@ import lombok.Getter;
 @Getter
 public enum Department {
 
-    ACADEMIC, SALES, HR, SERVICE, MARKETING, MENTORS, ECMA, ACCOUNTING, UNICORN, HEAD
+    ACADEMIC,
+    SALES,
+    HR,
+    SERVICE,
+    MARKETING,
+    MENTORS,
+    ECMA,
+    ACCOUNTING,
+    UNICORN,
+    HEAD
 
 }
