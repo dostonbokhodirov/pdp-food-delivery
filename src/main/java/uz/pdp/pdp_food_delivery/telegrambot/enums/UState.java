@@ -5,12 +5,11 @@ package uz.pdp.pdp_food_delivery.telegrambot.enums;
  */
 public enum UState {
     ANONYMOUS,
+    EMAIL,
     LANG,
-    LANG_ANSWER,
     FULL_NAME,
-    AGE,
-    GENDER,
     PHONE_NUMBER,
     AUTHORIZED,
-    DELETE_ALL;
+    DEPARTMENT,
+    DELETE_ALL
 }
