@@ -1,7 +1,7 @@
 package uz.pdp.pdp_food_delivery.telegrambot;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -16,7 +16,6 @@ import uz.pdp.pdp_food_delivery.telegrambot.handlers.UpdateHandler;
 import java.util.Objects;
 
 @Component
-@RequiredArgsConstructor
 public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
 
     private final AuthUserService authUserService;
@@ -28,10 +27,11 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
     @Value("${bot.token}")
     private String botToken;
 
-    @Override
-    public String getBotToken() {
-        return botToken;
+    public PdpFoodDeliveryBot(AuthUserService authUserService, @Lazy UpdateHandler updateHandler) {
+        this.authUserService = authUserService;
+        this.updateHandler = updateHandler;
     }
+
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -40,6 +40,11 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
             authUserService.save(update.getMessage());
         }
         updateHandler.handle(update);
+    }
+
+    @Override
+    public String getBotToken() {
+        return botToken;
     }
 
     @Override
