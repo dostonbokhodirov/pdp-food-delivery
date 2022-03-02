@@ -14,6 +14,7 @@ public class State {
     private static final Map<String, ManagerState> managerState = new HashMap<>();
     private static final Map<String, SearchState> searchState = new HashMap<>();
     private static final Map<String, Integer> limitState = new HashMap<>();
+    private static final Map<String, Language> languageState = new HashMap<>();
 
 
     public synchronized static void setState(String chatId, UState state) {
@@ -75,7 +76,7 @@ public class State {
 
     public static Integer getLimitState(String chatId) {
         if (Objects.isNull(limitState.get(chatId))) {
-            limitState.put(chatId, 5);
+            setLimitState(chatId, 5);
         }
         return limitState.get(chatId);
     }
@@ -83,4 +84,16 @@ public class State {
     public static void setLimitState(String chatId, Integer limit) {
         limitState.put(chatId, limit);
     }
+
+    public static Language getLanguageState(String chatId) {
+        if (Objects.isNull(languageState.get(chatId))) {
+            setLanguageState(chatId, Language.UZ);
+        }
+        return languageState.get(chatId);
+    }
+
+    public static void setLanguageState(String chatId, Language language) {
+        languageState.put(chatId, language);
+    }
+
 }
