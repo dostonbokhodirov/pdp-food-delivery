@@ -3,6 +3,9 @@ package uz.pdp.pdp_food_delivery.telegrambot;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
+import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
+import uz.pdp.pdp_food_delivery.telegrambot.enums.Language;
+import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,6 +19,7 @@ public class LangConfig {
     public static Properties en;
     public static String pathPre = "src/main/resources/i18n/";
 
+    private final AuthUserService authUserService;
     private final AuthUserRepository authUserRepository;
 
     static {
@@ -37,12 +41,12 @@ public class LangConfig {
         }
     }
 
-//    public String get(String chatId, String key) {
-//        String language = authUserRepository.getLanguage(chatId);
-//        if (language.equalsIgnoreCase("uz"))
-//            return uz.getProperty(key);
-//        if (language.equalsIgnoreCase("ru"))
-//            return ru.getProperty(key);
-//        return en.getProperty(key);
-//    }
+    public static String get(String chatId, String key) {
+        Language language = State.getLanguageState(chatId);
+        if (language.getCode().equalsIgnoreCase("uz"))
+            return uz.getProperty(key);
+        if (language.getCode().equalsIgnoreCase("ru"))
+            return ru.getProperty(key);
+        return en.getProperty(key);
+    }
 }
