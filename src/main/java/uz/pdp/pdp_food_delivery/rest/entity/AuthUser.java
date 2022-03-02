@@ -6,15 +6,18 @@ import uz.pdp.pdp_food_delivery.rest.entity.base.Auditable;
 import uz.pdp.pdp_food_delivery.rest.enums.Department;
 import uz.pdp.pdp_food_delivery.rest.enums.Role;
 
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
-@Table(schema = "user")
+@Entity
+@Table(name = "user",schema = "users")
 public class AuthUser extends Auditable {
+
 
     private String password;
 
+    @Column(name = "full_name")
     private String fullName;
 
     private String phoneNumber;
@@ -23,8 +26,10 @@ public class AuthUser extends Auditable {
 
     private String chatId;
 
+    @Enumerated(EnumType.STRING)
     private Department department;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     private boolean active;
