@@ -8,6 +8,7 @@ import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserUpdateDto;
 import uz.pdp.pdp_food_delivery.rest.mapper.auth.AuthUserMapper;
 import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
+import uz.pdp.pdp_food_delivery.rest.service.base.BaseService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Service
 public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRepository>
-        implements GenericCrudService<AuthUserCreateDto, AuthUserUpdateDto>, GenericService<AuthUserDto> {
+        implements GenericCrudService<AuthUserCreateDto, AuthUserUpdateDto>, GenericService<AuthUserDto>, BaseService {
 
     public AuthUserService(AuthUserMapper mapper, AuthUserRepository repository) {
         super(mapper, repository);

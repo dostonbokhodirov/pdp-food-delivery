@@ -5,17 +5,26 @@ import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderDto;
 import uz.pdp.pdp_food_delivery.rest.mapper.mealorder.MealOrderMapper;
 import uz.pdp.pdp_food_delivery.rest.repository.mealorder.MealOrderRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
+import uz.pdp.pdp_food_delivery.rest.service.base.BaseService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
 public class MealOrderService extends AbstractService<MealOrderMapper, MealOrderRepository>
-        implements GenericService<MealOrderDto> {
+        implements GenericService<MealOrderDto>, BaseService {
 
     public MealOrderService(MealOrderMapper mapper, MealOrderRepository repository) {
         super(mapper, repository);
     }
+
+
+
+    //this two times are used for checking dates(present or not)
+    public static LocalTime after = LocalTime.of(18,0,0);
+    public static LocalTime before = LocalTime.of(9,59,0);
+
 
     @Override
     public List<MealOrderDto> getAll() {
