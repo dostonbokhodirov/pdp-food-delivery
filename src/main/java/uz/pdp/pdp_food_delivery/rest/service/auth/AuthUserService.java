@@ -72,7 +72,7 @@ public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRep
         return mapper.toDto(content);
     }
 
-    public String getLanguage(String chatId) {
-        return repository.getLanguage(chatId);
-    }
+//    public String getLanguage(String chatId) {
+//        return repository.getLanguage(chatId);
+//    }
 }

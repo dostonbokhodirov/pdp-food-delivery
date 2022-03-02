@@ -1,6 +1,6 @@
-bot:
-  name: "PDP Food Delivery Bot"
-  token: "@pdpfood_bot"
+#bot:
+#  name: "PDP Food Delivery Bot"
+#  token: "@pdpfood_bot"
 
 spring:
   datasource:
