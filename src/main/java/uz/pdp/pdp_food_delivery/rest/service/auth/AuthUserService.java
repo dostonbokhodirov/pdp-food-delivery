@@ -35,17 +35,41 @@ public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRep
 
     @Override
     public void delete(Long id) {
-
+        Optional<AuthUser> byId = repository.findByIdAndDeleted(id, false);
+        if (byId.isPresent()) {
+            AuthUser authUser = byId.get();
+            authUser.setDeleted(true);
+            repository.save(authUser);
+        } else
+            throw new RuntimeException("User not found");
     }
 
     @Override
     public void update(AuthUserUpdateDto authUserUpdateDto) {
+        String email = authUserUpdateDto.getEmail();
+        Long id = authUserUpdateDto.getId();
+        String password = authUserUpdateDto.getPassword();
+        String phoneNumber = authUserUpdateDto.getPhoneNumber();
+        String fullName = authUserUpdateDto.getFullName();
 
+        Optional<AuthUser> byId = repository.findByIdAndDeleted(id, false);
+        if (byId.isPresent()) {
+            AuthUser authUser = byId.get();
+            authUser.setEmail(email);
+            authUser.setPassword(password);
+            authUser.setPhoneNumber(phoneNumber);
+            authUser.setFullName(fullName);
+            repository.save(authUser);
+        } else {
+            throw new RuntimeException("User not found");
+        }
     }
 
     @Override
-    public void create(AuthUserCreateDto authUserCreateDto) {
-
+    public Long create(AuthUserCreateDto authUserCreateDto) {
+        AuthUser authUser = mapper.fromCreateDto(authUserCreateDto);
+        AuthUser save = repository.save(authUser);
+        return save.getId();
     }
 
     @Override
@@ -70,6 +94,13 @@ public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRep
         Page<AuthUser> all = repository.findAllByDeleted(false, pageable);
         List<AuthUser> content = all.getContent();
         return mapper.toDto(content);
+    }
+
+    public Long create(AuthUserCreateDto dto, Long userId) {
+        AuthUser authUser = mapper.fromCreateDto(dto);
+        authUser.setCreatedBy(userId);
+        AuthUser save = repository.save(authUser);
+        return save.getId();
     }
 
 //    public String getLanguage(String chatId) {

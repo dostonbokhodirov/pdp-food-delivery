@@ -32,8 +32,9 @@ public class FeedbackService extends AbstractService<FeedbackMapper, FeedbackRep
     }
 
     @Override
-    public void create(FeedbackCreateDto feedbackCreateDto) {
+    public Long create(FeedbackCreateDto feedbackCreateDto) {
 
+        return null;
     }
 
     @Override

@@ -8,6 +8,13 @@ public enum Role {
     ADMIN,
     DEPARTMENT_HEAD,
     FOOD_MANAGER,
-    USER
+    USER,
+    ANONYMOUS;
 
+    public static Role getByName(String rol) {
+        for (Role role : values()) {
+            if (role.name().equalsIgnoreCase(rol)) return role;
+        }
+        return ANONYMOUS;
+    }
 }

@@ -8,7 +8,7 @@ import uz.pdp.pdp_food_delivery.rest.enums.Role;
 //import uz.pdp.pdp_food_delivery.telegrambot.enums.Language;
 //import uz.pdp.pdp_food_delivery.telegrambot.enums.Language;
 //import uz.pdp.pdp_food_delivery.telegrambot.enums.Language;
-import uz.pdp.pdp_food_delivery.telegrambot.enums.Language;
+//import uz.pdp.pdp_food_delivery.telegrambot.enums.Language;
 
 import javax.persistence.*;
 
@@ -35,11 +35,13 @@ public class AuthUser extends Auditable {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    //TOdo : default qiyman yozish
     private boolean active;
 
+    //TOdo : default qiyman yozish
     private boolean block;
 
-    @Enumerated(EnumType.STRING)
-    private Language language;
+//    @Enumerated(EnumType.STRING)
+//    private Language language;
 
 }
