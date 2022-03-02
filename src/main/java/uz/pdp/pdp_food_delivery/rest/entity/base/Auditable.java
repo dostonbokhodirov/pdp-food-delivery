@@ -1,4 +1,4 @@
-package uz.pdp.pdp_food_delivery.rest.entity;
+package uz.pdp.pdp_food_delivery.rest.entity.base;
 
 
 import lombok.AllArgsConstructor;
