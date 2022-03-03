@@ -33,8 +33,9 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
     }
 
     @Override
-    public void create(MealCreateDto mealCreateDto) {
+    public Long create(MealCreateDto mealCreateDto) {
 
+        return null;
     }
 
     @Override

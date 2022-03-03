@@ -32,8 +32,10 @@ public class AuthUser extends Auditable {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    //TOdo : default qiyman yozish
     private boolean active;
 
+    //TOdo : default qiyman yozish
     private boolean block;
 
     @Enumerated(EnumType.STRING)

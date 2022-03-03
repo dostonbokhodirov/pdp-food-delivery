@@ -1,5 +1,7 @@
 package uz.pdp.pdp_food_delivery.rest.repository.auth;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,6 +13,7 @@ import uz.pdp.pdp_food_delivery.rest.repository.BaseRepository;
 @Repository
 public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseRepository {
 
+    Page<AuthUser> findAllByDeleted(boolean deleted, Pageable pageable);
 
     @Query(value = "select u.language from AuthUser u where u.chatId = :chatId")
     public String getLanguage(@Param(value = "chatId") String chatId);
@@ -18,5 +21,6 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
     @Query("select u.role from AuthUser u where u.chatId = :chatId")
     public String findRoleByChatId(@Param(value = "chatId") String chatId);
 
+    Optional<AuthUser> findByIdAndDeleted(Long id, boolean deleted);
 }
 
