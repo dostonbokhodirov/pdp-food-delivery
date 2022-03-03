@@ -37,6 +37,7 @@ public class AuthorizationProcessor {
             sendMessage.setReplyMarkup(InlineBoard.languageButtons());
             bot.executeMessage(sendMessage);
             setState(chatId, UState.DELETE_ALL);
+
         } else if (UState.FULL_NAME.equals(state)) {
             String text = message.getText();
             if (StringUtils.isNumeric(text) || !text.equals(StringUtils.capitalize(text))) {

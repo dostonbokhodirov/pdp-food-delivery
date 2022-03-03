@@ -43,5 +43,8 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
     void updateEmail(@Param(value = "chatId") String chatId, @Param(value = "text") String text);
 
     Optional<AuthUser> findByIdAndDeleted(Long id, boolean deleted);
+
+    @Query(value = "update AuthUser u set u.language = :lang where u.chatId = :chatId", nativeQuery = true)
+    void updateLanguage(@Param(value = "chatId") String chatId,@Param(value = "lang") String lang);
 }
 

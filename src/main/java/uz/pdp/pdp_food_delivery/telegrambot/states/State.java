@@ -1,5 +1,6 @@
 package uz.pdp.pdp_food_delivery.telegrambot.states;
 
+import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserCreateDto;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.*;
 
 import java.util.HashMap;
@@ -42,6 +43,9 @@ public class State {
     }
 
     public static UState getState(String chatId) {
+        if (Objects.isNull(userState.get(chatId))){
+            State.setState(chatId, UState.ANONYMOUS);
+        }
         return userState.get(chatId);
     }
 

@@ -2,12 +2,12 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/pdp_food_delivery
-    username: doston
-    password: doston123
+    username: postgres
+    password: bunyod
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
@@ -17,5 +17,5 @@ spring:
     always-use-message-format: true
 
 bot:
-  name: "pdpfood_bot"
-  token: "5126126608:AAFl_X1rXzm0-H7mKz_-vcUXRHu-BYVQCmQ"
+  name: "@first_first_1bot"
+  token: "5047054234:AAH0uUFlFoNPRZBZg3OW6pKwPD34o-i18No"
