@@ -17,5 +17,5 @@ spring:
     always-use-message-format: true
 
 bot:
-  name: "PDP Food Delivery Bot"
-  token: "@pdpfood_bot"
+  name: "pdpfood_bot"
+  token: "5126126608:AAFl_X1rXzm0-H7mKz_-vcUXRHu-BYVQCmQ"

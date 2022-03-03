@@ -11,11 +11,9 @@ import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
 import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 import uz.pdp.pdp_food_delivery.telegrambot.LangConfig;
 import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
-import uz.pdp.pdp_food_delivery.telegrambot.emojis.Emojis;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.MenuState;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.base.AbstractHandler;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.AuthorizationProcessor;
-import uz.pdp.pdp_food_delivery.telegrambot.processors.MenuProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
 import java.util.Objects;
@@ -24,7 +22,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class MessageHandler extends AbstractHandler {
     private final PdpFoodDeliveryBot bot;
-    private final MenuProcessor menuProcessor;
+    //    private final MenuProcessor menuProcessor;
     private final AuthUserRepository repository;
     private final AuthUserService service;
     private final AuthorizationProcessor authorizationProcessor;
@@ -34,7 +32,9 @@ public class MessageHandler extends AbstractHandler {
         String chatId = update.getMessage().getChatId().toString();
         Message message = update.getMessage();
         String text = message.getText();
-        if ( update.getMessage().hasText()) {
+        SendMessage sendMessage1 = new SendMessage(chatId, update.getMessage().toString());
+        bot.executeMessage(sendMessage1);
+        if (update.getMessage().hasText()) {
             SendMessage sendMessage = new SendMessage();
 
             boolean existChatId = repository.existsByChatId(chatId);
@@ -50,7 +50,7 @@ public class MessageHandler extends AbstractHandler {
             if (Objects.isNull(role)) {
                 authorizationProcessor.process(message, State.getState(chatId));
             } else if (active) {
-                menuProcessor.menu(chatId,role);
+//                menuProcessor.menu(chatId,role);
             } else {
                 //sabr kardam
             }
@@ -58,7 +58,7 @@ public class MessageHandler extends AbstractHandler {
 //            message.setText(update.getMessage().getText());
 
             if ("/start".equals(text) && active) {
-                menuProcessor.menu(chatId, role);
+//                menuProcessor.menu(chatId, role);
 
 
 
@@ -67,7 +67,7 @@ public class MessageHandler extends AbstractHandler {
                     authorizationProcessor.process(message, State.getState(chatId));
                 }
                 if (Objects.nonNull(role) && State.getMenuState(chatId).equals(MenuState.UNDEFINED)) {
-                    menuProcessor.menu(chatId, role);
+//                    menuProcessor.menu(chatId, role);
                 }
                 return;
             }
