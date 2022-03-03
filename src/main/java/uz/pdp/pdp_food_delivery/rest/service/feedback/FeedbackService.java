@@ -34,9 +34,10 @@ public class FeedbackService extends AbstractService<FeedbackMapper, FeedbackRep
     }
 
     @Override
-    public void create(FeedbackCreateDto feedbackCreateDto) {
+    public Long create(FeedbackCreateDto feedbackCreateDto) {
         Feedback feedback = mapper.fromCreateDto(feedbackCreateDto);
         repository.save(feedback);
+        return feedback.getId();
     }
 
     @Override
