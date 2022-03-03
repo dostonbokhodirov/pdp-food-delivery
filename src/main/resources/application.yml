@@ -1,6 +1,6 @@
-#bot:
-#  name: "PDP Food Delivery Bot"
-#  token: "@pdpfood_bot"
+bot:
+  name: "food_service"
+  token: "5283213329:AAHTpDtGV8Q1SOndVvQvizP_HdlrbMfHpb8"
 
 spring:
   datasource:
@@ -23,11 +23,6 @@ spring:
     user:
       name: admin
       password: admin123
-
-bot:
-  name: "pdpfood_bot"
-  token: "5126126608:AAFl_X1rXzm0-H7mKz_-vcUXRHu-BYVQCmQ"
-
 
 springdoc:
   swagger-ui:

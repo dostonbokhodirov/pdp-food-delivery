@@ -2,6 +2,7 @@ package uz.pdp.pdp_food_delivery.rest.service.meal;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealUpdateDto;
@@ -86,6 +87,8 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
 
     @Override
     public List<MealDto> getAll() {
+
+
 
         return null;
     }
