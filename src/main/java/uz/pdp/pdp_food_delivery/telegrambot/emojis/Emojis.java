@@ -42,4 +42,6 @@ public class Emojis {
     public static final String ADVENTURE = "\uD83D\uDD75️\u200D♂️";
     public static final String OTHER = "\uD83D\uDCA0";
     public static final String LIMIT = "✖️";
+    public static final String HISTORY = "\uD83D\uDCD6";
+    public static final String SETTINGS = "⚙️";
 }

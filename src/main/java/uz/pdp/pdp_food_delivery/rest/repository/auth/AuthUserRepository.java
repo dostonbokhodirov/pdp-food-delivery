@@ -3,7 +3,6 @@ package uz.pdp.pdp_food_delivery.rest.repository.auth;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -17,28 +16,32 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
 
     Page<AuthUser> findAllByDeleted(boolean deleted, Pageable pageable);
 
-    @Query(value = "select u.language from AuthUser u where u.chatId = :chatId")
+    @Query(value = "select u.language from AuthUser u where u.chatId = :chatId", nativeQuery = true)
     String getLanguage(@Param(value = "chatId") String chatId);
 
-    @Query(value = "select u.role from AuthUser u where u.chatId =:chatId")
+    @Query(value = "select u.role from AuthUser u where u.chatId = :chatId", nativeQuery = true)
+    String findRoleByChatId(@Param(value = "chatId") String chatId);
+
+    @Query(value = "select u.role from AuthUser u where u.chatId = :chatId", nativeQuery = true)
     String getRole(@Param(value = "chatId") String chatId);
 
     boolean existsByChatId(String chatId);
 
-    @Query(value = "select u.active from AuthUser u where u.chatId =:chatId")
-    boolean isActive(@Param(value = "chatId")String chatId);
+    @Query(value = "select u.active from AuthUser u where u.chatId = :chatId", nativeQuery = true)
+    boolean isActive(@Param(value = "chatId") String chatId);
 
-    @Query(value = "update AuthUser u set u.fullName =: fulName where u.chatId =:chatId ")
-    void updateFullName(String chatId, String fulName);
+    @Query(value = "update AuthUser u set u.fullName = :fullName where u.chatId = :chatId", nativeQuery = true)
+    void updateFullName(@Param(value = "chatId") String chatId, @Param(value = "fullName") String fullName);
 
-    @Query(value = "update AuthUser u set u.phoneNumber =: phoneNumber where u.chatId =:chatId")
-    void updatePhone(String chatId, String phoneNumber);
+    @Query(value = "update AuthUser u set u.phoneNumber = :phoneNumber where u.chatId = :chatId", nativeQuery = true)
+    void updatePhone(@Param(value = "chatId") String chatId, @Param(value = "phoneNumber") String phoneNumber);
 
-    @Query(value = "update AuthUser u set u.role =: role where u.chatId =:chatId")
-    void updateRole(String chatId, String role);
+    @Query(value = "update AuthUser u set u.role = :role where u.chatId = :chatId", nativeQuery = true)
+    void updateRole(@Param(value = "chatId") String chatId, @Param(value = "role") String role);
 
-    @Query(value = "update AuthUser u set u.email =: text where u.chatId =:chatId")
-    void updateEmail(String chatId, String text);
+    @Query(value = "update AuthUser u set u.email = :text where u.chatId = :chatId", nativeQuery = true)
+    void updateEmail(@Param(value = "chatId") String chatId, @Param(value = "text") String text);
+
     Optional<AuthUser> findByIdAndDeleted(Long id, boolean deleted);
 
 }

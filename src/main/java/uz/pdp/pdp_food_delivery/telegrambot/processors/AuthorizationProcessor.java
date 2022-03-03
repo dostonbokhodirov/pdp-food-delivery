@@ -55,17 +55,18 @@ public class AuthorizationProcessor {
         } else if (UState.EMAIL.equals(state)) {
             String text = message.getText();
 
-            boolean matches = text.matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+");
-            if (!matches) {
-                SendMessage sendMessage = new SendMessage(chatId,
-                        Emojis.LOOK + " " + LangConfig.get(chatId, "invalid.email"));
-                sendMessage.setReplyMarkup(new ForceReplyKeyboard());
-                bot.executeMessage(sendMessage);
-            } else {
+//            boolean matches = text.matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+");
+//            if (!matches) {
+//                SendMessage sendMessage = new SendMessage(chatId,
+//                        Emojis.LOOK + " " + LangConfig.get(chatId, "invalid.email"));
+//                sendMessage.setReplyMarkup(new ForceReplyKeyboard());
+//                bot.executeMessage(sendMessage);
+//            }
+//            else {
                 authUserRepository.updateEmail(chatId, text);
                 SendMessage sendMessage = new SendMessage(chatId, LangConfig.get(chatId, "enter.phone") + Emojis.PHONE);
                 bot.executeMessage(sendMessage);
-            }
+//            }
 
         } else if (UState.PHONE_NUMBER.equals(state)) {
             if (message.hasContact()) {
@@ -88,7 +89,6 @@ public class AuthorizationProcessor {
             setMenuState(chatId, MenuState.UNDEFINED);
             authUserRepository.updateRole(chatId, Role.USER.toString());
 
-            menuProcessor.menu(chatId, "USER", botService.getMessage(chatId));
         }
 
     }

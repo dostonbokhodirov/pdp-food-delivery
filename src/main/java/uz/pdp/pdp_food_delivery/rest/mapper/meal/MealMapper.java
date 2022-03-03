@@ -9,6 +9,8 @@ import uz.pdp.pdp_food_delivery.rest.dto.meal.MealUpdateDto;
 import uz.pdp.pdp_food_delivery.rest.entity.Meal;
 import uz.pdp.pdp_food_delivery.rest.mapper.BaseMapper;
 
+import java.util.List;
+
 @Component
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface MealMapper extends BaseMapper<
@@ -17,4 +19,5 @@ public interface MealMapper extends BaseMapper<
         MealCreateDto,
         MealUpdateDto
         > {
+    List<MealDto> toDto(List<Meal> meals);
 }
