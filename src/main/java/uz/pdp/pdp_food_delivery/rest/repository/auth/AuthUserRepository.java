@@ -23,5 +23,7 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
 */
 
     Optional<AuthUser> findByIdAndDeleted(Long id, boolean deleted);
+
+/*    String getLanguage(String chatId);*/
 }
 

@@ -5,7 +5,6 @@ import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderDto;
 import uz.pdp.pdp_food_delivery.rest.mapper.mealorder.MealOrderMapper;
 import uz.pdp.pdp_food_delivery.rest.repository.mealorder.MealOrderRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
-import uz.pdp.pdp_food_delivery.rest.service.base.BaseService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 
 import java.time.LocalTime;
@@ -13,7 +12,7 @@ import java.util.List;
 
 @Service
 public class MealOrderService extends AbstractService<MealOrderMapper, MealOrderRepository>
-        implements GenericService<MealOrderDto>, BaseService {
+        implements GenericService<MealOrderDto> {
 
     public MealOrderService(MealOrderMapper mapper, MealOrderRepository repository) {
         super(mapper, repository);
