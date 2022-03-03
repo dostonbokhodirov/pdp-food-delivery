@@ -2,19 +2,23 @@ package uz.pdp.pdp_food_delivery.telegrambot;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.UpdateHandler;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.AuthorizationProcessor;
 
-import java.util.Objects;
+import java.util.*;
 
 @Component
 public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
@@ -84,4 +88,5 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
+
 }
