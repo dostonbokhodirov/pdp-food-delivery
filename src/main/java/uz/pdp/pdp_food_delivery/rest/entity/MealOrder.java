@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import uz.pdp.pdp_food_delivery.rest.entity.base.Auditable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -20,6 +21,7 @@ public class MealOrder extends Auditable {
     @OneToOne
     private Meal meal;
 
+    @Column(columnDefinition = "boolean default false")
     private boolean done;
 
 }

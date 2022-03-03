@@ -32,10 +32,10 @@ public class AuthUser extends Auditable {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    //TOdo : default qiyman yozish
+    @Column(columnDefinition = "boolean default false")
     private boolean active;
 
-    //TOdo : default qiyman yozish
+    @Column(columnDefinition = "boolean default false")
     private boolean block;
 
     @Enumerated(EnumType.STRING)
