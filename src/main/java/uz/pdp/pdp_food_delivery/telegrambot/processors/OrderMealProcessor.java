@@ -26,20 +26,20 @@ public class OrderMealProcessor {
     private final MealService mealService;
     private final Offset offset;
 
-    public void process(Message message) {
-        String chatId = message.getChatId().toString();
-        Pageable pageable = new OffsetBasedPageRequest(offset.getSearchOffset(chatId), State.getLimitState(chatId));
-        List<MealDto> meals = mealService.getAllByLimit(pageable);
-        SendMessage sendMessage;
-        if (meals.size() == 0) {
-            sendMessage = new SendMessage(chatId, LangConfig.get(chatId, "no.meal"));
-            State.setSearchState(chatId, SearchState.UNDEFINED);
-            State.setMenuState(chatId, MenuState.UNDEFINED);
-        } else {
-            offset.setSearchOffset(chatId, 0);
-            sendMessage = new SendMessage(chatId, callbackHandlerProcessor.getMealMessage(meals, chatId).toString());
-            sendMessage.setReplyMarkup(InlineBoard.meal((ArrayList<MealDto>) meals, State.getLimitState(chatId), offset.getSearchOffset(chatId)));
-        }
-        bot.executeMessage(sendMessage);
-    }
+//    public void process(Message message) {
+//        String chatId = message.getChatId().toString();
+//        Pageable pageable = new OffsetBasedPageRequest(offset.getSearchOffset(chatId), State.getLimitState(chatId));
+//        List<MealDto> meals = mealService.getAllByLimit(pageable);
+//        SendMessage sendMessage;
+//        if (meals.size() == 0) {
+//            sendMessage = new SendMessage(chatId, LangConfig.get(chatId, "no.meal"));
+//            State.setSearchState(chatId, SearchState.UNDEFINED);
+//            State.setMenuState(chatId, MenuState.UNDEFINED);
+//        } else {
+//            offset.setSearchOffset(chatId, 0);
+//            sendMessage = new SendMessage(chatId, callbackHandlerProcessor.getMealMessage(meals, chatId).toString());
+//            sendMessage.setReplyMarkup(InlineBoard.meal((ArrayList<MealDto>) meals, State.getLimitState(chatId), offset.getSearchOffset(chatId)));
+//        }
+//        bot.executeMessage(sendMessage);
+//    }
 }
