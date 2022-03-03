@@ -16,5 +16,4 @@ public interface MealRepository extends JpaRepository<Meal, Long>, BaseRepositor
 
     List<Meal> getAllByLimit(@Param(value = "limit") Integer limitState, @Param(value = "offset") Integer offset);
 
-    List<Meal> findAllInclusive(@Param(value = "pageable") Pageable pageable);
 }

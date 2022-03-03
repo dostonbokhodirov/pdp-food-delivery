@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import uz.pdp.pdp_food_delivery.rest.entity.AuthUser;
-import uz.pdp.pdp_food_delivery.rest.enums.Role;
 import uz.pdp.pdp_food_delivery.rest.repository.BaseRepository;
+
+import java.util.Optional;
 
 @Repository
 public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseRepository {

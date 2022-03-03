@@ -51,7 +51,7 @@ public class MessageHandler extends AbstractHandler {
             return;
         } else if ("/order".equals(command)) {
             State.setMenuState(chatId, MenuState.ORDER);
-            orderMealProcessor.process(message, State.getState(chatId));
+            orderMealProcessor.process(message);
         }
     }
 }

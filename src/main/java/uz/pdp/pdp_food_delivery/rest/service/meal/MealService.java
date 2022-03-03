@@ -1,5 +1,6 @@
 package uz.pdp.pdp_food_delivery.rest.service.meal;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
@@ -48,9 +49,12 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
         return null;
     }
 
-    public List<MealDto> getAllByLimit(Integer limitState, Integer offset) {
-        List<Meal> meals = repository.getAllByLimit(limitState, offset);
+    public List<MealDto> getAllByLimit(Pageable pageable) {
+        List<Meal> meals = repository.findAll(pageable).getContent();
         return mapper.toDto(meals);
+
+//        List<Meal> meals = repository.getAllByLimit(limitState, offset);
+//        return mapper.toDto(meals);
     }
 
 }
