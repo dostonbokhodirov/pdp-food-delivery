@@ -3,6 +3,7 @@ package uz.pdp.pdp_food_delivery.rest.entity;
 import lombok.Getter;
 import lombok.Setter;
 import uz.pdp.pdp_food_delivery.rest.entity.base.Auditable;
+import uz.pdp.pdp_food_delivery.rest.entity.meal.Meal;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
