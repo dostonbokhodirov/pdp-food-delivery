@@ -28,6 +28,6 @@ public interface GenericCrudService<
 
     void delete(Long id);
 
-    Void update(UD updateDto);
+    void update(UD updateDto);
 
 }

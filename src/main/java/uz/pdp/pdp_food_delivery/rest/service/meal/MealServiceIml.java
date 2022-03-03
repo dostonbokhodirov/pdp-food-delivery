@@ -24,9 +24,9 @@ public class MealServiceIml extends AbstractService<MealMapper, MealRepository>
     }
 
     @Override
-    public Void update(MealUpdateDto mealUpdateDto) {
+    public void update(MealUpdateDto mealUpdateDto) {
 
-        return null;
+
     }
 
     @Override

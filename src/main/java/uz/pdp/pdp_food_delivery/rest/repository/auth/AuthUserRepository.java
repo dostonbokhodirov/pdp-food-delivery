@@ -16,7 +16,6 @@ import java.util.Optional;
 public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseRepository {
 
     Page<AuthUser> findAllByDeleted(boolean deleted, Pageable pageable);
-/*
 
     @Query(value = "select u.language from AuthUser u where u.chatId = :chatId")
     String getLanguage(@Param(value = "chatId") String chatId);
@@ -42,6 +41,5 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
     void updateEmail(String chatId, String text);
     Optional<AuthUser> findByIdAndDeleted(Long id, boolean deleted);
 
-/*    String getLanguage(String chatId);*/
 }
 
