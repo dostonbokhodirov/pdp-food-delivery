@@ -29,7 +29,7 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
     @Value("${bot.token}")
     private String botToken;
 
-    public PdpFoodDeliveryBot(AuthUserService authUserService, @Lazy UpdateHandler updateHandler, AuthorizationProcessor authorizationProcessor) {
+    public PdpFoodDeliveryBot(AuthUserService authUserService, @Lazy UpdateHandler updateHandler, @Lazy AuthorizationProcessor authorizationProcessor) {
         this.authUserService = authUserService;
         this.updateHandler = updateHandler;
         this.authorizationProcessor = authorizationProcessor;

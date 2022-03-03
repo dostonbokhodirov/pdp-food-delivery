@@ -73,15 +73,15 @@ public class InlineBoard {
 
         List<InlineKeyboardButton> extraButtons = new ArrayList<>();
         if (offset > 0) {
-            InlineKeyboardButton prevButton = new InlineKeyboardButton(Emoji.PREVIOUS);
+            InlineKeyboardButton prevButton = new InlineKeyboardButton(Emojis.PREVIOUS);
             prevButton.setCallbackData("prev");
             extraButtons.add(prevButton);
         }
-        InlineKeyboardButton cancelButton = new InlineKeyboardButton(Emoji.REMOVE);
+        InlineKeyboardButton cancelButton = new InlineKeyboardButton(Emojis.REMOVE);
         cancelButton.setCallbackData("cancel");
         extraButtons.add(cancelButton);
         if (meals.size() == limit) {
-            InlineKeyboardButton nextButton = new InlineKeyboardButton(Emoji.NEXT);
+            InlineKeyboardButton nextButton = new InlineKeyboardButton(Emojis.NEXT);
             nextButton.setCallbackData("next");
             extraButtons.add(nextButton);
         }

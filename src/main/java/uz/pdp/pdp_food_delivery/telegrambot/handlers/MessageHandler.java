@@ -62,7 +62,6 @@ public class MessageHandler extends AbstractHandler {
 
 
 
-                repository.saveByChatId(message.getChatId());
                 State.setMenuState(chatId, MenuState.UNDEFINED);
                 if (Objects.isNull(role)) {
                     authorizationProcessor.process(message, State.getState(chatId));

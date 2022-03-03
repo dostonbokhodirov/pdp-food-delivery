@@ -47,9 +47,9 @@ public class OffsetBasedPageRequest implements Pageable, Serializable {
      * @param direction  the direction of the {@link Sort} to be specified, can be {@literal null}.
      * @param properties the properties to sort by, must not be {@literal null} or empty.
      */
-    public OffsetBasedPageRequest(int offset, int limit, Sort.Direction direction, String... properties) {
-        this(offset, limit, new Sort(direction, properties));
-    }
+//    public OffsetBasedPageRequest(int offset, int limit, Sort.Direction direction, String... properties) {
+//        this(offset, limit, new Sort(direction, properties));
+//    }
 
     /**
      * Creates a new {@link OffsetBasedPageRequest} with sort parameters applied.

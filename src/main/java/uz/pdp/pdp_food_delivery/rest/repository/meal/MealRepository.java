@@ -14,6 +14,6 @@ public interface MealRepository extends JpaRepository<Meal, Long>, BaseRepositor
 
 //    @Query(value = 'select * from books where name like \'%s\' limit \'%s\' offset :
 
-    List<Meal> getAllByLimit(@Param(value = "limit") Integer limitState, @Param(value = "offset") Integer offset);
+//    List<Meal> getAllByLimit(@Param(value = "limit") Integer limitState, @Param(value = "offset") Integer offset);
 
 }

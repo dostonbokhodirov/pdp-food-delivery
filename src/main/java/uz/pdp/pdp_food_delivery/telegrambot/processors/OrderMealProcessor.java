@@ -38,7 +38,7 @@ public class OrderMealProcessor {
         } else {
             offset.setSearchOffset(chatId, 0);
             sendMessage = new SendMessage(chatId, callbackHandlerProcessor.getMealMessage(meals, chatId).toString());
-            sendMessage.setReplyMarkup(InlineBoard.meal(meals, State.getLimitState(chatId), offset.getSearchOffset(chatId)));
+            sendMessage.setReplyMarkup(InlineBoard.meal((ArrayList<MealDto>) meals, State.getLimitState(chatId), offset.getSearchOffset(chatId)));
         }
         bot.executeMessage(sendMessage);
     }
