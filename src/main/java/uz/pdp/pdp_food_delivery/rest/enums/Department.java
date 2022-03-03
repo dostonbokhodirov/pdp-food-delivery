@@ -15,6 +15,14 @@ public enum Department {
     ECMA,
     ACCOUNTING,
     UNICORN,
-    HEAD
+    HEAD,
+    ANONYMOUS;
+
+    public static Department getByName(String dep) {
+        for (Department department : values()) {
+            if (department.name().equalsIgnoreCase(dep)) return department;
+        }
+        return ANONYMOUS;
+    }
 
 }

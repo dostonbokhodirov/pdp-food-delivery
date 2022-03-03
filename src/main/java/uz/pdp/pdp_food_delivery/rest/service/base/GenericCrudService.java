@@ -12,6 +12,6 @@ public interface GenericCrudService<CD extends BaseDto, UD extends GenericDto> {
 
     void update(UD ud);
 
-    void create(CD cd);
+    Long create(CD cd);
 
 }
