@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.UpdateHandler;
+import uz.pdp.pdp_food_delivery.telegrambot.processors.AuthorizationProcessor;
 
 import java.util.Objects;
 
@@ -20,6 +21,7 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
 
     private final AuthUserService authUserService;
     private final UpdateHandler updateHandler;
+    private final AuthorizationProcessor authorizationProcessor;
 
     @Value("${bot.name}")
     private String botUsername;
@@ -27,18 +29,15 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
     @Value("${bot.token}")
     private String botToken;
 
-    public PdpFoodDeliveryBot(AuthUserService authUserService, @Lazy UpdateHandler updateHandler) {
+    public PdpFoodDeliveryBot(AuthUserService authUserService, @Lazy UpdateHandler updateHandler, AuthorizationProcessor authorizationProcessor) {
         this.authUserService = authUserService;
         this.updateHandler = updateHandler;
+        this.authorizationProcessor = authorizationProcessor;
     }
 
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage() &&
-                Objects.nonNull(update.getMessage().getText()) && update.getMessage().getText().equals("/start")) {
-            authUserService.save(update.getMessage());
-        }
         updateHandler.handle(update);
     }
 
