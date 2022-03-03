@@ -22,6 +22,10 @@ public interface GenericCrudService<
 
     Long create(CD createDto);
 
+    default Long create(CD createDto, Long userId) {
+        return null;
+    }
+
     void delete(Long id);
 
     Void update(UD updateDto);

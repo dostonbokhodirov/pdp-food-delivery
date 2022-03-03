@@ -51,7 +51,15 @@ public class AuthUserServiceIml extends AbstractService<AuthUserMapper, AuthUser
     }
 
     public void save(Message message) {
+    }
 
+    @Override
+    public List<AuthUserDto> getGivenPage(Integer page, Integer size) {
+        return null;
+    }
 
+    @Override
+    public Long create(AuthUserCreateDto createDto, Long userId) {
+        return 1L;
     }
 }

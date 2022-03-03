@@ -9,8 +9,9 @@ import java.util.Date;
 public class CronJobs {
 
 
-    @Scheduled(cron="0/30 0 3-4 * * *")
-    public void writeMessage(){
+    @Scheduled(cron = "0/10 * * * * *")
+//    @Scheduled(cron = "${jobs.cronSchedule:-}")
+    public void writeMessage() {
         System.out.println("Welcome to Tashkent " + new Date());
     }
 }

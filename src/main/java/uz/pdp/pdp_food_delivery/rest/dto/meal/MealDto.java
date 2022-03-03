@@ -7,5 +7,5 @@ import uz.pdp.pdp_food_delivery.rest.dto.GenericDto;
 @Getter
 @Setter
 public class MealDto extends GenericDto {
-
+private String name;
 }

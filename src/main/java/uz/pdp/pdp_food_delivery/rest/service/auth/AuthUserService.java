@@ -6,10 +6,16 @@ import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserUpdateDto;
 import uz.pdp.pdp_food_delivery.rest.entity.AuthUser;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 
+import java.util.List;
+
 public interface AuthUserService extends GenericCrudService<
         AuthUser,
         AuthUserDto,
         AuthUserCreateDto,
         AuthUserUpdateDto
         > {
+
+    List<AuthUserDto> getGivenPage(Integer page, Integer size);
+
+    ;
 }

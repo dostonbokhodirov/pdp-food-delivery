@@ -43,8 +43,7 @@ public class AuthUserController extends AbstractController<AuthUserService> {
 
     @PutMapping("create")
     public Long create(@RequestBody AuthUserCreateDto dto, @RequestParam(defaultValue = "null") Long userId) {
-        Long aLong = service.create(dto, userId);
-        return aLong;
+         return service.create(dto, userId);
     }
 
     @PatchMapping("update")

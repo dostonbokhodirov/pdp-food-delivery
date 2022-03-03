@@ -25,7 +25,8 @@ public interface FeedbackMapper extends BaseMapper<
     Feedback fromUpdateDto(FeedbackUpdateDto feedbackUpdateDto);
 
     List<FeedbackDto> toDto(List<Feedback> feedback);
-    FeedbackDto toDto(Feedback feedback)
+
+    FeedbackDto toDto(Feedback feedback);
 
 
 }
