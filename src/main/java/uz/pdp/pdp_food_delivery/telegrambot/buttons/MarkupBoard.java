@@ -5,7 +5,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import uz.pdp.pdp_food_delivery.telegrambot.LangConfig;
-import uz.pdp.pdp_food_delivery.telegrambot.emojis.Emojis;
+import uz.pdp.pdp_food_delivery.telegrambot.emoji.Emoji;
 
 import java.util.List;
 
@@ -13,11 +13,11 @@ public class MarkupBoard {
     private static final ReplyKeyboardMarkup board = new ReplyKeyboardMarkup();
 
     public static ReplyKeyboardMarkup userMenu(String chatId) {
-        KeyboardRow row = new KeyboardRow();
-        row.add(new KeyboardButton(Emojis.HISTORY + " " + LangConfig.get(chatId, "order.history")));
-        row.add(new KeyboardButton(Emojis.SETTINGS + " " + LangConfig.get(chatId, "settings")));
+        KeyboardRow row1 = new KeyboardRow();
+        row1.add(new KeyboardButton(Emoji.ADD_BOOK + " " + LangConfig.get(chatId, "add.book")));
+        row1.add(new KeyboardButton(Emoji.DOWNLOAD + " " + LangConfig.get(chatId, "downloaded.books")));
 
-        board.setKeyboard(List.of(row));
+        board.setKeyboard(List.of(row1));
         board.setResizeKeyboard(true);
         board.setSelective(true);
         return board;

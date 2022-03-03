@@ -8,6 +8,8 @@ import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserDto;
 import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserUpdateDto;
 import uz.pdp.pdp_food_delivery.rest.entity.AuthUser;
 import uz.pdp.pdp_food_delivery.rest.mapper.BaseMapper;
+import java.util.List;
+
 
 @Component
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
@@ -16,4 +18,13 @@ public interface AuthUserMapper extends BaseMapper<
         AuthUserDto,
         AuthUserCreateDto,
         AuthUserUpdateDto> {
+
+    AuthUserDto toDto(AuthUser user);
+
+    List<AuthUserDto> toDto(List<AuthUser> users);
+
+    AuthUser fromCreateDto(AuthUserCreateDto dto);
+
+    AuthUser fromUpdateDto(AuthUserUpdateDto dto);
+
 }
