@@ -15,6 +15,10 @@ spring:
         format_sql: true
   messages:
     always-use-message-format: true
+  security:
+    user:
+      name: admin
+      password: admin123
 
 bot:
   name: "helloformyselfhdasf_bot"
