@@ -7,6 +7,13 @@ public enum Type {
 
     COMPLAIN //normmas degani esli cho
     , ADVICE // maslahat ma'nosida
-    , THANKS // thanksda bu
+    , THANKS;
+
+    public static Type getByName(String typ) {
+        for (Type type : values()) {
+            if (type.name().equalsIgnoreCase(typ)) return type;
+        }
+        return ADVICE;
+    }
 
 }

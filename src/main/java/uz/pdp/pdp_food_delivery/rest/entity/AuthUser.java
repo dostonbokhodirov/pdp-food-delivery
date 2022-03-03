@@ -5,15 +5,15 @@ import lombok.Setter;
 import uz.pdp.pdp_food_delivery.rest.entity.base.Auditable;
 import uz.pdp.pdp_food_delivery.rest.enums.Department;
 import uz.pdp.pdp_food_delivery.rest.enums.Role;
+import uz.pdp.pdp_food_delivery.telegrambot.enums.Language;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "user",schema = "users")
+@Table(name = "user", schema = "users")
 public class AuthUser extends Auditable {
-
 
     private String password;
 
@@ -32,8 +32,13 @@ public class AuthUser extends Auditable {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    //TOdo : default qiyman yozish
     private boolean active;
 
+    //TOdo : default qiyman yozish
     private boolean block;
+
+    @Enumerated(EnumType.STRING)
+    private Language language;
 
 }
