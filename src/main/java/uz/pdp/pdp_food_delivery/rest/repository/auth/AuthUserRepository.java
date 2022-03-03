@@ -22,6 +22,25 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
     @Query("select u.role from AuthUser u where u.chatId = :chatId")
     public String findRoleByChatId(@Param(value = "chatId") String chatId);
 
+    @Query(value = "select u.role from AuthUser u where u.chatId =:chatId")
+    String getRole(@Param(value = "chatId") String chatId);
+
+    boolean existsByChatId(String chatId);
+
+    @Query(value = "select u.active from AuthUser u where u.chatId =:chatId")
+    boolean isActive(@Param(value = "chatId")String chatId);
+
+    @Query(value = "update AuthUser u set u.fullName =: fulName where u.chatId =:chatId ")
+    void updateFullName(String chatId, String fulName);
+
+    @Query(value = "update AuthUser u set u.phoneNumber =: phoneNumber where u.chatId =:chatId")
+    void updatePhone(String chatId, String phoneNumber);
+
+    @Query(value = "update AuthUser u set u.role =: role where u.chatId =:chatId")
+    void updateRole(String chatId, String role);
+
+    @Query(value = "update AuthUser u set u.email =: text where u.chatId =:chatId")
+    void updateEmail(String chatId, String text);
     Optional<AuthUser> findByIdAndDeleted(Long id, boolean deleted);
 }
 

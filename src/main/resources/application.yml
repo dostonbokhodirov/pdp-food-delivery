@@ -1,13 +1,10 @@
-#bot:
-#  name: "PDP Food Delivery Bot"
-#  token: "@pdpfood_bot"
 
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/pdp_food_delivery
     username: postgres
-    password: root123
+    password: bunyod
   jpa:
     show-sql: true
     hibernate:
@@ -16,3 +13,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   messages:
     always-use-message-format: true
+
+bot:
+  name: "PDP Food Delivery Bot"
+  token: "@pdpfood_bot"

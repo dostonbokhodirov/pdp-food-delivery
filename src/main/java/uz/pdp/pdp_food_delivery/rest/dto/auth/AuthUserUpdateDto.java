@@ -19,4 +19,7 @@ public class AuthUserUpdateDto extends GenericDto {
 
     private boolean active;
 
+    public AuthUserUpdateDto(String fullName) {
+        this.fullName = fullName;
+    }
 }

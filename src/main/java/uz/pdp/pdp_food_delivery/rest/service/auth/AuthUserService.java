@@ -24,9 +24,13 @@ import java.util.Optional;
 public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRepository>
         implements GenericCrudService<AuthUserCreateDto, AuthUserUpdateDto>, GenericService<AuthUserDto>, BaseService {
 
-    public AuthUserService(AuthUserMapper mapper, AuthUserRepository repository) {
+    public AuthUserService(AuthUserMapper mapper, AuthUserRepository repository, AuthUserRepository repository1) {
         super(mapper, repository);
+        this.repository = repository1;
     }
+
+    private final AuthUserRepository repository;
+
 
     public void save(Message message) {
 

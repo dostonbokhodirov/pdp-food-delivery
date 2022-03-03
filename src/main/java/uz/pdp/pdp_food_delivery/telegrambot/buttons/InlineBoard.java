@@ -4,13 +4,40 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
-import uz.pdp.pdp_food_delivery.telegrambot.emoji.Emoji;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import uz.pdp.pdp_food_delivery.telegrambot.emojis.Emojis;
+
+import java.util.Arrays;
+import java.util.List;
+
 public class InlineBoard {
+
+    private static final InlineKeyboardMarkup board = new InlineKeyboardMarkup();
+
+
+    public static InlineKeyboardMarkup languageButtons() {
+        InlineKeyboardButton uz = new InlineKeyboardButton(Emojis.UZ + " O'zbek");
+        uz.setCallbackData("uz");
+
+        InlineKeyboardButton ru = new InlineKeyboardButton(Emojis.RU + " Русский");
+        ru.setCallbackData("ru");
+
+        InlineKeyboardButton en = new InlineKeyboardButton(Emojis.EN + " English");
+        en.setCallbackData("en");
+        board.setKeyboard(Arrays.asList(getRow(uz), getRow(ru), getRow(en)));
+        return board;
+    }
+
+
+    private static List<InlineKeyboardButton> getRow(InlineKeyboardButton... buttons) {
+        return Arrays.stream(buttons).toList();
+    }
     public static InlineKeyboardMarkup meal(ArrayList<MealDto> meals, Integer limit, Integer offset) {
         InlineKeyboardMarkup board = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
