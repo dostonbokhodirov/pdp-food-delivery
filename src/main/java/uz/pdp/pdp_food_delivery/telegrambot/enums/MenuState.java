@@ -19,5 +19,5 @@ public enum MenuState {
     USERLIST,
     REMOVE_MANAGER,
     ADD_MANAGER,
-    TOP
+    ORDER, TOP
 }

@@ -12,11 +12,11 @@ public class MarkupBoard {
     private static final ReplyKeyboardMarkup board = new ReplyKeyboardMarkup();
 
     public static ReplyKeyboardMarkup userMenu(String chatId) {
-        KeyboardRow row1 = new KeyboardRow();
-        row1.add(new KeyboardButton(Emoji.ADD_BOOK + " " + LangConfig.get(chatId, "add.book")));
-        row1.add(new KeyboardButton(Emoji.DOWNLOAD + " " + LangConfig.get(chatId, "downloaded.books")));
+        KeyboardRow row = new KeyboardRow();
+        row.add(new KeyboardButton(Emoji.HISTORY + " " + LangConfig.get(chatId, "order.history")));
+        row.add(new KeyboardButton(Emoji.SETTINGS + " " + LangConfig.get(chatId, "settings")));
 
-        board.setKeyboard(List.of(row1));
+        board.setKeyboard(List.of(row));
         board.setResizeKeyboard(true);
         board.setSelective(true);
         return board;

@@ -56,4 +56,8 @@ public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRep
     public String getLanguage(String chatId) {
         return repository.getLanguage(chatId);
     }
+
+    public String findRoleByChatId(String chatId) {
+        return repository.findRoleByChatId(chatId);
+    }
 }

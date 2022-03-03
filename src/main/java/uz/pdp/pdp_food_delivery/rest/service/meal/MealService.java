@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealUpdateDto;
+import uz.pdp.pdp_food_delivery.rest.entity.Meal;
 import uz.pdp.pdp_food_delivery.rest.mapper.meal.MealMapper;
 import uz.pdp.pdp_food_delivery.rest.repository.meal.MealRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
@@ -14,7 +15,7 @@ import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 import java.util.List;
 
 @Service
-public class MealService  extends AbstractService<MealMapper, MealRepository>
+public class MealService extends AbstractService<MealMapper, MealRepository>
         implements GenericCrudService<MealCreateDto, MealUpdateDto>, GenericService<MealDto>, BaseService {
 
     public MealService(MealMapper mapper, MealRepository repository) {
@@ -45,4 +46,10 @@ public class MealService  extends AbstractService<MealMapper, MealRepository>
     public MealDto get(Long id) {
         return null;
     }
+
+    public List<MealDto> getAllByLimit(Integer limitState, Integer offset) {
+        List<Meal> meals = repository.getAllByLimit(limitState, offset);
+        return mapper.toDto(meals);
+    }
+
 }
