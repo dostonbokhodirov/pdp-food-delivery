@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "feedback",schema = "feedback")
+@Table(name = "feedback", schema = "feedback")
 public class Feedback extends Auditable {
 
     private String message;

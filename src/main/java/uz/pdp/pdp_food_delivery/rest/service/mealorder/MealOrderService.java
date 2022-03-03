@@ -22,7 +22,7 @@ public class MealOrderService extends AbstractService<MealOrderMapper, MealOrder
 
     //this two times are used for checking dates(present or not)
     public static LocalTime after = LocalTime.of(18,0,0);
-    public static LocalTime before = LocalTime.of(9,59,0);
+    public static LocalTime before = LocalTime.of(10,0,0);
 
 
     @Override
