@@ -24,7 +24,7 @@ public class MealController extends AbstractController<MealService> {
     }
 
     @RequestMapping(value = "create", method = RequestMethod.POST)
-    public Long create(@RequestBody MealCreateDto dto, @RequestParam(defaultValue = "-1") Long sessionUserId) {
+    public Long create(@ModelAttribute MealCreateDto dto, @RequestParam(defaultValue = "-1") Long sessionUserId) {
         return service.create(dto, sessionUserId);
     }
 
