@@ -7,10 +7,13 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
+import uz.pdp.pdp_food_delivery.rest.entity.AuthUser;
+import uz.pdp.pdp_food_delivery.rest.enums.Role;
 import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
 import uz.pdp.pdp_food_delivery.telegrambot.LangConfig;
 import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
 import uz.pdp.pdp_food_delivery.telegrambot.emojis.Emojis;
+import uz.pdp.pdp_food_delivery.telegrambot.enums.Language;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.SettingsState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.UState;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.base.AbstractHandler;
@@ -45,31 +48,29 @@ public class CallbackHandler extends AbstractHandler {
         String data = callbackQuery.getData();
         String chatId = message.getChatId().toString();
         if ("uz".equals(data) || "ru".equals(data) || "en".equals(data)) {
-            authUserRepository.updateLanguage(chatId, data);
-            SendMessage sendMessage = new SendMessage(chatId, LangConfig.get(chatId, "enter.full.name"));
+            AuthUser user = authUserRepository.getByChatId(chatId);
+            user.setLanguage(Language.getByCode(data));
+            authUserRepository.save(user);
+            SendMessage sendMessage = new SendMessage(chatId,"Enter your Fullname: ");
             sendMessage.setReplyMarkup(new ForceReplyKeyboard());
-            bot.executeMessage(sendMessage);
             setState(chatId, UState.FULL_NAME);
-            authorizationProcessor.process(message, State.getState(chatId));
             deleteMessage(message, chatId);
-        }
-
-    }
-
-    public void languageMessage(Message message, String data) {
-        String chatId = message.getChatId().toString();
-        String role = authUserRepository.getRole(chatId);
-        if (Objects.isNull(role)) {
-            authUserRepository.updateLanguage(chatId, message.getText());
-
-
-        } else {
-            authUserRepository.updateLanguage(chatId, message.getText());
-            SendMessage sendMessage = new SendMessage(chatId, Emojis.ADD + " " +
-                    LangConfig.get(chatId, "language.changed"));
             bot.executeMessage(sendMessage);
-            State.setSettingsState(chatId, SettingsState.UNDEFINED);
-            settingProcessor.menu(chatId, LangConfig.get(chatId, "settings.menu"));
+        }else if(data.startsWith("accept_")){
+            String acceptedUser = data.substring(7);
+            if (data.substring(7).equals("no")){
+                SendMessage sendMessage = new SendMessage(chatId, "User not Accepted");
+                bot.executeMessage(sendMessage);
+            }else {
+                AuthUser user = authUserRepository.getByChatId(acceptedUser);
+                user.setRole(Role.USER);
+                State.setState(acceptedUser, UState.AUTHORIZED);
+                authUserRepository.save(user);
+                SendMessage sendMessage= new SendMessage(chatId, "User successfully added!");
+                bot.executeMessage(sendMessage);
+                SendMessage sendMessage1 = new SendMessage(acceptedUser, "You are successfully registered");
+                bot.executeMessage(sendMessage1);
+            }
         }
     }
 

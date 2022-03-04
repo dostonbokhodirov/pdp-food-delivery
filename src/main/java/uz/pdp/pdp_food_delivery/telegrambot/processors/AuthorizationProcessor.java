@@ -37,7 +37,6 @@ public class AuthorizationProcessor {
             sendMessage.setReplyMarkup(InlineBoard.languageButtons());
             bot.executeMessage(sendMessage);
             setState(chatId, UState.DELETE_ALL);
-
         } else if (UState.FULL_NAME.equals(state)) {
             String text = message.getText();
             if (StringUtils.isNumeric(text) || !text.equals(StringUtils.capitalize(text))) {
@@ -47,7 +46,7 @@ public class AuthorizationProcessor {
                 sendMessage.setReplyMarkup(new ForceReplyKeyboard());
                 bot.executeMessage(sendMessage);
             } else {
-                authUserRepository.updateFullName(chatId, message.getText());
+//                authUserRepository.updateFullName(chatId, message.getText());
                 SendMessage sendMessage = new SendMessage(chatId, LangConfig.get(chatId, "enter.email"));
 //                sendMessage.setReplyMarkup(new ForceReplyKeyboard());
                 bot.executeMessage(sendMessage);
@@ -55,7 +54,7 @@ public class AuthorizationProcessor {
             }
         } else if (UState.EMAIL.equals(state)) {
             String text = message.getText();
-
+//
 //            boolean matches = text.matches("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+");
 //            if (!matches) {
 //                SendMessage sendMessage = new SendMessage(chatId,
@@ -64,9 +63,9 @@ public class AuthorizationProcessor {
 //                bot.executeMessage(sendMessage);
 //            }
 //            else {
-                authUserRepository.updateEmail(chatId, text);
-                SendMessage sendMessage = new SendMessage(chatId, LangConfig.get(chatId, "enter.phone") + Emojis.PHONE);
-                bot.executeMessage(sendMessage);
+//                authUserRepository.updateEmail(chatId, text);
+//                SendMessage sendMessage = new SendMessage(chatId, LangConfig.get(chatId, "enter.phone") + Emojis.PHONE);
+//                bot.executeMessage(sendMessage);
 //            }
 
         } else if (UState.PHONE_NUMBER.equals(state)) {
@@ -75,7 +74,7 @@ public class AuthorizationProcessor {
                 if (!phoneNumber.contains("+")) {
                     phoneNumber = "+" + phoneNumber;
                 }
-                authUserRepository.updatePhone(chatId, phoneNumber);
+//                authUserRepository.updatePhone(chatId, phoneNumber);
                 SendMessage sendMessage = new SendMessage(chatId, LangConfig.get(chatId, "enter.department") + Emojis.DOWNLOAD);
                 bot.executeMessage(sendMessage);
             }
@@ -83,12 +82,12 @@ public class AuthorizationProcessor {
 
         } else if (UState.DEPARTMENT.equals(state)) {
             SendMessage sendMessage = new SendMessage();
-            sendMessage.setReplyMarkup(MarkupBoard.department(chatId));
+            sendMessage.setReplyMarkup(MarkupBoard.department());
             bot.executeMessage(sendMessage);
 
             setState(chatId, UState.AUTHORIZED);
             setMenuState(chatId, MenuState.UNDEFINED);
-            authUserRepository.updateRole(chatId, Role.USER.toString());
+//            authUserRepository.updateRole(chatId, Role.USER.toString());
 
         }
 

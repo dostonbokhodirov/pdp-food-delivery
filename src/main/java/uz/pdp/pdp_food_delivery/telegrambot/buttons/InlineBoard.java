@@ -33,7 +33,15 @@ public class InlineBoard {
         board.setKeyboard(Arrays.asList(getRow(uz), getRow(ru), getRow(en)));
         return board;
     }
-
+//
+    public static InlineKeyboardMarkup accept(String chatId){
+        InlineKeyboardButton accept = new InlineKeyboardButton(Emojis.ADD + " Confirm");
+        accept.setCallbackData("accept_" + chatId);
+        InlineKeyboardButton no = new InlineKeyboardButton(Emojis.REMOVE + " Ignore");
+        no.setCallbackData("accept_no");
+        board.setKeyboard(Arrays.asList(getRow(accept), getRow(no)));
+        return board;
+    }
 
     private static List<InlineKeyboardButton> getRow(InlineKeyboardButton... buttons) {
         return Arrays.stream(buttons).toList();
