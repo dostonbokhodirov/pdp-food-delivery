@@ -22,5 +22,7 @@ public class ExcelFile extends Auditable {
     @Column(nullable = false)
     private String path;
 
+    @Column(nullable = false)
+    private String mimeType;
 
 }

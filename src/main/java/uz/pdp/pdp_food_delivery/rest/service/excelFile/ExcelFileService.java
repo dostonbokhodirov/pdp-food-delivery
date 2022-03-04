@@ -29,7 +29,7 @@ public class ExcelFileService extends AbstractService<ExcelFileMapper, ExcelFile
         this.mealOrderService = mealOrderService;
     }
 
-    private ExcelFileDto getExcelFile(LocalDateTime date) {
+    public ExcelFileDto getExcelFile(LocalDateTime date) {
 
         List<MealOrderCreateDto> dto = mealOrderService.findOrderForExcelFile(date);
         ExcelFileDto excelFileDto;
@@ -64,7 +64,7 @@ public class ExcelFileService extends AbstractService<ExcelFileMapper, ExcelFile
                     }
                     workbook.write(outputStream);
 
-                    ExcelFile excelFile = new ExcelFile(fileName, file.getAbsolutePath());
+                    ExcelFile excelFile = new ExcelFile(fileName, file.getAbsolutePath(), ".xlsx");
                     repository.save(excelFile);
                     excelFileDto=mapper.toDto(excelFile);
                     return excelFileDto;
