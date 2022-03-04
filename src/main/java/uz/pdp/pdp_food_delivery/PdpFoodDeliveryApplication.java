@@ -14,6 +14,7 @@ import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 @SpringBootApplication
 //@RequiredArgsConstructor
 @OpenAPIDefinition
+
 public class PdpFoodDeliveryApplication {
 
     @Autowired

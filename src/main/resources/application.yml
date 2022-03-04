@@ -22,7 +22,8 @@ spring:
 springdoc:
   swagger-ui:
     path: sw
-
 bot:
-  name: "pdpfood_bot"
-  token: "1803505474:AAFUUTxemmqR4PXQUwbKoL9p2UOjQ6tAMwg"
+  name: "food_service"
+  token: "5283213329:AAHTpDtGV8Q1SOndVvQvizP_HdlrbMfHpb8"
+
+

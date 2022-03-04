@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import uz.pdp.pdp_food_delivery.rest.entity.base.Auditable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter
@@ -26,8 +24,6 @@ public class Meal extends Auditable {
     @Column(nullable = false)
     private LocalDate date;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "picture_id", nullable = false)
-    private MealPicture picture;
+    private String picturePath;
 
 }
