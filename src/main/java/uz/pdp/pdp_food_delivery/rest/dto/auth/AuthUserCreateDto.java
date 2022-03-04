@@ -9,6 +9,7 @@ import uz.pdp.pdp_food_delivery.rest.enums.Role;
 @Getter
 @Setter
 public class AuthUserCreateDto implements BaseDto {
+
     public String chatId;
 
     public AuthUserCreateDto(String chatId) {

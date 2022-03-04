@@ -1,3 +1,7 @@
+#bot:
+#  name: "PDP Food Delivery Bot"
+#  token: "@pdpfood_bot"
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -26,3 +30,4 @@ bot:
 springdoc:
   swagger-ui:
     path: sw
+
