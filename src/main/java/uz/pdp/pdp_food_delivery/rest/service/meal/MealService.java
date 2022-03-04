@@ -1,11 +1,11 @@
 package uz.pdp.pdp_food_delivery.rest.service.meal;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealUpdateDto;
 import uz.pdp.pdp_food_delivery.rest.entity.meal.Meal;
+import uz.pdp.pdp_food_delivery.rest.entity.meal.MealPicture;
 import uz.pdp.pdp_food_delivery.rest.mapper.meal.MealMapper;
 import uz.pdp.pdp_food_delivery.rest.repository.meal.MealRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
@@ -16,6 +16,7 @@ import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
 
 @Service
 public class MealService extends AbstractService<MealMapper, MealRepository>
@@ -32,7 +33,10 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
     public Long create(MealCreateDto mealCreateDto) {
 
         Meal meal = mapper.fromCreateDto(mealCreateDto);
-        meal.setPicture(mealPictureService.create(mealCreateDto.getPicture()));
+        MealPicture mealPicture = mealPictureService.create(mealCreateDto.getPicture());
+
+        meal.setPicture(mealPicture);
+
         repository.save(meal);
 
         return meal.getId();
@@ -42,8 +46,10 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
     public Long create(MealCreateDto mealCreateDto, Long sesId) {
 
         Meal meal = mapper.fromCreateDto(mealCreateDto);
+        MealPicture mealPicture = mealPictureService.create(mealCreateDto.getPicture());
+
+        meal.setPicture(mealPicture);
         meal.setCreatedBy(sesId);
-        meal.setPicture(mealPictureService.create(mealCreateDto.getPicture()));
 
         repository.save(meal);
 
@@ -53,7 +59,26 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
 
     @Override
     public void delete(Long id) {
-        repository.deleteById(id);
+        Optional<Meal> meal = repository.findByIdAndDeleted(id, false);
+        meal.ifPresentOrElse(
+                (value) ->
+                        value.setDeleted(true),
+                () -> {
+                    throw new RuntimeException("meal not found");
+                });
+        repository.save(meal.get());
+    }
+
+    public void delete(Long id, Long sesId) {
+        Optional<Meal> meal = repository.findByIdAndDeleted(id, false);
+        meal.ifPresentOrElse(
+                (value) ->
+                        value.setDeleted(true),
+                () -> {
+                    throw new RuntimeException("meal not found");
+                });
+        meal.get().setUpdatedBy(sesId);
+        repository.save(meal.get());
     }
 
     @Override
@@ -62,7 +87,7 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
         Optional<Meal> meal = repository.findById(mealUpdateDto.getId());
         mapper.fromUpdateDto(mealUpdateDto, meal.get());
 
-        if (Objects.nonNull(mealUpdateDto.getPicture())){
+        if (Objects.nonNull(mealUpdateDto.getPicture())) {
             meal.get().setPicture(mealPictureService.create(mealUpdateDto.getPicture()));
         }
         repository.save(meal.get());
@@ -74,24 +99,28 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
 
         mapper.fromUpdateDto(mealUpdateDto, meal.get());
 
-        if (Objects.nonNull(mealUpdateDto.getPicture())){
+        if (Objects.nonNull(mealUpdateDto.getPicture())) {
             meal.get().setPicture(mealPictureService.create(mealUpdateDto.getPicture()));
         }
 
         meal.get().setUpdatedBy(sesId);
         repository.save(meal.get());
-    }
 
+
+    }
 
 
     @Override
     public List<MealDto> getAll() {
+
 
         return null;
     }
 
     @Override
     public MealDto get(Long id) {
+        Optional<Meal> meal = repository.findById(id);
+
         return null;
     }
 
@@ -157,7 +186,6 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
 //        List<MealPicture> mealPictures = mealPictureRepository.findAllByMealId(mealId);
 //        return setPictureContent(mealPictures);
 //    }
-
 
 
 }
