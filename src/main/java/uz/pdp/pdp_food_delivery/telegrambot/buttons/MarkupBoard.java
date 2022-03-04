@@ -46,6 +46,26 @@ public class MarkupBoard {
         return board;
     }
 
+    public static ReplyKeyboardMarkup menuUser(){
+        KeyboardRow row = new KeyboardRow();
+        row.add(new KeyboardButton("Order"));
+        board.setSelective(true);
+        board.setResizeKeyboard(true);
+        board.setKeyboard(List.of(row));
+        return board;
+    }
+
+    public static ReplyKeyboardMarkup menuFoodManager(){
+        KeyboardRow row = new KeyboardRow();
+        row.add(new KeyboardButton("Add Food"));
+        row.add(new KeyboardButton("ORDER"));
+        row.add(new KeyboardButton("MONITORING"));
+        board.setResizeKeyboard(true);
+        board.setSelective(true);
+        board.setKeyboard(List.of(row));
+        return board;
+    }
+
     public static ReplyKeyboardMarkup sharePhoneNumber() {
         KeyboardButton phoneContact = new KeyboardButton(Emojis.PHONE + " " + "Contact");
         phoneContact.setRequestContact(true);

@@ -43,6 +43,7 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
 
     AuthUser getByChatId(String chatId);
 
-    AuthUser getByDepartmentAndRole(Department department, Role role);
+//    @Query(value = "select u.* from users.user u where u.role=:role  and u.department=:dep",nativeQuery = true)
+    AuthUser getByDepartmentAndRole(Department dep, Role role);
 }
 

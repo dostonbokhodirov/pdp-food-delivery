@@ -11,9 +11,13 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class MealCreateDto implements BaseDto {
+
     private String photoId;
+
     private String name;
+
     private LocalDate date;
+
     private MultipartFile picture;
 
     public MealCreateDto(String photoId, String name) {
