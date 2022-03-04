@@ -13,8 +13,7 @@ import uz.pdp.pdp_food_delivery.rest.mapper.BaseMapper;
 
 import java.util.List;
 
-@Component
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
+@Mapper(componentModel = "spring")
 public interface MealMapper extends BaseMapper<
         Meal,
         MealDto,
@@ -22,17 +21,22 @@ public interface MealMapper extends BaseMapper<
         MealUpdateDto
         > {
 
+    @Override
+    @Mapping(target="picture",ignore=true)
+    List<MealDto> toDto(List<Meal> e);
 
-    @Mapping(target = "picture", ignore = true)
-    List<MealDto> toDto(List<Meal> meals);
-
-    @Mapping(target = "picture", ignore = true)
+    @Override
+    @Mapping(target="picture",ignore=true)
     Meal fromCreateDto(MealCreateDto mealCreateDto);
 
     @Mapping(target = "picture", ignore = true)
     MealDto toDto(Meal meal);
 
-    @Mapping(target = "picture", ignore = true)
-    void fromUpdateDto(MealUpdateDto mealUpdateDto, @MappingTarget Meal meal);
+    @Override
+    @Mapping(target="picture",ignore=true)
+    Meal fromUpdateDto(MealUpdateDto mealUpdateDto);
+
+    @Mapping(target="picture",ignore=true)
+    Meal fromUpdateDto(MealUpdateDto mealUpdateDto,@MappingTarget Meal meal);
 
 }

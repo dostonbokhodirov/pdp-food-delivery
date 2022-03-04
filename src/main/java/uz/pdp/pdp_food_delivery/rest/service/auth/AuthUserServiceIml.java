@@ -1,9 +1,22 @@
 package uz.pdp.pdp_food_delivery.rest.service.auth;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MimeTypeUtils;
+import uz.pdp.pdp_food_delivery.rest.config.security.utils.JwtUtils;
 import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserDto;
 import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserUpdateDto;
@@ -12,10 +25,14 @@ import uz.pdp.pdp_food_delivery.rest.mapper.auth.AuthUserMapper;
 import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
 
-import java.util.List;
-import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.*;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+@Slf4j
 @Service
 public class AuthUserServiceIml extends AbstractService<AuthUserMapper, AuthUserRepository>
         implements AuthUserService {
@@ -28,6 +45,7 @@ public class AuthUserServiceIml extends AbstractService<AuthUserMapper, AuthUser
     public String getLanguage(String chatId) {
         return repository.getLanguage(chatId);
     }*/
+
 
     @Override
     public void delete(Long id) {
@@ -98,6 +116,90 @@ public class AuthUserServiceIml extends AbstractService<AuthUserMapper, AuthUser
         AuthUser save = repository.save(authUser);
         return save.getId();
     }
+
+    public String getLanguage(String chatId) {
+        return repository.getLanguage(chatId);
+    }
+
+    public String findRoleByChatId(String chatId) {
+        return repository.findRoleByChatId(chatId);
+    }
+
+    @Override
+    public void getRefreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        // gets "Authentication" header from request
+        String authorizationHeader = request.getHeader(AUTHORIZATION);
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            try {
+                //token
+                String refresh_token = authorizationHeader.substring("Bearer ".length());
+
+                //jwt algorithm
+
+                Algorithm algorithm = JwtUtils.getAlgorithm();
+
+                //checks token to valid  if not valid throws exception
+
+                JWTVerifier verifier = JWT.require(algorithm).build();
+
+                //if valid decode it with given algorithm
+                DecodedJWT decodedJWT = verifier.verify(refresh_token);
+
+                // from payload part gets subject
+                String phoneNumber = decodedJWT.getSubject();
+
+                // gets phone from db
+                AuthUser user = getUserByUsername(phoneNumber);
+
+                //creates new access token
+                String access_token = JWT.create()
+                        .withSubject(user.getPhoneNumber())
+                        .withExpiresAt(JwtUtils.getExpiry())
+                        .withIssuer(request.getRequestURL().toString())
+                        .withClaim("roles", Collections.singletonList(user.getRole().name()))
+                        .sign(algorithm);
+
+                //puts into map given refresh and created access tokens
+                Map<String, String> tokens = new HashMap<>();
+                tokens.put("access_token", access_token);
+                tokens.put("refresh_token", refresh_token);
+
+                //sets response type
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+                new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+
+            } catch (Exception exception) {
+                response.setHeader("error", exception.getMessage());
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                //response.sendError(FORBIDDEN.value());
+                Map<String, String> error = new HashMap<>();
+                error.put("error_message", exception.getMessage());
+                response.setContentType(MimeTypeUtils.APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), error);
+            }
+        } else {
+            throw new RuntimeException("Refresh token is missing");
+        }
+    }
+
+    public AuthUser getUserByUsername(String phone) {
+        log.info("Getting user by phone : {}", phone);
+        return repository.findByPhoneNumber(phone);
+    }
+
+
+    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
+        AuthUser user = repository.findByPhoneNumber(phone);
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getPhoneNumber())
+                .password(user.getPassword())
+                .authorities(Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())))
+                .build();
+    }
+
 
 //    public String getLanguage(String chatId) {
 //        return repository.getLanguage(chatId);

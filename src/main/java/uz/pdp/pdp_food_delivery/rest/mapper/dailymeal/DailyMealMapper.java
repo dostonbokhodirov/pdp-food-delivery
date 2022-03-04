@@ -8,7 +8,6 @@ import uz.pdp.pdp_food_delivery.rest.dto.dailymeal.DailyMealDto;
 import uz.pdp.pdp_food_delivery.rest.dto.dailymeal.DailyMealUpdateDto;
 import uz.pdp.pdp_food_delivery.rest.entity.meal.DailyMeal;
 import uz.pdp.pdp_food_delivery.rest.mapper.BaseMapper;
-@Component
 @Mapper(componentModel = "spring")
 public interface DailyMealMapper extends BaseMapper<
         DailyMeal,

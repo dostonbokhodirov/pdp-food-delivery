@@ -121,4 +121,20 @@ public class InlineBoard {
         board.setKeyboard(buttons);
         return board;
     }
+
+    public static InlineKeyboardMarkup cronJobChooseButton() {
+        InlineKeyboardButton choose = new InlineKeyboardButton("Choose");
+        choose.setCallbackData("choose");
+        board.setKeyboard(List.of(getRow(choose)));
+        return board;
+    }
+
+    public static InlineKeyboardMarkup cronJobgetOrderButton() {
+        InlineKeyboardButton yes = new InlineKeyboardButton("Yes");
+        yes.setCallbackData("Yes");
+        InlineKeyboardButton no = new InlineKeyboardButton("No");
+        no.setCallbackData("No");
+        board.setKeyboard(Arrays.asList(getRow(no),getRow(yes)));
+        return board;
+    }
 }

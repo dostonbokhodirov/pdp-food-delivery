@@ -19,8 +19,7 @@ public class DailyMeal extends Auditable {
     @Column(nullable = false)
     private Date date;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "picture_id", nullable = false)
-    private MealPicture picture;
+    @Column(name = "picture_path", nullable = false)
+    private String picture;
 
 }

@@ -30,7 +30,6 @@ public class CronJob {
            message.setReplyMarkup(board);
            bot.executeMessage(message);
        });
-
     }
 
     @Scheduled(cron="0 0/30 12,13,14 ? * MON,TUE,WED,THU,FRI")
