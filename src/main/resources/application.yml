@@ -15,6 +15,13 @@ spring:
         format_sql: true
   messages:
     always-use-message-format: true
+  security:
+    user:
+      name: admin
+      password: admin123
+springdoc:
+  swagger-ui:
+    path: sw
 
 bot:
   name: "pdpfood_bot"

@@ -1,14 +1,17 @@
 package uz.pdp.pdp_food_delivery.rest.controller;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.pdp_food_delivery.rest.controller.base.AbstractController;
 import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserDto;
 import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserUpdateDto;
+import uz.pdp.pdp_food_delivery.rest.response.Data;
+import uz.pdp.pdp_food_delivery.rest.response.ResponseEntity;
 import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -22,41 +25,43 @@ public class AuthUserController extends AbstractController<AuthUserService> {
 
     //Admin uchun
     @GetMapping("list")
-    public List<AuthUserDto> getGivenPageAndSizeOfUsers(@RequestParam(value = "page", defaultValue = "0") Integer page,
-                                                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
+    public ResponseEntity<Data<List<AuthUserDto>>> getGivenPageAndSizeOfUsers(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                                              @RequestParam(value = "size", defaultValue = "10") Integer size) {
         List<AuthUserDto> all = service.getGivenPage(page, size);
-        return all;
+        return new ResponseEntity<>(new Data<>(all.size(), all));
     }
 
-
     @GetMapping("get/{id}")
-    public AuthUserDto getById(@PathVariable Long id) {
+    public ResponseEntity<Data<AuthUserDto>> getById(@PathVariable Long id) {
         try {
             AuthUserDto authUserDto = service.get(id);
-            return authUserDto;
+            return new ResponseEntity<>(new Data<>(1, authUserDto));
         } catch (RuntimeException ignored) {
             return null;
         }
     }
 
     @PutMapping("create")
-    public Long create(@RequestBody AuthUserCreateDto dto, @RequestParam(defaultValue = "null") Long userId) {
+    public ResponseEntity<Long> create(@RequestBody AuthUserCreateDto dto, @RequestParam(defaultValue = "null") Long userId) {
         Long aLong = service.create(dto, userId);
-        return aLong;
+        return new ResponseEntity<>(aLong);
     }
 
     @PatchMapping("update")
-    public HttpEntity<?> update(@RequestBody AuthUserUpdateDto dto) {
+    public ResponseEntity<String> update(@RequestBody AuthUserUpdateDto dto) {
         service.update(dto);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>("Success");
     }
-
 
     @DeleteMapping("delete/{id}")
-    public HttpEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         service.delete(id);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>("Success");
     }
 
+    @GetMapping("/token/refresh")
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        service.getRefreshToken(request, response);
+    }
 
 }

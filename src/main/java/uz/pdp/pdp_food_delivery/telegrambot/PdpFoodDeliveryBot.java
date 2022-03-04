@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -50,12 +49,14 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
         return botUsername;
     }
 
-    public void executeMessage(BotApiMethod<?> msg) {
+
+    public Integer executeMealPicture(SendPhoto msg) {
         try {
-            execute(msg);
+            return execute(msg).getMessageId();
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public void executeMessage(SendMessage msg) {
