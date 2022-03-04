@@ -46,6 +46,7 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
 
     AuthUser findByPhoneNumber(String phoneNumber);
 
-
+    @Query(value = "select u.* from AuthUser u where u.chatId = :chatId", nativeQuery = true)
+    AuthUser findByChatId(@Param(value = "chatId") String chatId);
 }
 

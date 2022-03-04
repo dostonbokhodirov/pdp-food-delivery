@@ -2,16 +2,11 @@ package uz.pdp.pdp_food_delivery.telegrambot.processors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 import uz.pdp.pdp_food_delivery.telegrambot.LangConfig;
-import uz.pdp.pdp_food_delivery.telegrambot.buttons.InlineBoard;
 import uz.pdp.pdp_food_delivery.telegrambot.config.TargetMeal;
-import uz.pdp.pdp_food_delivery.telegrambot.enums.MenuState;
-import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -27,10 +22,12 @@ public class CallbackHandlerProcessor {
             for (MealDto meal : meals) {
                 if (meal.getId().equals(TargetMeal.getTargetMeal(chatId).getId())) {
                     messageText.append("<code>");
-                    getMessage(messageText, meal);
+                    StringBuilder message = getMessage(messageText, meal);
+                    messageText.append(message);
                     messageText.append("</code>");
                 } else {
-                    getMessage(messageText, meal);
+                    StringBuilder message = getMessage(messageText, meal);
+                    messageText.append(message);
                 }
             }
         }

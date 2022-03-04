@@ -62,26 +62,17 @@ public class InlineBoard {
             buttons.add(numberButtons1);
         }
 
-//        List<InlineKeyboardButton> extraButtons = new ArrayList<>();
-//        if (offset > 0) {
-//            InlineKeyboardButton prevButton = new InlineKeyboardButton(Emojis.PREVIOUS);
-//            prevButton.setCallbackData("prev");
-//            extraButtons.add(prevButton);
-//        }
-//        InlineKeyboardButton cancelButton = new InlineKeyboardButton(Emojis.REMOVE);
-//        cancelButton.setCallbackData("cancel");
-//        extraButtons.add(cancelButton);
-//        if (meals.size() == limit) {
-//            InlineKeyboardButton nextButton = new InlineKeyboardButton(Emojis.NEXT);
-//            nextButton.setCallbackData("next");
-//            extraButtons.add(nextButton);
-//        }
-//        buttons.add(extraButtons);
+        List<InlineKeyboardButton> extraButtons = new ArrayList<>();
+
+        InlineKeyboardButton cancelButton = new InlineKeyboardButton(Emojis.REMOVE);
+        cancelButton.setCallbackData("cancel");
+        extraButtons.add(cancelButton);
+        buttons.add(extraButtons);
         board.setKeyboard(buttons);
         return board;
     }
 
-    public static InlineKeyboardMarkup mealMenu(List<MealDto> meals, Integer limit, Integer offset, String chatId) {
+    public static InlineKeyboardMarkup dailyMealMenu(List<MealDto> meals, Integer limit, Integer offset, String chatId) {
         InlineKeyboardMarkup board = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
         List<InlineKeyboardButton> numberButtons = new ArrayList<>();

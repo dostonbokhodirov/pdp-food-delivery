@@ -9,14 +9,13 @@ import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 @Getter
 @Setter
 public class MealOrderCreateDto implements BaseDto {
-
-
     private AuthUserDto userDto;
-
-
     private MealDto mealDto;
-
-
     private boolean done;
 
+    public MealOrderCreateDto(AuthUserDto userDto, MealDto mealDto) {
+        this.userDto = userDto;
+        this.mealDto = mealDto;
+        this.done = false;
+    }
 }
