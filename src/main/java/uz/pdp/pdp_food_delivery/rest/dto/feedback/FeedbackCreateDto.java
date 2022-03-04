@@ -12,7 +12,7 @@ public class FeedbackCreateDto implements BaseDto {
 
     private String message;
 
-    private AuthUser user;
+    private Long  user;
 
     private Type type;
 
