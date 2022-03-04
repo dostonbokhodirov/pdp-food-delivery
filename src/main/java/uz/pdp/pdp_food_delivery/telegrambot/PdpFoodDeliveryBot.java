@@ -68,6 +68,15 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
         }
     }
 
+    public void executeMessage(SendPhoto msg) {
+        msg.setParseMode("HTML");
+        try {
+            execute(msg);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void executeMessage(SendDocument msg) {
         try {
             execute(msg);

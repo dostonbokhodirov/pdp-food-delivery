@@ -16,7 +16,7 @@ public class UpdateHandler extends AbstractHandler implements BaseHandler {
 
     @Override
     public void handle(Update update) {
-    if (update.hasMessage()) messageHandler.handle(update);
+        if (update.hasMessage()) messageHandler.handle(update);
         else if (update.hasCallbackQuery()) callbackHandler.handle(update);
         else if (update.hasInlineQuery()) inlineHandler.handle(update);
     }
