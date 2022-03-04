@@ -7,7 +7,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/pdp_food_delivery
     username: postgres
-    password: 19801980
+    password: iPhone0303
   jpa:
     show-sql: true
     hibernate:
