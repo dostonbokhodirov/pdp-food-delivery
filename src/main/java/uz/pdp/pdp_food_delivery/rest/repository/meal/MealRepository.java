@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 import uz.pdp.pdp_food_delivery.rest.entity.meal.Meal;
 import uz.pdp.pdp_food_delivery.rest.repository.BaseRepository;
 
+import java.util.Optional;
+
 @Repository
 public interface MealRepository extends JpaRepository<Meal, Long>, BaseRepository {
 
@@ -12,4 +14,6 @@ public interface MealRepository extends JpaRepository<Meal, Long>, BaseRepositor
 
 //    List<Meal> getAllByLimit(@Param(value = "limit") Integer limitState, @Param(value = "offset") Integer offset);
 
+
+    Optional<Meal> findByIdAndDeleted(Long id, boolean isDeleted);
 }
