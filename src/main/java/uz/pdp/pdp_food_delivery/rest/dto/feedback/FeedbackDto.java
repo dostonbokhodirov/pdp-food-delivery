@@ -12,7 +12,7 @@ public class FeedbackDto extends GenericDto {
 
     private String message;
 
-//    private AuthUser user;
+    private Long user;
 
     private Type type;
 

@@ -27,7 +27,7 @@ public class FeedbackController extends AbstractController<FeedbackService> {
         return new ResponseEntity<>(aLong);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public ResponseEntity<HttpStatus> update(@RequestBody FeedbackUpdateDto dto) {
         service.update(dto);
         return new ResponseEntity<>(HttpStatus.OK);
