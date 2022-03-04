@@ -37,6 +37,10 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
 
     Optional<AuthUser> findByIdAndDeleted(Long id, boolean deleted);
 
+    AuthUser findByPhoneNumber(String phoneNumber);
+
+
+
     AuthUser getByChatId(String chatId);
 
     AuthUser getByDepartmentAndRole(Department department, Role role);

@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -54,7 +54,18 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
         return botUsername;
     }
 
-    public void executeMessage(BotApiMethod<?> msg) {
+
+    public Integer executeMealPicture(SendPhoto msg) {
+        try {
+            return execute(msg).getMessageId();
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void executeMessage(SendMessage msg) {
+        msg.setParseMode("HTML");
         try {
             execute(msg);
         } catch (TelegramApiException e) {
@@ -62,7 +73,7 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
         }
     }
 
-    public void executeMessage(SendMessage msg) {
+    public void executeMessage(SendPhoto msg) {
         msg.setParseMode("HTML");
         try {
             execute(msg);

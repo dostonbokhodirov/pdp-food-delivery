@@ -14,6 +14,7 @@ import uz.pdp.pdp_food_delivery.rest.entity.AuthUser;
 import uz.pdp.pdp_food_delivery.rest.enums.Department;
 import uz.pdp.pdp_food_delivery.rest.enums.Role;
 import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
+import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
 import uz.pdp.pdp_food_delivery.telegrambot.buttons.InlineBoard;
 import uz.pdp.pdp_food_delivery.telegrambot.buttons.MarkupBoard;
@@ -33,15 +34,16 @@ import static uz.pdp.pdp_food_delivery.telegrambot.states.State.setState;
 @Component
 @RequiredArgsConstructor
 public class MessageHandler extends AbstractHandler {
-    private final AuthUserRepository repository;
-    private final AuthorizationProcessor authorizationProcessor;
     private final PdpFoodDeliveryBot bot;
+    //    private final MenuProcessor menuProcessor;
+    private final AuthUserRepository repository;
+    private final AuthUserService service;
+    private final AuthorizationProcessor authorizationProcessor;
     private final PasswordEncoder passwordEncoder;
     private final MenuProcessor menuProcessor;
 
     @Override
     public void handle(Update update) {
-
         String chatId = update.getMessage().getChatId().toString();
         Message message = update.getMessage();
         String text = message.getText();
@@ -169,4 +171,3 @@ public class MessageHandler extends AbstractHandler {
 
     }
 }
-

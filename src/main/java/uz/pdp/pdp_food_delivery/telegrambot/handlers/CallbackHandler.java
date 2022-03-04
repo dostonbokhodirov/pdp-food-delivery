@@ -1,5 +1,6 @@
 package uz.pdp.pdp_food_delivery.telegrambot.handlers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
@@ -16,7 +17,16 @@ import uz.pdp.pdp_food_delivery.telegrambot.emojis.Emojis;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.Language;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.SettingsState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.UState;
+import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
+import uz.pdp.pdp_food_delivery.rest.service.meal.MealService;
+import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
+import uz.pdp.pdp_food_delivery.telegrambot.config.Offset;
+import uz.pdp.pdp_food_delivery.telegrambot.enums.MenuState;
+import uz.pdp.pdp_food_delivery.telegrambot.enums.SearchState;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.base.AbstractHandler;
+import uz.pdp.pdp_food_delivery.telegrambot.processors.CallbackHandlerProcessor;
+import uz.pdp.pdp_food_delivery.telegrambot.processors.DailyMealProcessor;
+import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.AuthorizationProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.SettingProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
@@ -26,6 +36,7 @@ import java.util.Objects;
 import static uz.pdp.pdp_food_delivery.telegrambot.states.State.setState;
 
 @Component
+@RequiredArgsConstructor
 public class CallbackHandler extends AbstractHandler {
 
 
@@ -34,16 +45,27 @@ public class CallbackHandler extends AbstractHandler {
     private final SettingProcessor settingProcessor;
     private final PdpFoodDeliveryBot bot;
 
-    public CallbackHandler(AuthUserRepository authUserRepository, AuthorizationProcessor authorizationProcessor, SettingProcessor settingProcessor, PdpFoodDeliveryBot bot) {
-        this.authUserRepository = authUserRepository;
-        this.authorizationProcessor = authorizationProcessor;
-        this.settingProcessor = settingProcessor;
-        this.bot = bot;
-    }
+//    public CallbackHandler(AuthUserRepository authUserRepository, AuthorizationProcessor authorizationProcessor, SettingProcessor settingProcessor, PdpFoodDeliveryBot bot) {
+//        this.authUserRepository = authUserRepository;
+//        this.authorizationProcessor = authorizationProcessor;
+//        this.settingProcessor = settingProcessor;
+//        this.bot = bot;
+//    }
+
+
+    private final MealService mealService;
+    //    private final DailyMealService dailyMealService;
+    private final DailyMealProcessor dailyMealProcessor;
+    private final Offset offset;
+    private final CallbackHandlerProcessor callbackHandlerProcessor;
 
     @Override
     public void handle(Update update) {
         CallbackQuery callbackQuery = update.getCallbackQuery();
+//        Message message = update.getMessage();
+//        String chatId = message.getChatId().toString();
+//        String data = callbackQuery.getData();
+
         Message message = callbackQuery.getMessage();
         String data = callbackQuery.getData();
         String chatId = message.getChatId().toString();
@@ -71,7 +93,25 @@ public class CallbackHandler extends AbstractHandler {
                 SendMessage sendMessage1 = new SendMessage(acceptedUser, "You are successfully registered");
                 bot.executeMessage(sendMessage1);
             }
+        }else if (data.equals("prev")) {
+            offset.setSearchOffset(chatId, -1);
+            callbackHandlerProcessor.prevMessage(message, offset.getSearchOffset(chatId));
+        } else if (data.equals("next")) {
+            offset.setSearchOffset(chatId, 1);
+            callbackHandlerProcessor.nextMessage(message, offset.getSearchOffset(chatId));
+        } else if (data.equals("cancel")) {
+            offset.setSearchOffset(chatId, 0);
+            deleteMessage(message, chatId);
+            State.setMenuState(chatId, MenuState.UNDEFINED);
+            State.setSearchState(chatId, SearchState.UNDEFINED);
+        } else {
+            MealDto mealDto = mealService.get(Long.valueOf(data));
+            SendMessage sendMessage = new SendMessage(chatId, mealDto.getName());
+            bot.executeMessage(sendMessage);
         }
+
+
+
     }
 
     private void deleteMessage(Message message, String chatId) {
