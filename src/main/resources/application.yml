@@ -1,9 +1,13 @@
+#bot:
+#  name: "food_service"
+#  token: "5283213329:AAHTpDtGV8Q1SOndVvQvizP_HdlrbMfHpb8"
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/pdp_food_delivery
-    username: doston
-    password: doston123
+    username: postgres
+    password: iPhone0303
   jpa:
     show-sql: true
     hibernate:
@@ -19,10 +23,8 @@ spring:
     user:
       name: admin
       password: admin123
+
 springdoc:
   swagger-ui:
     path: sw
 
-bot:
-  name: "pdpfood_bot"
-  token: "1803505474:AAFUUTxemmqR4PXQUwbKoL9p2UOjQ6tAMwg"

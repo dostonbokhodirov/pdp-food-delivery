@@ -11,6 +11,8 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import uz.pdp.pdp_food_delivery.rest.entity.AuthUser;
+import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
 import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.UpdateHandler;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.AuthorizationProcessor;
@@ -21,6 +23,8 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
     private final AuthUserService authUserService;
     private final UpdateHandler updateHandler;
     private final AuthorizationProcessor authorizationProcessor;
+    private final AuthUserRepository authUserRepository;
+
 
     @Value("${bot.name}")
     private String botUsername;
@@ -28,10 +32,11 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
     @Value("${bot.token}")
     private String botToken;
 
-    public PdpFoodDeliveryBot(AuthUserService authUserService, @Lazy UpdateHandler updateHandler, @Lazy AuthorizationProcessor authorizationProcessor) {
+    public PdpFoodDeliveryBot(AuthUserService authUserService, @Lazy UpdateHandler updateHandler, @Lazy AuthorizationProcessor authorizationProcessor, AuthUserRepository authUserRepository) {
         this.authUserService = authUserService;
         this.updateHandler = updateHandler;
         this.authorizationProcessor = authorizationProcessor;
+        this.authUserRepository = authUserRepository;
     }
 
 

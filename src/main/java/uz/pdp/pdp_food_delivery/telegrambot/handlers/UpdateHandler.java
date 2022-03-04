@@ -20,4 +20,5 @@ public class UpdateHandler extends AbstractHandler implements BaseHandler {
         else if (update.hasCallbackQuery()) callbackHandler.handle(update);
         else if (update.hasInlineQuery()) inlineHandler.handle(update);
     }
+
 }

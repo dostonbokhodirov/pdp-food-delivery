@@ -4,22 +4,30 @@ import org.springframework.stereotype.Service;
 import uz.pdp.pdp_food_delivery.rest.dto.feedback.FeedbackCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.feedback.FeedbackDto;
 import uz.pdp.pdp_food_delivery.rest.dto.feedback.FeedbackUpdateDto;
+import uz.pdp.pdp_food_delivery.rest.entity.AuthUser;
 import uz.pdp.pdp_food_delivery.rest.entity.Feedback;
 import uz.pdp.pdp_food_delivery.rest.mapper.feedback.FeedbackMapper;
+import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
 import uz.pdp.pdp_food_delivery.rest.repository.feedback.FeedbackRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
 import uz.pdp.pdp_food_delivery.rest.service.base.BaseService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FeedbackService extends AbstractService<FeedbackMapper, FeedbackRepository>
         implements GenericCrudService<FeedbackCreateDto, FeedbackUpdateDto>, GenericService<FeedbackDto>, BaseService {
 
-    public FeedbackService(FeedbackMapper mapper, FeedbackRepository repository) {
+    private final AuthUserRepository userRepository;
+
+    public FeedbackService(FeedbackMapper mapper, FeedbackRepository repository, AuthUserRepository userRepository) {
         super(mapper, repository);
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -35,19 +43,36 @@ public class FeedbackService extends AbstractService<FeedbackMapper, FeedbackRep
 
     @Override
     public Long create(FeedbackCreateDto feedbackCreateDto) {
+        Optional<AuthUser> userOptional = userRepository.findById(feedbackCreateDto.getUser());
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
         Feedback feedback = mapper.fromCreateDto(feedbackCreateDto);
+        feedback.setUser(userOptional.get());
         repository.save(feedback);
         return feedback.getId();
     }
 
     @Override
     public List<FeedbackDto> getAll() {
-       return mapper.toDto(repository.findAll());
+
+        List<Feedback> feedbackList = repository.findAll();
+
+        List<FeedbackDto> returnDtos = new ArrayList<>(Collections.emptyList());
+
+        for (Feedback feedback : feedbackList) {
+            returnDtos.add(get(feedback.getId()));
+        }
+
+        return returnDtos;
     }
 
     @Override
     public FeedbackDto get(Long id) {
-       return mapper.toDto(repository.findById(id).get());
+        Feedback feedback = repository.findById(id).get();
+        FeedbackDto feedbackDto = mapper.toDto(feedback);
+        feedbackDto.setId(feedback.getUser().getId());
+        return feedbackDto;
     }
 
 }
