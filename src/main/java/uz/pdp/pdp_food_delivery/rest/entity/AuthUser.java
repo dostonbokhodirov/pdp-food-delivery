@@ -20,7 +20,7 @@ public class AuthUser extends Auditable {
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String phoneNumber;
 
     private String email;

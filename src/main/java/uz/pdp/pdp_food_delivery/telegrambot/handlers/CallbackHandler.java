@@ -13,6 +13,7 @@ import uz.pdp.pdp_food_delivery.rest.enums.Role;
 import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
 import uz.pdp.pdp_food_delivery.telegrambot.LangConfig;
 import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
+import uz.pdp.pdp_food_delivery.telegrambot.buttons.MarkupBoard;
 import uz.pdp.pdp_food_delivery.telegrambot.emojis.Emojis;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.Language;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.SettingsState;
@@ -82,16 +83,23 @@ public class CallbackHandler extends AbstractHandler {
             String acceptedUser = data.substring(7);
             if (data.substring(7).equals("no")){
                 SendMessage sendMessage = new SendMessage(chatId, "User not Accepted");
+                DeleteMessage deleteMessage = new DeleteMessage(chatId, message.getMessageId());
+                bot.executeMessage(deleteMessage);
                 bot.executeMessage(sendMessage);
             }else {
                 AuthUser user = authUserRepository.getByChatId(acceptedUser);
                 user.setRole(Role.USER);
                 State.setState(acceptedUser, UState.AUTHORIZED);
+                State.setMenuState(acceptedUser, MenuState.UNDEFINED);
                 authUserRepository.save(user);
+                DeleteMessage deleteMessage = new DeleteMessage(chatId, message.getMessageId());
+                bot.executeMessage(deleteMessage);
                 SendMessage sendMessage= new SendMessage(chatId, "User successfully added!");
                 bot.executeMessage(sendMessage);
                 SendMessage sendMessage1 = new SendMessage(acceptedUser, "You are successfully registered");
+                sendMessage1.setReplyMarkup(MarkupBoard.menuUser());
                 bot.executeMessage(sendMessage1);
+
             }
         }else if (data.equals("prev")) {
             offset.setSearchOffset(chatId, -1);

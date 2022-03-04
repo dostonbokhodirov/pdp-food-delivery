@@ -3,7 +3,6 @@ package uz.pdp.pdp_food_delivery.rest.repository.auth;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,8 +11,6 @@ import uz.pdp.pdp_food_delivery.rest.enums.Department;
 import uz.pdp.pdp_food_delivery.rest.enums.Role;
 import uz.pdp.pdp_food_delivery.rest.repository.BaseRepository;
 
-import javax.transaction.Transactional;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -53,5 +50,6 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
     @Query(value = "select mo.user_id from meal_order.meal_order mo where mo.done='f';", nativeQuery = true)
     ArrayList<Long> getUserIdByMealOrder();
 
+//    @Query(value = "select u.* from users.user u where u.role=:role  and u.department=:dep",nativeQuery = true)
 }
 
