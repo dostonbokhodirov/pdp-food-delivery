@@ -28,6 +28,8 @@ public class MealPictureService {
         BOT = bot;
     }
 
+
+
     public MealPicture create(MultipartFile picture) {
 
         MealPicture mealPicture = new MealPicture();
