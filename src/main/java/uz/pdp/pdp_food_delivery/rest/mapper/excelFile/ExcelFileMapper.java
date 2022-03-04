@@ -2,6 +2,8 @@ package uz.pdp.pdp_food_delivery.rest.mapper.excelFile;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
+import uz.pdp.pdp_food_delivery.rest.dto.BaseDto;
+import uz.pdp.pdp_food_delivery.rest.dto.GenericDto;
 import uz.pdp.pdp_food_delivery.rest.dto.excelFile.ExcelFileDto;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderDto;
@@ -12,7 +14,11 @@ import uz.pdp.pdp_food_delivery.rest.mapper.BaseMapper;
 import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
-public interface ExcelFileMapper extends BaseMapper {
+public interface ExcelFileMapper extends BaseMapper<
+        ExcelFile,
+        ExcelFileDto,
+        BaseDto,
+        GenericDto> {
 
     ExcelFileDto toDto(ExcelFile excelFile);
 

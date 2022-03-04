@@ -26,6 +26,10 @@ public interface GenericCrudService<
         return null;
     }
 
+    default void delete(Long id, Long sessionUserId) {
+
+    }
+
     void delete(Long id);
 
     void update(UD updateDto);
