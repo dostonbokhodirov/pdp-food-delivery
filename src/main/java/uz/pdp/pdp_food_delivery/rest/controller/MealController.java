@@ -6,6 +6,9 @@ import uz.pdp.pdp_food_delivery.rest.dto.meal.MealCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 import uz.pdp.pdp_food_delivery.rest.service.meal.MealService;
 
+
+@RestController
+@RequestMapping(value = "/meal/")
 public class MealController extends AbstractController<MealService> {
 
 
