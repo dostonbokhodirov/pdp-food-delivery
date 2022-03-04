@@ -13,6 +13,7 @@ public class ExcelFileDto extends GenericDto {
 
     private String name;
     private String path;
+    private String mimeType;
     private LocalDateTime dateTime;
 
 }
