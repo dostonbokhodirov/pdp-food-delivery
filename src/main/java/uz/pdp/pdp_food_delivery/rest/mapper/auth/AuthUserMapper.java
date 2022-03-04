@@ -11,7 +11,7 @@ import uz.pdp.pdp_food_delivery.rest.mapper.BaseMapper;
 import java.util.List;
 
 
-@Component
+//@Component
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface AuthUserMapper extends BaseMapper<
         AuthUser,

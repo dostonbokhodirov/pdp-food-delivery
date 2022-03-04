@@ -2,7 +2,6 @@ package uz.pdp.pdp_food_delivery.rest.dto.auth;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import uz.pdp.pdp_food_delivery.rest.dto.BaseDto;
 import uz.pdp.pdp_food_delivery.rest.enums.Department;
 import uz.pdp.pdp_food_delivery.rest.enums.Role;
@@ -17,7 +16,14 @@ public class AuthUserCreateDto implements BaseDto {
         this.chatId = chatId;
     }
 
-    private String password;
+    public AuthUserCreateDto(String fullName, String phoneNumber, String email, String password, String department, String role) {
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.password = password;
+        this.department = department;
+        this.role = role;
+    }
 
     private String fullName;
 
@@ -25,7 +31,10 @@ public class AuthUserCreateDto implements BaseDto {
 
     private String email;
 
+    private String password;
 
     private String department;
+
+    private String role;
 
 }

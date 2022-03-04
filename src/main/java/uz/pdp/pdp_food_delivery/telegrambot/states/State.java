@@ -1,5 +1,6 @@
 package uz.pdp.pdp_food_delivery.telegrambot.states;
 
+import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserCreateDto;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.*;
 
 import java.util.HashMap;
@@ -15,6 +16,7 @@ public class State {
     private static final Map<String, SearchState> searchState = new HashMap<>();
     private static final Map<String, Integer> limitState = new HashMap<>();
     private static final Map<String, Language> languageState = new HashMap<>();
+    private static final Map<String, AddMealState> mealState = new HashMap<>();
 
 
     public synchronized static void setState(String chatId, UState state) {
@@ -42,6 +44,9 @@ public class State {
     }
 
     public static UState getState(String chatId) {
+        if (Objects.isNull(userState.get(chatId))){
+            State.setState(chatId, UState.ANONYMOUS);
+        }
         return userState.get(chatId);
     }
 
@@ -76,7 +81,7 @@ public class State {
 
     public static Integer getLimitState(String chatId) {
         if (Objects.isNull(limitState.get(chatId))) {
-            setLimitState(chatId, 5);
+            setLimitState(chatId, 1);
         }
         return limitState.get(chatId);
     }
@@ -94,6 +99,17 @@ public class State {
 
     public static void setLanguageState(String chatId, Language language) {
         languageState.put(chatId, language);
+    }
+
+    public static AddMealState getAddMealState(String chatId) {
+        if (Objects.isNull(mealState.get(chatId))) {
+            setAddMealState(chatId, AddMealState.UNDEFINED);
+        }
+        return mealState.get(chatId);
+    }
+
+    public static void setAddMealState(String chatId, AddMealState state) {
+        mealState.put(chatId, state);
     }
 
 }

@@ -5,13 +5,13 @@ bot:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/food_delivery
+    url: jdbc:postgresql://localhost:5432/pdp_food_delivery
     username: postgres
-    password: 2001
+    password: root123
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:

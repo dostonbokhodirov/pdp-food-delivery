@@ -5,8 +5,10 @@ import uz.pdp.pdp_food_delivery.rest.controller.base.AbstractController;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 import uz.pdp.pdp_food_delivery.rest.service.meal.MealService;
+
+
 @RestController
-@RequestMapping("/meal/*")
+@RequestMapping(value = "/meal/")
 public class MealController extends AbstractController<MealService> {
 
 
@@ -22,7 +24,7 @@ public class MealController extends AbstractController<MealService> {
     }
 
     @RequestMapping(value = "create", method = RequestMethod.POST)
-    public Long create(@RequestBody MealCreateDto dto, @RequestParam(defaultValue = "-1") Long sessionUserId) {
+    public Long create(@ModelAttribute MealCreateDto dto, @RequestParam(defaultValue = "-1") Long sessionUserId) {
         return service.create(dto, sessionUserId);
     }
 
