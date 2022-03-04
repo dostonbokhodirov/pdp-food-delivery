@@ -1,10 +1,12 @@
 package uz.pdp.pdp_food_delivery.rest.response;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class ResponseEntity<T> {
+@Setter
+public class ResponseEntity<T> implements BaseResponse {
 
     private T data;
 

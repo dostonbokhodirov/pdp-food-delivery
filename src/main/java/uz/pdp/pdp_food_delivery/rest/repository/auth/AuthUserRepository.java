@@ -16,7 +16,7 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
 
     Page<AuthUser> findAllByDeleted(boolean deleted, Pageable pageable);
 
-    @Query(value = "select u.language from AuthUser u where u.chatId = :chatId", nativeQuery = true)
+    @Query(value = "select u.language from users.auth_user u where u.chatId = :chatId", nativeQuery = true)
     String getLanguage(@Param(value = "chatId") String chatId);
 
     @Query(value = "select u.role from AuthUser u where u.chatId = :chatId", nativeQuery = true)
@@ -43,5 +43,9 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
     void updateEmail(@Param(value = "chatId") String chatId, @Param(value = "text") String text);
 
     Optional<AuthUser> findByIdAndDeleted(Long id, boolean deleted);
+
+    AuthUser findByPhoneNumber(String phoneNumber);
+
+
 }
 

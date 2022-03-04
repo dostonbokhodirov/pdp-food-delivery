@@ -2,41 +2,39 @@ package uz.pdp.pdp_food_delivery;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserCreateDto;
+import uz.pdp.pdp_food_delivery.rest.enums.Department;
+import uz.pdp.pdp_food_delivery.rest.enums.Role;
+import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 
 @SpringBootApplication
+//@RequiredArgsConstructor
 @OpenAPIDefinition
 public class PdpFoodDeliveryApplication {
 
-    /* @Autowired
-     AuthUserRepository authUserRepository;
+    @Autowired
+    AuthUserService userService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
- */
     public static void main(String[] args) {
+
         SpringApplication.run(PdpFoodDeliveryApplication.class, args);
     }
 
-  /*  {
-        AuthUser user = new AuthUser();
-        user.setFullName("Saydali");
-        user.setDepartment(Department.HEAD);
-        user.setPassword("123");
-        user.setPhoneNumber("+998973130080");
-        user.setEmail("murodullayev.saydali@gmail.com");
-        user.setRole(Role.ADMIN);
-
-        AuthUser authUser = new AuthUser();
-        authUser.setFullName("Saydali");
-        authUser.setDepartment(Department.HEAD);
-        authUser.setPassword("123");
-        authUser.setPhoneNumber("+998973130080");
-        authUser.setEmail("murodullayev.saydali@gmail.com");
-        authUser.setRole(Role.ADMIN);
-
-        authUserRepository.save(user);
-        authUserRepository.save(authUser);
-    }*/
-
+    //    @Bean
+    CommandLineRunner run() {
+        return args -> {
+            userService.create(new AuthUserCreateDto("admin", "+998973130080", "Saydali@gmail.com",
+                    passwordEncoder.encode("admin123"), Department.ACADEMIC.name(), Role.ADMIN.name()));
+            userService.create(new AuthUserCreateDto("manager", "+998973130081", "Saydali1@gmail.com",
+                    passwordEncoder.encode("manager123"), Department.ACADEMIC.name(), Role.ADMIN.name()));
+            userService.create(new AuthUserCreateDto("employee", "+998973130082", "Saydali2@gmail.com",
+                    passwordEncoder.encode("employee123"), Department.ACADEMIC.name(), Role.ADMIN.name()));
+        };
+    }
 }

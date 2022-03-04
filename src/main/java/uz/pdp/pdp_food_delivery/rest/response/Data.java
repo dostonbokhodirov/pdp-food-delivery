@@ -1,8 +1,11 @@
 package uz.pdp.pdp_food_delivery.rest.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class Data<T> {
 
     private Integer totalCount;
