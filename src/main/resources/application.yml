@@ -7,11 +7,11 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/pdp_food_delivery
     username: postgres
-    password: iPhone0303
+    password: root123
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
