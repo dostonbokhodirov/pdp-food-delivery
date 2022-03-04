@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "user", schema = "users")
+@Table(name = "auth_user", schema = "users")
 public class AuthUser extends Auditable {
 
     private String password;
@@ -20,6 +20,7 @@ public class AuthUser extends Auditable {
     @Column(name = "full_name")
     private String fullName;
 
+    @Column(nullable = false, unique = true)
     private String phoneNumber;
 
     private String email;
@@ -32,10 +33,10 @@ public class AuthUser extends Auditable {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    //TOdo : default qiyman yozish
+    @Column(columnDefinition = "boolean default false")
     private boolean active;
 
-    //TOdo : default qiyman yozish
+    @Column(columnDefinition = "boolean default false")
     private boolean block;
 
     @Enumerated(EnumType.STRING)

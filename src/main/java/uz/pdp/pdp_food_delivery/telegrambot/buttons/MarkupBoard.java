@@ -8,6 +8,7 @@ import uz.pdp.pdp_food_delivery.telegrambot.LangConfig;
 import uz.pdp.pdp_food_delivery.telegrambot.emojis.Emojis;
 
 import java.util.List;
+import java.util.Stack;
 
 public class MarkupBoard {
     private static final ReplyKeyboardMarkup board = new ReplyKeyboardMarkup();
@@ -23,7 +24,7 @@ public class MarkupBoard {
         return board;
     }
 
-    public static ReplyKeyboardMarkup department(String chatId) {
+    public static ReplyKeyboardMarkup department() {
         KeyboardRow row1 = new KeyboardRow();
         row1.add(new KeyboardButton("ACADEMIC"));
         row1.add(new KeyboardButton("SALES"));
@@ -38,11 +39,23 @@ public class MarkupBoard {
         row4.add(new KeyboardButton("ACCOUNTING"));
         KeyboardRow row5 =new KeyboardRow();
         row5.add(new KeyboardButton("UNICORN"));
-        row5.add("HEAD");
+        row5.add(new KeyboardButton("HEAD"));
         board.setKeyboard(List.of(row1,row2,row3,row4,row5));
         board.setResizeKeyboard(true);
         board.setSelective(true);
         return board;
     }
+
+    public static ReplyKeyboardMarkup sharePhoneNumber() {
+        KeyboardButton phoneContact = new KeyboardButton(Emojis.PHONE + " " + "Contact");
+        phoneContact.setRequestContact(true);
+        board.setResizeKeyboard(true);
+        board.setSelective(true);
+        KeyboardRow row = new KeyboardRow();
+        row.add(phoneContact);
+        board.setKeyboard(List.of(row));
+        return board;
+    }
+
 
 }

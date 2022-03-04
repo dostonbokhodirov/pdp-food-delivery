@@ -5,7 +5,10 @@ package uz.pdp.pdp_food_delivery.telegrambot.enums;
  */
 public enum UState {
     ANONYMOUS,
+    ADMIN_CONFIRM,
+    CONFIRM,
     EMAIL,
+    PASSWORD,
     LANG,
     FULL_NAME,
     PHONE_NUMBER,

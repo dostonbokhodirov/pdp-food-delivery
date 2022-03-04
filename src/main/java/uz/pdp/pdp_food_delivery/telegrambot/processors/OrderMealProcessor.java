@@ -2,7 +2,10 @@ package uz.pdp.pdp_food_delivery.telegrambot.processors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 import uz.pdp.pdp_food_delivery.rest.service.meal.MealService;
@@ -11,13 +14,14 @@ import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
 import uz.pdp.pdp_food_delivery.telegrambot.buttons.InlineBoard;
 import uz.pdp.pdp_food_delivery.telegrambot.config.Offset;
 import uz.pdp.pdp_food_delivery.telegrambot.config.OffsetBasedPageRequest;
+import uz.pdp.pdp_food_delivery.telegrambot.config.TargetMeal;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.MenuState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.SearchState;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@Component
 @RequiredArgsConstructor
 public class OrderMealProcessor {
 
@@ -26,20 +30,27 @@ public class OrderMealProcessor {
     private final MealService mealService;
     private final Offset offset;
 
-//    public void process(Message message) {
-//        String chatId = message.getChatId().toString();
-//        Pageable pageable = new OffsetBasedPageRequest(offset.getSearchOffset(chatId), State.getLimitState(chatId));
-//        List<MealDto> meals = mealService.getAllByLimit(pageable);
-//        SendMessage sendMessage;
-//        if (meals.size() == 0) {
-//            sendMessage = new SendMessage(chatId, LangConfig.get(chatId, "no.meal"));
-//            State.setSearchState(chatId, SearchState.UNDEFINED);
-//            State.setMenuState(chatId, MenuState.UNDEFINED);
-//        } else {
-//            offset.setSearchOffset(chatId, 0);
-//            sendMessage = new SendMessage(chatId, callbackHandlerProcessor.getMealMessage(meals, chatId).toString());
-//            sendMessage.setReplyMarkup(InlineBoard.meal((ArrayList<MealDto>) meals, State.getLimitState(chatId), offset.getSearchOffset(chatId)));
-//        }
-//        bot.executeMessage(sendMessage);
-//    }
+    public void process(Message message) {
+        String chatId = message.getChatId().toString();
+        offset.setSearchOffset(chatId, 0);
+        Pageable pageable = new OffsetBasedPageRequest(offset.getSearchOffset(chatId), State.getLimitState(chatId));
+        List<MealDto> meals = mealService.getAllByLimit(pageable);
+        if (meals.size() == 0) {
+//            SendMessage sendMessage = new SendMessage(chatId, LangConfig.get(chatId, "no.meal"));
+            SendMessage sendMessage = new SendMessage(chatId, "no meal");
+            State.setSearchState(chatId, SearchState.UNDEFINED);
+            State.setMenuState(chatId, MenuState.UNDEFINED);
+            bot.executeMessage(sendMessage);
+        } else {
+            offset.setSearchOffset(chatId, 0);
+            SendPhoto sendPhoto = new SendPhoto();
+            sendPhoto.setChatId(chatId);
+            TargetMeal.setTargetMeal(chatId, meals.get(0));
+            sendPhoto.setCaption(callbackHandlerProcessor.getMealMessage(meals, chatId).toString());
+            sendPhoto.setReplyMarkup(
+                    InlineBoard.mealMenu(meals, State.getLimitState(chatId), offset.getSearchOffset(chatId), chatId));
+            sendPhoto.setPhoto(new InputFile());
+            bot.executeMessage(sendPhoto);
+        }
+    }
 }
