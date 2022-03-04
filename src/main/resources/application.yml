@@ -1,6 +1,6 @@
-bot:
-  name: "food_service"
-  token: "5283213329:AAHTpDtGV8Q1SOndVvQvizP_HdlrbMfHpb8"
+#bot:
+#  name: "food_service"
+#  token: "5283213329:AAHTpDtGV8Q1SOndVvQvizP_HdlrbMfHpb8"
 
 spring:
   datasource:
