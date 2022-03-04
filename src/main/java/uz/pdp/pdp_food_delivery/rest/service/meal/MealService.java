@@ -13,6 +13,7 @@ import uz.pdp.pdp_food_delivery.rest.service.base.BaseService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -35,26 +36,27 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
 
     @Override
     public Long create(MealCreateDto mealCreateDto) {
-
-        return null;
+        Meal meal = mapper.fromCreateDto(mealCreateDto);
+        meal.setDate(LocalDate.now());
+        Meal save = repository.save(meal);
+        return save.getId();
     }
 
     @Override
     public List<MealDto> getAll() {
-        return null;
+        List<Meal> meals = repository.findAll();
+        return mapper.toDto(meals);
     }
 
     @Override
     public MealDto get(Long id) {
-        return null;
+        Meal meal = repository.findById(id).orElseThrow(() -> new RuntimeException("Meal Not Found"));
+        return mapper.toDto(meal);
     }
 
     public List<MealDto> getAllByLimit(Pageable pageable) {
         List<Meal> meals = repository.findAll(pageable).getContent();
         return mapper.toDto(meals);
-
-//        List<Meal> meals = repository.getAllByLimit(limitState, offset);
-//        return mapper.toDto(meals);
     }
 
 }

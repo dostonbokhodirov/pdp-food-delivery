@@ -7,14 +7,13 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.UpdateHandler;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.AuthorizationProcessor;
-
-import java.util.Objects;
 
 @Component
 public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
@@ -60,6 +59,15 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
     }
 
     public void executeMessage(SendMessage msg) {
+        msg.setParseMode("HTML");
+        try {
+            execute(msg);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void executeMessage(SendPhoto msg) {
         msg.setParseMode("HTML");
         try {
             execute(msg);

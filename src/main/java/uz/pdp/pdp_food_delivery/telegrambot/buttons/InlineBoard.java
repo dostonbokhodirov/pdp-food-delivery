@@ -1,18 +1,11 @@
 package uz.pdp.pdp_food_delivery.telegrambot.buttons;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import uz.pdp.pdp_food_delivery.telegrambot.emojis.Emojis;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,7 +31,8 @@ public class InlineBoard {
     private static List<InlineKeyboardButton> getRow(InlineKeyboardButton... buttons) {
         return Arrays.stream(buttons).toList();
     }
-    public static InlineKeyboardMarkup meal(ArrayList<MealDto> meals, Integer limit, Integer offset) {
+
+    public static InlineKeyboardMarkup meal(List<MealDto> meals) {
         InlineKeyboardMarkup board = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
         List<InlineKeyboardButton> numberButtons = new ArrayList<>();
@@ -48,8 +42,7 @@ public class InlineBoard {
         if (meals.size() <= 5) {
             for (MealDto meal : meals) {
                 InlineKeyboardButton button = new InlineKeyboardButton(numbers.get(i++ - 1));
-//                String id = mealRepository.getId(meal.getPicture());
-//                button.setCallbackData(id);
+                button.setCallbackData(meal.getId().toString());
                 numberButtons.add(button);
             }
             buttons.add(numberButtons);
@@ -57,18 +50,49 @@ public class InlineBoard {
             for (int j = 0; j < meals.size(); j++) {
                 if (j >= meals.size() / 2) {
                     InlineKeyboardButton button = new InlineKeyboardButton(numbers.get(i++ - 1));
-//                    String id = mealRepository.getId(meals.get(j).getId());
-//                    button.setCallbackData(id);
+                    button.setCallbackData(meals.get(j).getId().toString());
                     numberButtons1.add(button);
                 } else {
                     InlineKeyboardButton button = new InlineKeyboardButton(numbers.get(i++ - 1));
-//                    String id = mealRepository.getId(meals.get(j).getId());
-//                    button.setCallbackData(id);
+                    button.setCallbackData(meals.get(j).getId().toString());
                     numberButtons.add(button);
                 }
             }
             buttons.add(numberButtons);
             buttons.add(numberButtons1);
+        }
+
+//        List<InlineKeyboardButton> extraButtons = new ArrayList<>();
+//        if (offset > 0) {
+//            InlineKeyboardButton prevButton = new InlineKeyboardButton(Emojis.PREVIOUS);
+//            prevButton.setCallbackData("prev");
+//            extraButtons.add(prevButton);
+//        }
+//        InlineKeyboardButton cancelButton = new InlineKeyboardButton(Emojis.REMOVE);
+//        cancelButton.setCallbackData("cancel");
+//        extraButtons.add(cancelButton);
+//        if (meals.size() == limit) {
+//            InlineKeyboardButton nextButton = new InlineKeyboardButton(Emojis.NEXT);
+//            nextButton.setCallbackData("next");
+//            extraButtons.add(nextButton);
+//        }
+//        buttons.add(extraButtons);
+        board.setKeyboard(buttons);
+        return board;
+    }
+
+    public static InlineKeyboardMarkup mealMenu(List<MealDto> meals, Integer limit, Integer offset, String chatId) {
+        InlineKeyboardMarkup board = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
+        List<InlineKeyboardButton> numberButtons = new ArrayList<>();
+        if (meals.size() <= 5) {
+            for (MealDto meal : meals) {
+//                InlineKeyboardButton button = new InlineKeyboardButton(LangConfig.get(chatId, "order"));
+                InlineKeyboardButton button = new InlineKeyboardButton("ORDER");
+                button.setCallbackData("order_" + meal.getId());
+                numberButtons.add(button);
+            }
+            buttons.add(numberButtons);
         }
 
         List<InlineKeyboardButton> extraButtons = new ArrayList<>();

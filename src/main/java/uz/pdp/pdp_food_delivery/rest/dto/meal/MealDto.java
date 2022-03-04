@@ -4,12 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import uz.pdp.pdp_food_delivery.rest.dto.GenericDto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 public class MealDto extends GenericDto {
-    private byte[] picture;
+    private String photoId;
     private String name;
-    private Date date;
+    private LocalDate date;
 }
