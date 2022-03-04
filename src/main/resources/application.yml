@@ -1,18 +1,30 @@
-#bot:
-#  name: "PDP Food Delivery Bot"
-#  token: "@pdpfood_bot"
+bot:
+  name: "PDP Food Delivery Bot"
+  token: "5227670217:AAHEpHh_2JAq3m7qB4bbJ2B9xudS5sAzNt4"
 
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/food_delivery
     username: postgres
-    password: iPhone0303
+    password: 2001
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: true
   messages:
     always-use-message-format: true
+  security:
+    user:
+      name: admin
+      password: admin123
+
+springdoc:
+  swagger-ui:
+    path: sw
+

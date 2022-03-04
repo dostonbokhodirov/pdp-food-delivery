@@ -10,13 +10,11 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name ="meal" ,schema ="meal")
-public class Meal extends Auditable {
+@Table(name = "daily_meal",schema = "daily_meal")
+public class DailyMeal extends Auditable {
 
     @Column(nullable = false)
     private String name;
-
-    private Double price;
 
     @Column(nullable = false)
     private Date date;

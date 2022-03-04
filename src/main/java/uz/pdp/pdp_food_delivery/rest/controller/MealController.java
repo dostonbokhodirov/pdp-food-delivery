@@ -26,9 +26,10 @@ public class MealController extends AbstractController<MealService> {
         return service.create(dto, sessionUserId);
     }
 
-//    @RequestMapping(value = "update", method = RequestMethod.POST)
-//    public ResponseEntity<Object> update(@RequestBody MealUpdateDto dto, @RequestParam(defaultValue = "-1") Long sessionUserId) {
-//        return service.update(dto,sessionUserId);
-//    }
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable Long id, @RequestParam(defaultValue = "-1") Long sessionUserId) {
+        service.delete(id, sessionUserId);
+    }
+
 
 }
