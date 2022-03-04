@@ -20,7 +20,7 @@ public class MealPicture extends Auditable {
     @Column(name = "image_name")
     private String imageName;
 
-    private String code;
+    private Integer idOnTgServer;
 
     @Column
     private String format;

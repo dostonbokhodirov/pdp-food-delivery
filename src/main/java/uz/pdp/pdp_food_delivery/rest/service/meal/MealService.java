@@ -1,39 +1,56 @@
 package uz.pdp.pdp_food_delivery.rest.service.meal;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealUpdateDto;
 import uz.pdp.pdp_food_delivery.rest.entity.meal.Meal;
+import uz.pdp.pdp_food_delivery.rest.entity.meal.MealPicture;
 import uz.pdp.pdp_food_delivery.rest.mapper.meal.MealMapper;
+import uz.pdp.pdp_food_delivery.rest.repository.meal.MealPictureRepository;
 import uz.pdp.pdp_food_delivery.rest.repository.meal.MealRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
 import uz.pdp.pdp_food_delivery.rest.service.base.BaseService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
+import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static uz.pdp.pdp_food_delivery.rest.service.meal.MealPictureService.UPLOAD_DIRECTORY;
 
 @Service
 public class MealService extends AbstractService<MealMapper, MealRepository>
         implements GenericCrudService<MealCreateDto, MealUpdateDto>, GenericService<MealDto>, BaseService {
 
+    private final PdpFoodDeliveryBot BOT;
     private final MealPictureService mealPictureService;
+    private final MealPictureRepository mealPictureRepository;
+    public String chatIdForUploadsPhoto = "blabla";//TODO chatId kerak
 
-    public MealService(MealMapper mapper, MealRepository repository, MealPictureService mealPictureService) {
+    public MealService(MealMapper mapper, MealRepository repository, PdpFoodDeliveryBot bot, MealPictureService mealPictureService, MealPictureRepository mealPictureRepository) {
         super(mapper, repository);
+        BOT = bot;
         this.mealPictureService = mealPictureService;
+        this.mealPictureRepository = mealPictureRepository;
     }
 
     @Override
     public Long create(MealCreateDto mealCreateDto) {
 
         Meal meal = mapper.fromCreateDto(mealCreateDto);
-        meal.setPicture(mealPictureService.create(mealCreateDto.getPicture()));
+        MealPicture mealPicture = mealPictureService.create(mealCreateDto.getPicture());
+        Integer photoMessageId = uploadMealPictureOnTelegramServer(UPLOAD_DIRECTORY + meal.getPicture().getGeneratedName(), chatIdForUploadsPhoto);
+
+        mealPicture.setIdOnTgServer(photoMessageId);
+        meal.setPicture(mealPicture);
+
+        mealPictureRepository.save(mealPicture);
         repository.save(meal);
 
         return meal.getId();
@@ -43,9 +60,15 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
     public Long create(MealCreateDto mealCreateDto, Long sesId) {
 
         Meal meal = mapper.fromCreateDto(mealCreateDto);
-        meal.setCreatedBy(sesId);
-        meal.setPicture(mealPictureService.create(mealCreateDto.getPicture()));
+        MealPicture mealPicture = mealPictureService.create(mealCreateDto.getPicture());
+        Integer photoMessageId = uploadMealPictureOnTelegramServer(UPLOAD_DIRECTORY + meal.getPicture().getGeneratedName(), chatIdForUploadsPhoto);
 
+        mealPicture.setIdOnTgServer(photoMessageId);
+
+        meal.setCreatedBy(sesId);
+        meal.setPicture(mealPicture);
+
+        mealPictureRepository.save(mealPicture);
         repository.save(meal);
 
         return meal.getId();
@@ -63,7 +86,7 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
         Optional<Meal> meal = repository.findById(mealUpdateDto.getId());
         mapper.fromUpdateDto(mealUpdateDto, meal.get());
 
-        if (Objects.nonNull(mealUpdateDto.getPicture())){
+        if (Objects.nonNull(mealUpdateDto.getPicture())) {
             meal.get().setPicture(mealPictureService.create(mealUpdateDto.getPicture()));
         }
         repository.save(meal.get());
@@ -75,19 +98,19 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
 
         mapper.fromUpdateDto(mealUpdateDto, meal.get());
 
-        if (Objects.nonNull(mealUpdateDto.getPicture())){
+        if (Objects.nonNull(mealUpdateDto.getPicture())) {
             meal.get().setPicture(mealPictureService.create(mealUpdateDto.getPicture()));
         }
 
         meal.get().setUpdatedBy(sesId);
         repository.save(meal.get());
-    }
 
+
+    }
 
 
     @Override
     public List<MealDto> getAll() {
-
 
 
         return null;
@@ -95,7 +118,17 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
 
     @Override
     public MealDto get(Long id) {
+        Optional<Meal> meal = repository.findById(id);
+
         return null;
+    }
+
+    private Integer uploadMealPictureOnTelegramServer(String path, String chatId) {
+        SendPhoto sendPhoto = new SendPhoto();
+        sendPhoto.setChatId(chatId);
+        sendPhoto.setPhoto(new InputFile(new File(path)));
+
+        return BOT.executeMealPicture(sendPhoto);
     }
 
 //
@@ -160,7 +193,6 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
 //        List<MealPicture> mealPictures = mealPictureRepository.findAllByMealId(mealId);
 //        return setPictureContent(mealPictures);
 //    }
-
 
 
 }

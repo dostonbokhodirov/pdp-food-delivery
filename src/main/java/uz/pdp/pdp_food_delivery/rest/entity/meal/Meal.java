@@ -16,6 +16,8 @@ public class Meal extends Auditable {
     @Column(nullable = false)
     private String name;
 
+    private Double price;
+
     @Column(nullable = false)
     private Date date;
 

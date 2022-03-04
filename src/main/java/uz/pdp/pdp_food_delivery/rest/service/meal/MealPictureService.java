@@ -15,7 +15,7 @@ import java.util.UUID;
 public class MealPictureService {
 
     private final MealPictureRepository mealPictureRepository;
-    private static String UPLOAD_DIRECTORY = "src/main/resources/MealPictures/";
+    public static String UPLOAD_DIRECTORY = "src/main/resources/MealPictures/";
 
     public MealPictureService(MealPictureRepository mealPictureRepository) {
         this.mealPictureRepository = mealPictureRepository;
@@ -29,7 +29,7 @@ public class MealPictureService {
         String[] str = picture.getName().split("\\.");
         mealPicture.setFormat(str[str.length - 1]);
         mealPicture.setGeneratedName(UUID.randomUUID().toString().replace("-", "") + "." + mealPicture.getFormat());
-        mealPictureRepository.save(mealPicture);
+
 
         Path path = Paths.get(UPLOAD_DIRECTORY + mealPicture.getGeneratedName());
 
