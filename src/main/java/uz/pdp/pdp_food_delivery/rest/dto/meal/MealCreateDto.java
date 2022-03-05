@@ -15,8 +15,11 @@ public class MealCreateDto implements BaseDto {
     private MultipartFile picture;
 
     private String name;
+
     private LocalDate date;
+
     private Double price;
+
     private String photoId;
 
 

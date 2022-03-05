@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class MealDto extends GenericDto {
+
     private String photoId;
 
     private String picturePath;

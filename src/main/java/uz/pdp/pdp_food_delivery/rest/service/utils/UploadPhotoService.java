@@ -1,4 +1,4 @@
-package uz.pdp.pdp_food_delivery.rest.service.meal;
+package uz.pdp.pdp_food_delivery.rest.service.utils;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
