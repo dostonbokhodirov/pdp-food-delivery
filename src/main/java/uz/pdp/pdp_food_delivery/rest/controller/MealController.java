@@ -10,39 +10,43 @@ import uz.pdp.pdp_food_delivery.rest.dto.meal.MealUpdateDto;
 import uz.pdp.pdp_food_delivery.rest.response.ResponseEntity;
 import uz.pdp.pdp_food_delivery.rest.service.meal.MealService;
 
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
+@RestController
+@RequestMapping("/meal/")
 public class MealController extends AbstractController<MealService> {
-
 
     public MealController(MealService service) {
         super(service);
     }
 
-
-    @RequestMapping(value = "get/{id}")
-    public ResponseEntity<MealDto> get(@PathVariable Long id, HttpServletResponse response) {
+    @GetMapping(value = "get/{id}")
+    public ResponseEntity<MealDto> get(@PathVariable Long id) {
         MealDto mealDto = service.get(id);
         return new ResponseEntity<>(mealDto);
     }
 
+    @GetMapping(value = "list")
+    public ResponseEntity<List<MealDto>> getAll(){
+        List<MealDto> meals = service.getAll();
+        return new ResponseEntity<>(meals);
+    }
 
-    @RequestMapping(value = "create", method = RequestMethod.POST)
+    @PostMapping(value = "create")
     public ResponseEntity<Long> create(@RequestBody MealCreateDto dto, @RequestParam(defaultValue = "-1") Long sessionUserId) {
         Long aLong = service.create(dto, sessionUserId);
         return new ResponseEntity<>(aLong);
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.PATCH)
-    public void create(@RequestBody MealUpdateDto dto, @RequestParam(defaultValue = "-1") Long sessionUserId) {
+    @PatchMapping(value = "update/{id}")
+    public void create(@RequestBody MealUpdateDto dto,@PathVariable(name = "id") Long id ,@RequestParam(defaultValue = "-1") Long sessionUserId) {
+        dto.setId(id);
         service.update(dto, sessionUserId);
     }
 
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "delete/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id, @RequestParam(defaultValue = "-1") Long sessionUserId) {
         service.delete(id, sessionUserId);
         return new ResponseEntity<>(org.springframework.http.HttpStatus.OK);
     }
-
-
 }
