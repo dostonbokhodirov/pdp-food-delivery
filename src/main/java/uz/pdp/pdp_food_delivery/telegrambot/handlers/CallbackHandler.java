@@ -98,7 +98,7 @@ public class CallbackHandler extends AbstractHandler {
             DailyMealDto dailyMealDto = dailyMealService.get(Long.valueOf(splitData));
             MealDto mealDto = mealService.getByPhotoId(dailyMealDto.getPhotoId());
             AuthUserDto authUserDto = authUserService.getByChatId(chatId);
-            mealOrderService.create(new MealOrderCreateDto(authUserDto, mealDto));
+            mealOrderService.create(new MealOrderCreateDto(authUserDto.getId(), mealDto.getId()));
             SendMessage sendMessage = new SendMessage(chatId, mealDto.getName());
             bot.executeMessage(sendMessage);
         } else if (data.startsWith("add_")) {
