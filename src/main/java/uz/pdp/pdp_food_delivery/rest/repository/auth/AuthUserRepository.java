@@ -54,5 +54,7 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
 
     @Query(value = "select u.* from users.user u where u.chat_id = :chatId", nativeQuery = true)
     AuthUser findByChatId(@Param(value = "chatId") String chatId);
+    @Query(value = "select u.role from users.user u where u.chat_id =:chatId",nativeQuery = true)
+    String  getRoleByChatId(String chatId);
 }
 

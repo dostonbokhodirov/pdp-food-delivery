@@ -57,6 +57,7 @@ public class CallbackHandler extends AbstractHandler {
         if ("uz".equals(data) || "ru".equals(data) || "en".equals(data)) {
             AuthUser user = authUserRepository.getByChatId(chatId);
             user.setLanguage(Language.getByCode(data));
+            State.setLanguageState(chatId,Language.getByCode(data));
             authUserRepository.save(user);
             SendMessage sendMessage = new SendMessage(chatId, "Enter your Fullname: ");
             sendMessage.setReplyMarkup(new ForceReplyKeyboard());
@@ -73,6 +74,7 @@ public class CallbackHandler extends AbstractHandler {
             } else {
                 AuthUser user = authUserRepository.getByChatId(acceptedUser);
                 user.setRole(Role.USER);
+                //user.setActive(true);
                 State.setState(acceptedUser, UState.AUTHORIZED);
                 State.setMenuState(acceptedUser, MenuState.UNDEFINED);
                 authUserRepository.save(user);

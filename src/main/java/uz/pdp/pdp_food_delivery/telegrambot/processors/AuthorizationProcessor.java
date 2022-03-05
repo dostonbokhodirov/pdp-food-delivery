@@ -140,7 +140,7 @@ public class AuthorizationProcessor {
             bot.executeMessage(sendMessage1);
             SendMessage sendMessage = new SendMessage();
             sendMessage.setChatId(admin.getChatId());
-            sendMessage.setText(currentUser.getFullName() + "wants to Join your department,\nWill you confirm?");
+            sendMessage.setText(currentUser.getFullName() + " wants to Join your department,\nWill you confirm?");
             sendMessage.setReplyMarkup(InlineBoard.accept(chatId));
 
             bot.executeMessage(sendMessage);
