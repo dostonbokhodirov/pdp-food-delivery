@@ -2,6 +2,10 @@ package uz.pdp.pdp_food_delivery.rest.service.meal;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealUpdateDto;
@@ -13,7 +17,9 @@ import uz.pdp.pdp_food_delivery.rest.service.base.BaseService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 import uz.pdp.pdp_food_delivery.rest.service.utils.UploadPhotoService;
+import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -25,10 +31,12 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
         implements GenericCrudService<MealCreateDto, MealUpdateDto>, GenericService<MealDto>, BaseService {
 
     private final UploadPhotoService uploadPhotoService;
+    private final PdpFoodDeliveryBot bot;
 
-    public MealService(MealMapper mapper, MealRepository repository, UploadPhotoService uploadPhotoService) {
+    public MealService(MealMapper mapper, MealRepository repository, UploadPhotoService uploadPhotoService, PdpFoodDeliveryBot bot) {
         super(mapper, repository);
         this.uploadPhotoService = uploadPhotoService;
+        this.bot = bot;
     }
 
     @Override
@@ -109,7 +117,23 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
 
         repository.save(meal);
 
+    }
 
+    public String updateMealPhotoId(String photoPath,SendPhoto sendPhoto) {
+
+        Optional<Meal> mealOptional = repository.findByPhotoPath(photoPath);
+        Meal meal = mealOptional.get();
+
+        sendPhoto.setPhoto(new InputFile(new File(photoPath)));
+        Message message = bot.executeMealPicture(sendPhoto);
+        String photoId = message.getPhoto().get(0).getFileId();
+        meal.setPhotoId(photoId);
+        DeleteMessage deleteMessage = new DeleteMessage();
+        deleteMessage.setMessageId(message.getMessageId());
+        deleteMessage.setChatId(sendPhoto.getChatId());
+        bot.executeMessage(deleteMessage);
+        repository.save(meal);
+        return photoId;
     }
 
     private Meal findById(Long id) {
