@@ -55,12 +55,14 @@ public class MarkupBoard {
 
     public static ReplyKeyboardMarkup menuFoodManager() {
         KeyboardRow row = new KeyboardRow();
+        KeyboardRow row1 = new KeyboardRow();
         row.add(new KeyboardButton("Add Meal"));
         row.add(new KeyboardButton("Order"));
-        row.add(new KeyboardButton("Monitoring"));
+        row1.add(new KeyboardButton("Daily Meals"));
+        row1.add(new KeyboardButton("Monitoring"));
         board.setResizeKeyboard(true);
         board.setSelective(true);
-        board.setKeyboard(List.of(row));
+        board.setKeyboard(List.of(row, row1));
         return board;
     }
 
