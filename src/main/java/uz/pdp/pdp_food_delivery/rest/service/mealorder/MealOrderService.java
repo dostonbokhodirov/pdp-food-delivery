@@ -74,8 +74,8 @@ public class MealOrderService extends AbstractService<MealOrderMapper, MealOrder
     @Override
     public Long create(MealOrderCreateDto mealOrderCreateDto) {
         MealOrder mealOrder = mapper.fromCreateDto(mealOrderCreateDto);
-        AuthUser authUser = userRepository.findById(mealOrderCreateDto.getUserId()).get();
-        Meal meal = mealRepository.findById(mealOrderCreateDto.getMealId()).get();
+        AuthUser authUser = userRepository.findById(mealOrderCreateDto.getUserDto().getId()).get();
+        Meal meal = mealRepository.findById(mealOrderCreateDto.getMealDto().getId()).get();
         mealOrder.setUser(authUser);
         mealOrder.setMeal(meal);
         MealOrder save = repository.save(mealOrder);

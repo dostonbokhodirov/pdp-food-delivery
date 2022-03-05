@@ -19,8 +19,6 @@ public interface MealOrderMapper extends BaseMapper {
 
     List<MealOrderCreateDto> toCreateDto(List<MealOrder> orders);
 
-    @Mapping(target = "userId", ignore = true)
-    @Mapping(target = "mealId", ignore = true)
     MealOrder fromCreateDto(MealOrderCreateDto orderCreateDto);
 
     MealOrder fromUpdateDto(MealOrderDto orderUpdateDto);
