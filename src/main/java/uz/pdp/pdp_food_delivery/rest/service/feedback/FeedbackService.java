@@ -38,7 +38,7 @@ public class FeedbackService extends AbstractService<FeedbackMapper, FeedbackRep
     @Override
     public void update(FeedbackUpdateDto feedbackUpdateDto) {
         Feedback feedback = mapper.fromUpdateDto(feedbackUpdateDto);
-        repository.update(feedback);
+        repository.save(feedback);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class FeedbackService extends AbstractService<FeedbackMapper, FeedbackRep
     public FeedbackDto get(Long id) {
         Feedback feedback = repository.findById(id).get();
         FeedbackDto feedbackDto = mapper.toDto(feedback);
-        feedbackDto.setId(feedback.getUser().getId());
+        feedbackDto.setUser(feedback.getUser().getId());
         return feedbackDto;
     }
 
