@@ -1,9 +1,12 @@
 package uz.pdp.pdp_food_delivery.telegrambot.processors;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealCreateDto;
 import uz.pdp.pdp_food_delivery.rest.service.meal.MealService;
@@ -12,6 +15,8 @@ import uz.pdp.pdp_food_delivery.telegrambot.config.TargetMeal;
 import uz.pdp.pdp_food_delivery.telegrambot.emojis.Emojis;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.AddMealState;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
