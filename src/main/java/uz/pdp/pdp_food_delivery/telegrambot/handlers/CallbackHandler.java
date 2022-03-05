@@ -26,18 +26,14 @@ import uz.pdp.pdp_food_delivery.telegrambot.enums.MenuState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.SearchState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.UState;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.base.AbstractHandler;
-import uz.pdp.pdp_food_delivery.telegrambot.processors.CallbackHandlerProcessor;
-import uz.pdp.pdp_food_delivery.telegrambot.processors.DailyMealProcessor;
-import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.AuthorizationProcessor;
+import uz.pdp.pdp_food_delivery.telegrambot.processors.CallbackHandlerProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.SettingProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
-import java.util.Objects;
+import java.time.LocalDate;
 
 import static uz.pdp.pdp_food_delivery.telegrambot.states.State.setState;
-
-import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
@@ -67,27 +63,27 @@ public class CallbackHandler extends AbstractHandler {
             AuthUser user = authUserRepository.getByChatId(chatId);
             user.setLanguage(Language.getByCode(data));
             authUserRepository.save(user);
-            SendMessage sendMessage = new SendMessage(chatId,"Enter your Fullname: ");
+            SendMessage sendMessage = new SendMessage(chatId, "Enter your Fullname: ");
             sendMessage.setReplyMarkup(new ForceReplyKeyboard());
             setState(chatId, UState.FULL_NAME);
             deleteMessage(message, chatId);
             bot.executeMessage(sendMessage);
-        }else if(data.startsWith("accept_")){
+        } else if (data.startsWith("accept_")) {
             String acceptedUser = data.substring(7);
-            if (data.substring(7).equals("no")){
+            if (data.substring(7).equals("no")) {
                 SendMessage sendMessage = new SendMessage(chatId, "User not Accepted");
                 bot.executeMessage(sendMessage);
-            }else {
+            } else {
                 AuthUser user = authUserRepository.getByChatId(acceptedUser);
                 user.setRole(Role.USER);
                 State.setState(acceptedUser, UState.AUTHORIZED);
                 authUserRepository.save(user);
-                SendMessage sendMessage= new SendMessage(chatId, "User successfully added!");
+                SendMessage sendMessage = new SendMessage(chatId, "User successfully added!");
                 bot.executeMessage(sendMessage);
                 SendMessage sendMessage1 = new SendMessage(acceptedUser, "You are successfully registered");
                 bot.executeMessage(sendMessage1);
             }
-        }else if (data.equals("prev")) {
+        } else if (data.equals("prev")) {
             offset.setSearchOffset(chatId, -1);
             callbackHandlerProcessor.prevMessage(message, offset.getSearchOffset(chatId));
         } else if (data.equals("next")) {

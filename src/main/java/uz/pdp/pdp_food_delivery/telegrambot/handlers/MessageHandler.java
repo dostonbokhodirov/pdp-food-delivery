@@ -19,16 +19,16 @@ import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
 import uz.pdp.pdp_food_delivery.telegrambot.buttons.InlineBoard;
 import uz.pdp.pdp_food_delivery.telegrambot.buttons.MarkupBoard;
 import uz.pdp.pdp_food_delivery.telegrambot.emojis.Emojis;
-import uz.pdp.pdp_food_delivery.telegrambot.enums.MenuState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.UState;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.base.AbstractHandler;
+import uz.pdp.pdp_food_delivery.telegrambot.processors.AddMealProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.AuthorizationProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.MenuProcessor;
+import uz.pdp.pdp_food_delivery.telegrambot.processors.OrderMealProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
 import java.util.Arrays;
 
-import static uz.pdp.pdp_food_delivery.telegrambot.states.State.setMenuState;
 import static uz.pdp.pdp_food_delivery.telegrambot.states.State.setState;
 
 @Component
@@ -42,12 +42,22 @@ public class MessageHandler extends AbstractHandler {
     private final PasswordEncoder passwordEncoder;
     private final MenuProcessor menuProcessor;
 
+    private final OrderMealProcessor orderMealProcessor;
+    private final AddMealProcessor addMealProcessor;
+
     @Override
     public void handle(Update update) {
         String chatId = update.getMessage().getChatId().toString();
         Message message = update.getMessage();
         String text = message.getText();
         boolean existChatId = repository.existsByChatId(chatId);
+
+        if ("/addmeal".equals(text)) {
+            orderMealProcessor.process(message);
+        }
+        if ("order".equals(text)) {
+            addMealProcessor.process(message, State.getAddMealState(chatId));
+        }
 
         if ("/start".equals(text) && !existChatId) {
             AuthUser user = new AuthUser();
@@ -64,16 +74,14 @@ public class MessageHandler extends AbstractHandler {
             sendMessage.setReplyMarkup(InlineBoard.languageButtons());
             bot.executeMessage(sendMessage);
             setState(chatId, UState.FULL_NAME);
-        }
-        else if (UState.FULL_NAME.equals(State.getState(chatId))) {
+        } else if (UState.FULL_NAME.equals(State.getState(chatId))) {
             if (StringUtils.isNumeric(text) || !text.equals(StringUtils.capitalize(text))) {
                 SendMessage sendMessage = new SendMessage(chatId,
                         Emojis.LOOK + " " + "Please, enter your full name correctly" + "\n"
                                 + "Without any numbers and capitalize it");
                 sendMessage.setReplyMarkup(new ForceReplyKeyboard());
                 bot.executeMessage(sendMessage);
-            }
-            else {
+            } else {
                 AuthUser user = repository.getByChatId(chatId);
                 user.setFullName(text);
                 repository.save(user);
@@ -81,8 +89,7 @@ public class MessageHandler extends AbstractHandler {
                 SendMessage sendMessage = new SendMessage(chatId, "Enter Email");
                 bot.executeMessage(sendMessage);
             }
-        }
-        else if (UState.EMAIL.equals(State.getState(chatId))) {
+        } else if (UState.EMAIL.equals(State.getState(chatId))) {
 
             AuthUser user = repository.getByChatId(chatId);
             user.setEmail(text);
@@ -92,8 +99,7 @@ public class MessageHandler extends AbstractHandler {
             sendMessage.setText("Enter Your Password: ");
             sendMessage.setChatId(chatId);
             bot.executeMessage(sendMessage);
-        }
-        else if (UState.PASSWORD.equals(State.getState(chatId))) {
+        } else if (UState.PASSWORD.equals(State.getState(chatId))) {
             AuthUser user = repository.getByChatId(chatId);
             user.setPassword(text);
             repository.save(user);
@@ -102,8 +108,7 @@ public class MessageHandler extends AbstractHandler {
             sendMessage1.setChatId(chatId);
             setState(chatId, UState.CONFIRM);
             bot.executeMessage(sendMessage1);
-        }
-        else if(UState.CONFIRM.equals(State.getState(chatId))){
+        } else if (UState.CONFIRM.equals(State.getState(chatId))) {
             AuthUser user = repository.getByChatId(chatId);
             if (!text.equals(user.getPassword())) {
                 SendMessage sendMessage = new SendMessage();
@@ -122,8 +127,7 @@ public class MessageHandler extends AbstractHandler {
                 bot.executeMessage(sendMessage);
             }
 
-        }
-        else if (UState.PHONE_NUMBER.equals(State.getState(chatId))) {
+        } else if (UState.PHONE_NUMBER.equals(State.getState(chatId))) {
 
             if (message.hasContact()) {
                 String phoneNumber = message.getContact().getPhoneNumber();
@@ -144,8 +148,7 @@ public class MessageHandler extends AbstractHandler {
             }
 
 
-        }
-        else if (UState.DEPARTMENT.equals(State.getState(chatId))) {
+        } else if (UState.DEPARTMENT.equals(State.getState(chatId))) {
 
             if (Arrays.stream(Department.values()).noneMatch(department -> department.toString().equals(text))) {
                 DeleteMessage deleteMessage = new DeleteMessage(chatId, message.getMessageId());
@@ -157,7 +160,7 @@ public class MessageHandler extends AbstractHandler {
 
             AuthUser currentUser = repository.getByChatId(chatId);
             AuthUser admin = repository.getByDepartmentAndRole(Department.getByName(text), Role.valueOf("ADMIN"));
-            SendMessage sendMessage1= new SendMessage(chatId, "Please wait, your request sent to ADMIN of your Department\n " +
+            SendMessage sendMessage1 = new SendMessage(chatId, "Please wait, your request sent to ADMIN of your Department\n " +
                     "ADMIN should Confirm you");
             bot.executeMessage(sendMessage1);
             SendMessage sendMessage = new SendMessage();
@@ -165,7 +168,7 @@ public class MessageHandler extends AbstractHandler {
             sendMessage.setText(currentUser.getFullName() + "wants to Join your department,\nWill you confirm?");
             sendMessage.setReplyMarkup(InlineBoard.accept(chatId));
             bot.executeMessage(sendMessage);
-        }else if(UState.AUTHORIZED.equals(State.getState(chatId))){
+        } else if (UState.AUTHORIZED.equals(State.getState(chatId))) {
             menuProcessor.menu(chatId, State.getMenuState(chatId));
         }
 
