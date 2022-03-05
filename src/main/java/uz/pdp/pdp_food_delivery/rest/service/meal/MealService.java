@@ -12,8 +12,10 @@ import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
 import uz.pdp.pdp_food_delivery.rest.service.base.BaseService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
+import uz.pdp.pdp_food_delivery.rest.service.utils.UploadPhotoService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -21,90 +23,99 @@ import java.util.Optional;
 public class MealService extends AbstractService<MealMapper, MealRepository>
         implements GenericCrudService<MealCreateDto, MealUpdateDto>, GenericService<MealDto>, BaseService {
 
+    private final UploadPhotoService uploadPhotoService;
 
-    public MealService(MealMapper mapper, MealRepository repository) {
+    public MealService(MealMapper mapper, MealRepository repository, UploadPhotoService uploadPhotoService) {
         super(mapper, repository);
+        this.uploadPhotoService = uploadPhotoService;
     }
 
     @Override
     public Long create(MealCreateDto mealCreateDto) {
 
-//        Meal meal = mapper.fromCreateDto(mealCreateDto);
-//        MealPicture mealPicture = mealPictureService.create(mealCreateDto.getPicture());
-//
-//        meal.setPicture(mealPicture);
-//
-//        repository.save(meal);
-//
-//        return meal.getId();
+        Meal meal = mapper.fromCreateDto(mealCreateDto);
+        meal.setPhotoPath(uploadPhotoService.upload(mealCreateDto.getPicture()));
 
-        return null;
+        repository.save(meal);
+
+        return meal.getId();
+
     }
 
     public Long create(MealCreateDto mealCreateDto, Long sesId) {
 
-//        Meal meal = mapper.fromCreateDto(mealCreateDto);
-//        MealPicture mealPicture = mealPictureService.create(mealCreateDto.getPicture());
-//
-//        meal.setPicture(mealPicture);
-//        meal.setCreatedBy(sesId);
-//
-//        repository.save(meal);
-//
-//        return meal.getId();
-        return null;
+        Meal meal = mapper.fromCreateDto(mealCreateDto);
+        meal.setPhotoPath(uploadPhotoService.upload(mealCreateDto.getPicture()));
+        meal.setCreatedBy(sesId);
+
+        repository.save(meal);
+
+        return meal.getId();
+
     }
 
     @Override
     public void delete(Long id) {
-        Optional<Meal> meal = repository.findByIdAndDeleted(id, false);
-        meal.ifPresentOrElse(
+        Optional<Meal> mealOp = repository.findByIdAndDeleted(id, false);
+        Meal meal = mealOp.get();
+        mealOp.ifPresentOrElse(
                 (value) ->
                         value.setDeleted(true),
                 () -> {
                     throw new RuntimeException("meal not found");
                 });
-        repository.save(meal.get());
+        repository.save(meal);
     }
 
     public void delete(Long id, Long sesId) {
-        Optional<Meal> meal = repository.findByIdAndDeleted(id, false);
-        meal.ifPresentOrElse(
+        Optional<Meal> mealOp = repository.findByIdAndDeleted(id, false);
+        Meal meal = mealOp.get();
+        mealOp.ifPresentOrElse(
                 (value) ->
                         value.setDeleted(true),
                 () -> {
                     throw new RuntimeException("meal not found");
                 });
-        meal.get().setUpdatedBy(sesId);
-        repository.save(meal.get());
+        meal.setUpdatedBy(sesId);
+        repository.save(meal);
     }
 
     @Override
     public void update(MealUpdateDto mealUpdateDto) {
 
-//        Optional<Meal> meal = repository.findById(mealUpdateDto.getId());
-//        mapper.fromUpdateDto(mealUpdateDto, meal.get());
-//
-//        if (Objects.nonNull(mealUpdateDto.getPicture())) {
-//            meal.get().setPicture(mealPictureService.create(mealUpdateDto.getPicture()));
-//        }
-//        repository.save(meal.get());
+        Meal meal = findById(mealUpdateDto.getId());
+
+        mapper.fromUpdateDto(mealUpdateDto, meal);
+
+        if (Objects.nonNull(mealUpdateDto.getPicture())) {
+            meal.setPhotoPath(uploadPhotoService.upload(mealUpdateDto.getPicture()));
+            meal.setPhotoId(null);
+        }
+
+        repository.save(meal);
     }
 
     public void update(MealUpdateDto mealUpdateDto, Long sesId) {
 
-//        Optional<Meal> meal = repository.findById(mealUpdateDto.getId());
-//
-//        mapper.fromUpdateDto(mealUpdateDto, meal.get());
-//
-//        if (Objects.nonNull(mealUpdateDto.getPicture())) {
-//            meal.get().setPicture(mealPictureService.create(mealUpdateDto.getPicture()));
-//        }
-//
-//        meal.get().setUpdatedBy(sesId);
-//        repository.save(meal.get());
+        Meal meal = findById(mealUpdateDto.getId());
+
+        mapper.fromUpdateDto(mealUpdateDto, meal);
+
+        if (Objects.nonNull(mealUpdateDto.getPicture())) {
+            meal.setPhotoPath(uploadPhotoService.upload(mealUpdateDto.getPicture()));
+            meal.setPhotoId(null);
+        }
+        meal.setUpdatedBy(sesId);
+
+        repository.save(meal);
 
 
+    }
+
+    private Meal findById(Long id) {
+        Optional<Meal> mealOp = repository.findById(id);
+
+        return mealOp.get();
     }
 
     @Override

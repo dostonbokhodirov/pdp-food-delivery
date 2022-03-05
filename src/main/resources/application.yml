@@ -1,7 +1,3 @@
-#bot:
-#  name: "food_service"
-#  token: "5283213329:AAHTpDtGV8Q1SOndVvQvizP_HdlrbMfHpb8"
-
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver

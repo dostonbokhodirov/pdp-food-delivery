@@ -1,5 +1,6 @@
 package uz.pdp.pdp_food_delivery;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,8 +12,7 @@ import uz.pdp.pdp_food_delivery.rest.enums.Role;
 import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 
 @SpringBootApplication
-//@RequiredArgsConstructor
-//@OpenAPIDefinition
+@OpenAPIDefinition
 public class PdpFoodDeliveryApplication {
 
     @Autowired
@@ -21,7 +21,6 @@ public class PdpFoodDeliveryApplication {
     PasswordEncoder passwordEncoder;
 
     public static void main(String[] args) {
-
         SpringApplication.run(PdpFoodDeliveryApplication.class, args);
     }
 

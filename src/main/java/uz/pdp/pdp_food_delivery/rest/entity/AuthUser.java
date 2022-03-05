@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "auth_user", schema = "users")
+@Table(name = "user", schema = "users")
 public class AuthUser extends Auditable {
 
     private String password;
@@ -20,7 +20,7 @@ public class AuthUser extends Auditable {
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String phoneNumber;
 
     private String email;

@@ -107,4 +107,12 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
+
+    public void executeMessage(DeleteMessage deleteMessage) {
+        try {
+            execute(deleteMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
 }

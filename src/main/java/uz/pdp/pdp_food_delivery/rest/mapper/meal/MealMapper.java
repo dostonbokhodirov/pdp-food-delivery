@@ -17,12 +17,13 @@ import java.util.List;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface MealMapper extends BaseMapper {
 
-
     List<MealDto> toDto(List<Meal> meals);
 
+    @Mapping(target = "picturePath", ignore = true)
     Meal fromCreateDto(MealCreateDto mealCreateDto);
 
     MealDto toDto(Meal meal);
 
     void fromUpdateDto(MealUpdateDto mealUpdateDto, @MappingTarget Meal meal);
+
 }

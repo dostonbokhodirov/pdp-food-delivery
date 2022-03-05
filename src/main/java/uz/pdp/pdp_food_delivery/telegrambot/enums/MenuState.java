@@ -5,19 +5,13 @@ package uz.pdp.pdp_food_delivery.telegrambot.enums;
  */
 public enum MenuState {
     SEARCH,
-    ADD_BOOK,
     SETTINGS,
     CHANGE_NAME,
     CHANGE_PHONE,
     CHANGE_LANG,
-    CHANGE_BIRTHDATE,
     UNDEFINED,
     DELETE_ALL,
-    REMOVE_BOOK,
     DOWNLOADED,
     UPLOADED,
-    USERLIST,
-    REMOVE_MANAGER,
-    ADD_MANAGER,
-    ORDER, TOP
+    ORDER
 }
