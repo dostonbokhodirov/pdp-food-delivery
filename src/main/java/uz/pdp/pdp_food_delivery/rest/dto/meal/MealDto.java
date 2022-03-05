@@ -12,7 +12,9 @@ public class MealDto extends GenericDto {
 
     private String photoId;
 
-    private String picturePath;
+    private String photoPath;
+
+    private String price;
 
     private String name;
 
