@@ -38,7 +38,7 @@ public class FeedbackService extends AbstractService<FeedbackMapper, FeedbackRep
     @Override
     public void update(FeedbackUpdateDto feedbackUpdateDto) {
         Feedback feedback = mapper.fromUpdateDto(feedbackUpdateDto);
-        repository.save(feedback);
+        repository.update(feedback);
     }
 
     @Override
