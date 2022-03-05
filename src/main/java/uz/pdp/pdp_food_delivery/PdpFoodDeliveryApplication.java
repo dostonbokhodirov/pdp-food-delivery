@@ -12,9 +12,7 @@ import uz.pdp.pdp_food_delivery.rest.enums.Role;
 import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 
 @SpringBootApplication
-//@RequiredArgsConstructor
 @OpenAPIDefinition
-
 public class PdpFoodDeliveryApplication {
 
     @Autowired
@@ -23,7 +21,6 @@ public class PdpFoodDeliveryApplication {
     PasswordEncoder passwordEncoder;
 
     public static void main(String[] args) {
-
         SpringApplication.run(PdpFoodDeliveryApplication.class, args);
     }
 

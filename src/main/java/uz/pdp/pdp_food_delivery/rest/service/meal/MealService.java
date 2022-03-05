@@ -14,6 +14,7 @@ import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 import uz.pdp.pdp_food_delivery.rest.service.utils.UploadPhotoService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,18 +35,17 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
     public Long create(MealCreateDto mealCreateDto) {
 
         Meal meal = mapper.fromCreateDto(mealCreateDto);
-        meal.setPicturePath(uploadPhotoService.upload(mealCreateDto.getPicture()));
+//        meal.setPhotoPath(uploadPhotoService.upload(mealCreateDto.getPicture()));
+        meal.setDate(LocalDate.now());
 
-        repository.save(meal);
-
-        return meal.getId();
-
+        Meal save = repository.save(meal);
+        return save.getId();
     }
 
     public Long create(MealCreateDto mealCreateDto, Long sesId) {
 
         Meal meal = mapper.fromCreateDto(mealCreateDto);
-        meal.setPicturePath(uploadPhotoService.upload(mealCreateDto.getPicture()));
+        meal.setPhotoPath(uploadPhotoService.upload(mealCreateDto.getPicture()));
         meal.setCreatedBy(sesId);
 
         repository.save(meal);
@@ -53,7 +53,6 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
         return meal.getId();
 
     }
-
 
     @Override
     public void delete(Long id) {
@@ -81,7 +80,6 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
         repository.save(meal);
     }
 
-
     @Override
     public void update(MealUpdateDto mealUpdateDto) {
 
@@ -90,7 +88,7 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
         mapper.fromUpdateDto(mealUpdateDto, meal);
 
         if (Objects.nonNull(mealUpdateDto.getPicture())) {
-            meal.setPicturePath(uploadPhotoService.upload(mealUpdateDto.getPicture()));
+            meal.setPhotoPath(uploadPhotoService.upload(mealUpdateDto.getPicture()));
             meal.setPhotoId(null);
         }
 
@@ -104,7 +102,7 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
         mapper.fromUpdateDto(mealUpdateDto, meal);
 
         if (Objects.nonNull(mealUpdateDto.getPicture())) {
-            meal.setPicturePath(uploadPhotoService.upload(mealUpdateDto.getPicture()));
+            meal.setPhotoPath(uploadPhotoService.upload(mealUpdateDto.getPicture()));
             meal.setPhotoId(null);
         }
         meal.setUpdatedBy(sesId);
@@ -119,7 +117,6 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
 
         return mealOp.get();
     }
-
 
     @Override
     public List<MealDto> getAll() {
@@ -138,5 +135,8 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
         return mapper.toDto(meals);
     }
 
-
+    public MealDto getByPhotoId(String photoId) {
+        Meal meal = repository.findByPhotoId(photoId);
+        return mapper.toDto(meal);
+    }
 }

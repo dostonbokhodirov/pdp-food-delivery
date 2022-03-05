@@ -1,11 +1,10 @@
 package uz.pdp.pdp_food_delivery.rest.repository.mealorder;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import uz.pdp.pdp_food_delivery.rest.entity.MealOrder;
+import uz.pdp.pdp_food_delivery.rest.entity.meal.MealOrder;
 import uz.pdp.pdp_food_delivery.rest.repository.BaseRepository;
 
 import java.sql.Date;

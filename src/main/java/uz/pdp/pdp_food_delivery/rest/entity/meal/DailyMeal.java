@@ -4,20 +4,23 @@ import lombok.Getter;
 import lombok.Setter;
 import uz.pdp.pdp_food_delivery.rest.entity.base.Auditable;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "daily_meal",schema = "daily_meal")
+@Table(name = "daily_meal", schema = "daily_meal")
 public class DailyMeal extends Auditable {
 
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private Date date;
+    private LocalDate date;
 
-
+    @Column(name = "photo_id", nullable = false)
+    private String photoId;
 }

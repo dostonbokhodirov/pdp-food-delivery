@@ -3,7 +3,6 @@ package uz.pdp.pdp_food_delivery.rest.repository.auth;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,7 +11,6 @@ import uz.pdp.pdp_food_delivery.rest.enums.Department;
 import uz.pdp.pdp_food_delivery.rest.enums.Role;
 import uz.pdp.pdp_food_delivery.rest.repository.BaseRepository;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Repository
@@ -40,10 +38,12 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
     AuthUser findByPhoneNumber(String phoneNumber);
 
 
-
     AuthUser getByChatId(String chatId);
 
-//    @Query(value = "select u.* from users.user u where u.role=:role  and u.department=:dep",nativeQuery = true)
+    //    @Query(value = "select u.* from users.user u where u.role=:role  and u.department=:dep",nativeQuery = true)
     AuthUser getByDepartmentAndRole(Department dep, Role role);
+
+    @Query(value = "select u.* from users.user u where u.chat_id = :chatId", nativeQuery = true)
+    AuthUser findByChatId(@Param(value = "chatId") String chatId);
 }
 

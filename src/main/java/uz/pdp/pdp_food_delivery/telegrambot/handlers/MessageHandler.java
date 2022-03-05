@@ -6,9 +6,10 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import uz.pdp.pdp_food_delivery.rest.entity.AuthUser;
 import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
+import uz.pdp.pdp_food_delivery.telegrambot.enums.AddMealState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.UState;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.base.AbstractHandler;
-import uz.pdp.pdp_food_delivery.telegrambot.processors.AuthorizationProcessor;
+import uz.pdp.pdp_food_delivery.telegrambot.processors.*;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
 @Component
@@ -16,6 +17,11 @@ import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 public class MessageHandler extends AbstractHandler {
     private final AuthUserRepository repository;
     private final AuthorizationProcessor processor;
+    private final MenuProcessor menuProcessor;
+
+    private final OrderMealProcessor orderMealProcessor;
+    private final AddMealProcessor addMealProcessor;
+    private final DailyMealProcessor dailyMealProcessor;
 
     @Override
     public void handle(Update update) {
@@ -24,12 +30,25 @@ public class MessageHandler extends AbstractHandler {
         String text = message.getText();
         boolean existChatId = repository.existsByChatId(chatId);
 
-        if ("/start".equals(text) && !existChatId) {
+
+        if (State.getAddMealState(chatId).equals(AddMealState.FILE)) {
+            addMealProcessor.process(message, State.getAddMealState(chatId));
+            return;
+        }
+        if ("Add Meal".equals(text)) {
+            addMealProcessor.process(message, State.getAddMealState(chatId));
+        } else if ("Order".equals(text)) {
+            orderMealProcessor.process(message);
+        } else if ("Daily Meals".equals(text)) {
+            dailyMealProcessor.process(message);
+        } else if ("/start".equals(text) && !existChatId) {
             AuthUser user = new AuthUser();
             user.setChatId(chatId);
             repository.save(user);
             State.setState(chatId, UState.ANONYMOUS);
+            processor.process(message);
+        } else {
+            menuProcessor.menu(message);
         }
-        processor.process(message);
     }
 }
