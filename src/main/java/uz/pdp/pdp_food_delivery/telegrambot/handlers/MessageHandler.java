@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import uz.pdp.pdp_food_delivery.rest.entity.AuthUser;
 import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.AddMealState;
+import uz.pdp.pdp_food_delivery.telegrambot.enums.UState;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.base.AbstractHandler;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.*;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
@@ -44,7 +45,7 @@ public class MessageHandler extends AbstractHandler {
             AuthUser user = new AuthUser();
             user.setChatId(chatId);
             repository.save(user);
-//            State.setState(chatId, UState.ANONYMOUS);
+            State.setState(chatId, UState.ANONYMOUS);
             processor.process(message);
         } else {
             menuProcessor.menu(message);
