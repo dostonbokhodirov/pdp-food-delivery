@@ -209,4 +209,9 @@ public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRep
                 .authorities(Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())))
                 .build();
     }
+
+    public AuthUserDto getByChatId(String chatId) {
+        AuthUser authUser = repository.findByChatId(chatId);
+        return mapper.toDto(authUser);
+    }
 }
