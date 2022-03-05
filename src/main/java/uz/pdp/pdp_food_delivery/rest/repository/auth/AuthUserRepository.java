@@ -12,6 +12,7 @@ import uz.pdp.pdp_food_delivery.rest.enums.Role;
 import uz.pdp.pdp_food_delivery.rest.repository.BaseRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -44,11 +45,11 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
 
     AuthUser getByDepartmentAndRole(Department department, Role role);
 
-    @Query(value = "select u.id from users.user  u left join meal_order.meal_order mo on  u.id <> mo.user_id;", nativeQuery = true)
-    ArrayList<Long> getUserIdByNoMealOrder();
+    @Query(value = "select u.chat_id from users.user  u left join meal_order.meal_order mo on  u.id <> mo.user_id;", nativeQuery = true)
+    Optional<List<Long>> getUserIdByNoMealOrder();
 
-    @Query(value = "select mo.user_id from meal_order.meal_order mo where mo.done='f';", nativeQuery = true)
-    ArrayList<Long> getUserIdByMealOrder();
+    @Query(value = "select mo.chat_id from meal_order.meal_order mo where mo.done='f';", nativeQuery = true)
+    Optional<List<Long>> getUserIdByMealOrder();
 
 //    @Query(value = "select u.* from users.user u where u.role=:role  and u.department=:dep",nativeQuery = true)
 }
