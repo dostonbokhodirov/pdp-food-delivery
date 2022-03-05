@@ -3,9 +3,6 @@ package uz.pdp.pdp_food_delivery.rest.mapper.excelFile;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import uz.pdp.pdp_food_delivery.rest.dto.excelFile.ExcelFileDto;
-import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderCreateDto;
-import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderDto;
-import uz.pdp.pdp_food_delivery.rest.entity.MealOrder;
 import uz.pdp.pdp_food_delivery.rest.entity.excelFile.ExcelFile;
 import uz.pdp.pdp_food_delivery.rest.mapper.BaseMapper;
 

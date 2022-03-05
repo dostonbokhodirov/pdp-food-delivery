@@ -38,13 +38,12 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
     AuthUser findByPhoneNumber(String phoneNumber);
 
 
-
     AuthUser getByChatId(String chatId);
 
-//    @Query(value = "select u.* from users.user u where u.role=:role  and u.department=:dep",nativeQuery = true)
+    //    @Query(value = "select u.* from users.user u where u.role=:role  and u.department=:dep",nativeQuery = true)
     AuthUser getByDepartmentAndRole(Department dep, Role role);
 
-    @Query(value = "select u.* from AuthUser u where u.chatId = :chatId", nativeQuery = true)
+    @Query(value = "select u.* from users.user u where u.chat_id = :chatId", nativeQuery = true)
     AuthUser findByChatId(@Param(value = "chatId") String chatId);
 }
 

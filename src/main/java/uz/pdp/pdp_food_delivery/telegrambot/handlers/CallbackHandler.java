@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
 import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserDto;
 import uz.pdp.pdp_food_delivery.rest.dto.dailymeal.DailyMealCreateDto;
+import uz.pdp.pdp_food_delivery.rest.dto.dailymeal.DailyMealDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderCreateDto;
 import uz.pdp.pdp_food_delivery.rest.entity.AuthUser;
@@ -27,10 +28,9 @@ import uz.pdp.pdp_food_delivery.telegrambot.enums.MenuState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.SearchState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.UState;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.base.AbstractHandler;
-import uz.pdp.pdp_food_delivery.telegrambot.processors.AuthorizationProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.CallbackHandlerProcessor;
-import uz.pdp.pdp_food_delivery.telegrambot.processors.SettingProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
+
 import java.time.LocalDate;
 
 import static uz.pdp.pdp_food_delivery.telegrambot.states.State.setState;
@@ -39,13 +39,8 @@ import static uz.pdp.pdp_food_delivery.telegrambot.states.State.setState;
 @RequiredArgsConstructor
 public class CallbackHandler extends AbstractHandler {
 
-
     private final AuthUserRepository authUserRepository;
-    private final AuthorizationProcessor authorizationProcessor;
-    private final SettingProcessor settingProcessor;
     private final PdpFoodDeliveryBot bot;
-
-
     private final MealService mealService;
     private final MealOrderService mealOrderService;
     private final AuthUserService authUserService;
@@ -83,18 +78,16 @@ public class CallbackHandler extends AbstractHandler {
                 authUserRepository.save(user);
                 DeleteMessage deleteMessage = new DeleteMessage(chatId, message.getMessageId());
                 bot.executeMessage(deleteMessage);
-                SendMessage sendMessage= new SendMessage(chatId, "User successfully added!");
+                SendMessage sendMessage = new SendMessage(chatId, "User successfully added!");
                 bot.executeMessage(sendMessage);
                 SendMessage sendMessage1 = new SendMessage(acceptedUser, "You are successfully registered");
                 sendMessage1.setReplyMarkup(MarkupBoard.menuUser());
                 bot.executeMessage(sendMessage1);
             }
         } else if (data.equals("prev")) {
-            offset.setSearchOffset(chatId, -1);
-            callbackHandlerProcessor.prevMessage(message, offset.getSearchOffset(chatId));
+            callbackHandlerProcessor.prevMessage(callbackQuery);
         } else if (data.equals("next")) {
-            offset.setSearchOffset(chatId, 1);
-            callbackHandlerProcessor.nextMessage(message, offset.getSearchOffset(chatId));
+            callbackHandlerProcessor.nextMessage(callbackQuery);
         } else if (data.equals("cancel")) {
             offset.setSearchOffset(chatId, 0);
             deleteMessage(message, chatId);
@@ -102,14 +95,16 @@ public class CallbackHandler extends AbstractHandler {
             State.setSearchState(chatId, SearchState.UNDEFINED);
         } else if (data.startsWith("order_")) {
             String splitData = data.substring(6);
-            MealDto mealDto = mealService.get(Long.valueOf(splitData));
-            dailyMealService.create(new DailyMealCreateDto(mealDto.getName(), LocalDate.now(), mealDto.getPhotoId()));
-            SendMessage sendMessage = new SendMessage(chatId, mealDto.getName());
-            bot.executeMessage(sendMessage);
-        } else {
-            MealDto mealDto = mealService.get(Long.valueOf(data));
+            DailyMealDto dailyMealDto = dailyMealService.get(Long.valueOf(splitData));
+            MealDto mealDto = mealService.getByPhotoId(dailyMealDto.getPhotoId());
             AuthUserDto authUserDto = authUserService.getByChatId(chatId);
             mealOrderService.create(new MealOrderCreateDto(authUserDto, mealDto));
+            SendMessage sendMessage = new SendMessage(chatId, mealDto.getName());
+            bot.executeMessage(sendMessage);
+        } else if (data.startsWith("add_")) {
+            String splitData = data.substring(4);
+            MealDto mealDto = mealService.get(Long.valueOf(splitData));
+            dailyMealService.create(new DailyMealCreateDto(mealDto.getName(), LocalDate.now(), mealDto.getPhotoId()));
             SendMessage sendMessage = new SendMessage(chatId, mealDto.getName());
             bot.executeMessage(sendMessage);
         }

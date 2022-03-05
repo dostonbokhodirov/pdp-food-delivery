@@ -50,7 +50,7 @@ public class InlineBoard {
         if (meals.size() <= 5) {
             for (MealDto meal : meals) {
                 InlineKeyboardButton button = new InlineKeyboardButton(numbers.get(i++ - 1));
-                button.setCallbackData(meal.getId().toString());
+                button.setCallbackData("add_" + meal.getId().toString());
                 numberButtons.add(button);
             }
             buttons.add(numberButtons);
@@ -58,11 +58,11 @@ public class InlineBoard {
             for (int j = 0; j < meals.size(); j++) {
                 if (j >= meals.size() / 2) {
                     InlineKeyboardButton button = new InlineKeyboardButton(numbers.get(i++ - 1));
-                    button.setCallbackData(meals.get(j).getId().toString());
+                    button.setCallbackData("add_" + meals.get(j).getId().toString());
                     numberButtons1.add(button);
                 } else {
                     InlineKeyboardButton button = new InlineKeyboardButton(numbers.get(i++ - 1));
-                    button.setCallbackData(meals.get(j).getId().toString());
+                    button.setCallbackData("add_" + meals.get(j).getId().toString());
                     numberButtons.add(button);
                 }
             }
@@ -95,11 +95,9 @@ public class InlineBoard {
         }
 
         List<InlineKeyboardButton> extraButtons = new ArrayList<>();
-        if (offset > 0) {
-            InlineKeyboardButton prevButton = new InlineKeyboardButton(Emojis.PREVIOUS);
-            prevButton.setCallbackData("prev");
-            extraButtons.add(prevButton);
-        }
+        InlineKeyboardButton prevButton = new InlineKeyboardButton(Emojis.PREVIOUS);
+        prevButton.setCallbackData("prev");
+        extraButtons.add(prevButton);
         InlineKeyboardButton cancelButton = new InlineKeyboardButton(Emojis.REMOVE);
         cancelButton.setCallbackData("cancel");
         extraButtons.add(cancelButton);

@@ -3,7 +3,7 @@ package uz.pdp.pdp_food_delivery.rest.service.mealorder;
 import org.springframework.stereotype.Service;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderDto;
-import uz.pdp.pdp_food_delivery.rest.entity.MealOrder;
+import uz.pdp.pdp_food_delivery.rest.entity.meal.MealOrder;
 import uz.pdp.pdp_food_delivery.rest.mapper.mealorder.MealOrderMapper;
 import uz.pdp.pdp_food_delivery.rest.repository.mealorder.MealOrderRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;

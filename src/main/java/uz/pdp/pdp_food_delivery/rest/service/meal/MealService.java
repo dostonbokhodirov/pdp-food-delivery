@@ -14,6 +14,7 @@ import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 import uz.pdp.pdp_food_delivery.rest.service.utils.UploadPhotoService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,12 +35,11 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
     public Long create(MealCreateDto mealCreateDto) {
 
         Meal meal = mapper.fromCreateDto(mealCreateDto);
-        meal.setPhotoPath(uploadPhotoService.upload(mealCreateDto.getPicture()));
+//        meal.setPhotoPath(uploadPhotoService.upload(mealCreateDto.getPicture()));
+        meal.setDate(LocalDate.now());
 
-        repository.save(meal);
-
-        return meal.getId();
-
+        Meal save = repository.save(meal);
+        return save.getId();
     }
 
     public Long create(MealCreateDto mealCreateDto, Long sesId) {
@@ -135,4 +135,8 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
         return mapper.toDto(meals);
     }
 
+    public MealDto getByPhotoId(String photoId) {
+        Meal meal = repository.findByPhotoId(photoId);
+        return mapper.toDto(meal);
+    }
 }

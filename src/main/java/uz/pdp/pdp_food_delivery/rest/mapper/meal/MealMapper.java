@@ -19,7 +19,7 @@ public interface MealMapper extends BaseMapper {
 
     List<MealDto> toDto(List<Meal> meals);
 
-    @Mapping(target = "picturePath", ignore = true)
+    @Mapping(target = "photoPath", ignore = true)
     Meal fromCreateDto(MealCreateDto mealCreateDto);
 
     MealDto toDto(Meal meal);
