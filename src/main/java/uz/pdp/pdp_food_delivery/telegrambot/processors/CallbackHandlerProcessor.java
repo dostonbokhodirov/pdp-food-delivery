@@ -38,7 +38,6 @@ public class CallbackHandlerProcessor {
             for (MealDto meal : meals) {
                 messageText.append("<code>")
                         .append(i++).append(".</code> ")
-                        .append(LangConfig.get(chatId, "meal.name"))
                         .append(" <b>").append(meal.getName()).append("</b>\n");
             }
         }
