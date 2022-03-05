@@ -33,13 +33,13 @@ public class MealController extends AbstractController<MealService> {
     }
 
     @PostMapping(value = "create")
-    public ResponseEntity<Long> create(@RequestBody MealCreateDto dto, @RequestParam(defaultValue = "-1") Long sessionUserId) {
+    public ResponseEntity<Long> create(@ModelAttribute MealCreateDto dto, @RequestParam(defaultValue = "-1") Long sessionUserId) {
         Long aLong = service.create(dto, sessionUserId);
         return new ResponseEntity<>(aLong);
     }
 
     @PatchMapping(value = "update/{id}")
-    public void create(@RequestBody MealUpdateDto dto,@PathVariable(name = "id") Long id ,@RequestParam(defaultValue = "-1") Long sessionUserId) {
+    public void create(@ModelAttribute MealUpdateDto dto,@PathVariable(name = "id") Long id ,@RequestParam(defaultValue = "-1") Long sessionUserId) {
         dto.setId(id);
         service.update(dto, sessionUserId);
     }
