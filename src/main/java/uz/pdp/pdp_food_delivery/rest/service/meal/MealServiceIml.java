@@ -81,6 +81,7 @@ public class MealServiceIml extends AbstractService<MealMapper, MealRepository>
         repository.save(meal);
     }
 
+    @Override
     public void update(MealUpdateDto mealUpdateDto, Long sesId) {
         Optional<Meal> mealOptional = repository.findById(mealUpdateDto.getId());
         Meal meal=mealOptional.get();
@@ -112,6 +113,12 @@ public class MealServiceIml extends AbstractService<MealMapper, MealRepository>
     @Override
     public List<MealDto> getAllByLimit(Pageable pageable) {
         return null;//repository.getAllByLimit(pageable);
+    }
+
+    @Override
+    public MealDto getByPhotoId(String photoId) {
+        Meal meal= repository.findByPhotoId(photoId).get();
+        return mapper.toDto(meal);
     }
 }
 

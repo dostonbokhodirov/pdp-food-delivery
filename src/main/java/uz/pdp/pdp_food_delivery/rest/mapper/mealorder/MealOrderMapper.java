@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderDto;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderUpdateDto;
-import uz.pdp.pdp_food_delivery.rest.entity.MealOrder;
+import uz.pdp.pdp_food_delivery.rest.entity.meal.MealOrder;
 import uz.pdp.pdp_food_delivery.rest.mapper.BaseMapper;
 
 import java.util.List;
 
-
+@Component
 @Mapper( unmappedTargetPolicy = ReportingPolicy.IGNORE,componentModel = "spring")
 public interface MealOrderMapper extends BaseMapper<
         MealOrder,

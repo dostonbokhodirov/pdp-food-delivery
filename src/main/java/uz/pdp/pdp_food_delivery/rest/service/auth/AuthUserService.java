@@ -23,5 +23,6 @@ public interface AuthUserService extends GenericCrudService<
 
     void getRefreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
 
-    ;
+
+    AuthUserDto getByChatId(String chatId);
 }

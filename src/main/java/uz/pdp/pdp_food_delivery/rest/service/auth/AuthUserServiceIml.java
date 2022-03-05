@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeTypeUtils;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import uz.pdp.pdp_food_delivery.rest.config.security.utils.JwtUtils;
 import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserDto;
@@ -41,10 +42,9 @@ public class AuthUserServiceIml extends AbstractService<AuthUserMapper, AuthUser
         super(mapper, repository);
     }
 
-/*
-    public String getLanguage(String chatId) {
-        return repository.getLanguage(chatId);
-    }*/
+    public void save(Message message) {
+
+    }
 
 
     @Override
@@ -125,7 +125,7 @@ public class AuthUserServiceIml extends AbstractService<AuthUserMapper, AuthUser
         return repository.findRoleByChatId(chatId);
     }
 
-    @Override
+
     public void getRefreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         // gets "Authentication" header from request
@@ -137,11 +137,9 @@ public class AuthUserServiceIml extends AbstractService<AuthUserMapper, AuthUser
                 String refresh_token = authorizationHeader.substring("Bearer ".length());
 
                 //jwt algorithm
-
                 Algorithm algorithm = JwtUtils.getAlgorithm();
 
                 //checks token to valid  if not valid throws exception
-
                 JWTVerifier verifier = JWT.require(algorithm).build();
 
                 //if valid decode it with given algorithm
@@ -190,7 +188,7 @@ public class AuthUserServiceIml extends AbstractService<AuthUserMapper, AuthUser
         return repository.findByPhoneNumber(phone);
     }
 
-
+    @Override
     public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
         AuthUser user = repository.findByPhoneNumber(phone);
         return org.springframework.security.core.userdetails.User.builder()
@@ -200,8 +198,10 @@ public class AuthUserServiceIml extends AbstractService<AuthUserMapper, AuthUser
                 .build();
     }
 
+    @Override
+    public AuthUserDto getByChatId(String chatId) {
+        AuthUser authUser = repository.findByChatId(chatId);
+        return mapper.toDto(authUser);
+    }
 
-//    public String getLanguage(String chatId) {
-//        return repository.getLanguage(chatId);
-//    }
 }

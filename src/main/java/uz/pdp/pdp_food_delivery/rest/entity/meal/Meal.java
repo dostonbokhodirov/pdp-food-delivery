@@ -27,6 +27,6 @@ public class Meal extends Auditable {
     private LocalDate date;
 
     @Column(name = "photo_path")
-    private String photoPath;
+    private String picture;
 
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import uz.pdp.pdp_food_delivery.rest.dto.dailymeal.DailyMealCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.dailymeal.DailyMealDto;
 import uz.pdp.pdp_food_delivery.rest.dto.dailymeal.DailyMealUpdateDto;
+import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 import uz.pdp.pdp_food_delivery.rest.entity.meal.DailyMeal;
 import uz.pdp.pdp_food_delivery.rest.mapper.BaseMapper;
 
@@ -18,10 +19,18 @@ public interface DailyMealMapper extends BaseMapper<
         DailyMealCreateDto,
         DailyMealUpdateDto> {
 
+    @Override
+    DailyMealDto toDto(DailyMeal dailyMeal);
 
-    List<MealDto> toDto(List<DailyMeal> dailyMeals);
+    @Override
+    List<DailyMealDto> toDto(List<DailyMeal> e);
 
+    @Override
     DailyMeal fromCreateDto(DailyMealCreateDto dailyMealCreateDto);
 
-    DailyMealDto toDto(DailyMeal dailyMeal);
+    @Override
+    DailyMeal fromUpdateDto(DailyMealUpdateDto dailyMealUpdateDto);
+
+    List<MealDto> toMealDto(List<DailyMeal> dailyMeals);
+
 }

@@ -34,4 +34,8 @@ public interface GenericCrudService<
 
     void update(UD updateDto);
 
+    default void update(UD updateDto, Long sessionUserId) {
+
+    }
+
 }

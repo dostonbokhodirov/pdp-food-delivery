@@ -18,6 +18,8 @@ public interface MealService extends GenericCrudService<
         GenericService<MealDto> {
 
     List<MealDto> getAllByLimit(Pageable pageable);
+
+    MealDto getByPhotoId(String photoId);
 }
 
 

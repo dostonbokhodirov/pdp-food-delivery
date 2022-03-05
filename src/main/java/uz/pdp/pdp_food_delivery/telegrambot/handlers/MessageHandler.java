@@ -29,24 +29,24 @@ public class MessageHandler extends AbstractHandler {
         Message message = update.getMessage();
         String text = message.getText();
         boolean existChatId = repository.existsByChatId(chatId);
-
-
         if (State.getAddMealState(chatId).equals(AddMealState.FILE)) {
             addMealProcessor.process(message, State.getAddMealState(chatId));
             return;
         }
-        if ("Add Meal".equals(text)) {
+        if (!existChatId) {
+            if ("/start".equals(text)) {
+                AuthUser user = new AuthUser();
+                user.setChatId(chatId);
+                repository.save(user);
+                State.setState(chatId, UState.ANONYMOUS);
+                processor.process(message);
+            }
+        } else if ("Add Meal".equals(text)) {
             addMealProcessor.process(message, State.getAddMealState(chatId));
         } else if ("Order".equals(text)) {
             orderMealProcessor.process(message);
         } else if ("Daily Meals".equals(text)) {
             dailyMealProcessor.process(message);
-        } else if ("/start".equals(text) && !existChatId) {
-            AuthUser user = new AuthUser();
-            user.setChatId(chatId);
-            repository.save(user);
-            State.setState(chatId, UState.ANONYMOUS);
-            processor.process(message);
         } else {
             menuProcessor.menu(message);
         }
