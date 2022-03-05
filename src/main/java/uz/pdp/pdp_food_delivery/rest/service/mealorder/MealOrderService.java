@@ -3,8 +3,12 @@ package uz.pdp.pdp_food_delivery.rest.service.mealorder;
 import org.springframework.stereotype.Service;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderDto;
+import uz.pdp.pdp_food_delivery.rest.entity.AuthUser;
+import uz.pdp.pdp_food_delivery.rest.entity.meal.Meal;
 import uz.pdp.pdp_food_delivery.rest.entity.meal.MealOrder;
 import uz.pdp.pdp_food_delivery.rest.mapper.mealorder.MealOrderMapper;
+import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
+import uz.pdp.pdp_food_delivery.rest.repository.meal.MealRepository;
 import uz.pdp.pdp_food_delivery.rest.repository.mealorder.MealOrderRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
 import uz.pdp.pdp_food_delivery.rest.service.base.BaseService;
@@ -21,9 +25,15 @@ import java.util.Optional;
 public class MealOrderService extends AbstractService<MealOrderMapper, MealOrderRepository>
         implements GenericCrudService<MealOrderCreateDto, MealOrderDto>, GenericService<MealOrderDto>, BaseService {
 
-    public MealOrderService(MealOrderMapper mapper, MealOrderRepository repository) {
+    public MealOrderService(MealOrderMapper mapper, MealOrderRepository repository, AuthUserRepository userRepository, MealRepository mealRepository) {
         super(mapper, repository);
+        this.userRepository = userRepository;
+        this.mealRepository = mealRepository;
     }
+
+
+    private final AuthUserRepository userRepository;
+    private final MealRepository mealRepository;
 
 
     //this two times are used for checking dates(present or not)
@@ -64,6 +74,10 @@ public class MealOrderService extends AbstractService<MealOrderMapper, MealOrder
     @Override
     public Long create(MealOrderCreateDto mealOrderCreateDto) {
         MealOrder mealOrder = mapper.fromCreateDto(mealOrderCreateDto);
+        AuthUser authUser = userRepository.findById(mealOrderCreateDto.getUserDto().getId()).get();
+        Meal meal = mealRepository.findById(mealOrderCreateDto.getMealDto().getId()).get();
+        mealOrder.setUser(authUser);
+        mealOrder.setMeal(meal);
         MealOrder save = repository.save(mealOrder);
         return save.getId();
     }
