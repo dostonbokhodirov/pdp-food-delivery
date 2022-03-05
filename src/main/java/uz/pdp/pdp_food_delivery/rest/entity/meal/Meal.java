@@ -16,6 +16,8 @@ public class Meal extends Auditable {
 //    @Column(nullable = false)
     private String photoId;
 
+    private String picturePath;
+
     @Column(nullable = false)
     private String name;
 
@@ -24,6 +26,5 @@ public class Meal extends Auditable {
     @Column(nullable = false)
     private LocalDate date;
 
-    private String picturePath;
 
 }

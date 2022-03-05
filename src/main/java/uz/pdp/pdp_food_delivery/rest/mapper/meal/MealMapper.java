@@ -18,15 +18,12 @@ import java.util.List;
 public interface MealMapper extends BaseMapper {
 
 
-    @Mapping(target = "picture", ignore = true)
     List<MealDto> toDto(List<Meal> meals);
 
-    @Mapping(target = "picture", ignore = true)
+    @Mapping(target = "picturePath", ignore = true)
     Meal fromCreateDto(MealCreateDto mealCreateDto);
 
-    @Mapping(target = "picture", ignore = true)
     MealDto toDto(Meal meal);
 
-    @Mapping(target = "picture", ignore = true)
     void fromUpdateDto(MealUpdateDto mealUpdateDto, @MappingTarget Meal meal);
 }
