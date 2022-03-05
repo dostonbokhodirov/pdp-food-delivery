@@ -21,22 +21,13 @@ public interface MealMapper extends BaseMapper<
         MealUpdateDto
         > {
 
-    @Override
-    @Mapping(target="picture",ignore=true)
-    List<MealDto> toDto(List<Meal> e);
+    List<MealDto> toDto(List<Meal> meals);
 
-    @Override
-    @Mapping(target="picture",ignore=true)
+    @Mapping(target = "photoPath", ignore = true)
     Meal fromCreateDto(MealCreateDto mealCreateDto);
 
-    @Mapping(target = "picture", ignore = true)
     MealDto toDto(Meal meal);
 
-    @Override
-    @Mapping(target="picture",ignore=true)
-    Meal fromUpdateDto(MealUpdateDto mealUpdateDto);
-
-    @Mapping(target="picture",ignore=true)
-    Meal fromUpdateDto(MealUpdateDto mealUpdateDto,@MappingTarget Meal meal);
+    void fromUpdateDto(MealUpdateDto mealUpdateDto, @MappingTarget Meal meal);
 
 }

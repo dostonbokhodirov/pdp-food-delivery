@@ -13,7 +13,6 @@ import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-//@RequiredArgsConstructor
 @OpenAPIDefinition
 @EnableScheduling
 public class PdpFoodDeliveryApplication {
@@ -24,7 +23,6 @@ public class PdpFoodDeliveryApplication {
     PasswordEncoder passwordEncoder;
 
     public static void main(String[] args) {
-
         SpringApplication.run(PdpFoodDeliveryApplication.class, args);
     }
 

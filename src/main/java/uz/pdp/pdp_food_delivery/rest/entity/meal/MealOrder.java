@@ -1,7 +1,8 @@
-package uz.pdp.pdp_food_delivery.rest.entity;
+package uz.pdp.pdp_food_delivery.rest.entity.meal;
 
 import lombok.Getter;
 import lombok.Setter;
+import uz.pdp.pdp_food_delivery.rest.entity.AuthUser;
 import uz.pdp.pdp_food_delivery.rest.entity.base.Auditable;
 import uz.pdp.pdp_food_delivery.rest.entity.meal.Meal;
 
