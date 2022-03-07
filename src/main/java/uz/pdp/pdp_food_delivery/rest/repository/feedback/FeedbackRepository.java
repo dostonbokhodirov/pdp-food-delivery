@@ -1,6 +1,5 @@
 package uz.pdp.pdp_food_delivery.rest.repository.feedback;
 
-import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,12 +11,12 @@ import uz.pdp.pdp_food_delivery.rest.repository.BaseRepository;
 import javax.transaction.Transactional;
 
 @Repository
-public interface FeedbackRepository extends JpaRepository<Feedback,Long>, BaseRepository {
+public interface FeedbackRepository extends JpaRepository<Feedback, Long>, BaseRepository {
 
 
     @Transactional
     @Modifying
-    @Query(value = "update feedback f set f.message = :#{#dto.message}, f.type = :#{#dto.type}}",nativeQuery = true)
+    @Query(value = "update feedback.feedback f set f.message = :#{#dto.message}, f.type = :#{#dto.type}}", nativeQuery = true)
     void update(@Param(value = "dto") Feedback feedback);
 
 

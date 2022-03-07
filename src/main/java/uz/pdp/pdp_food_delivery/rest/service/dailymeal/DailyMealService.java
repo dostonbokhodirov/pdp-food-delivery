@@ -21,4 +21,7 @@ public interface DailyMealService extends GenericCrudService<
     List<MealDto> getAllByLimit(Pageable pageable);
 
     List<String> getAllName();
+
+
+    void truncate();
 }
