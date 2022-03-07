@@ -4,6 +4,9 @@ package uz.pdp.pdp_food_delivery.rest.service.excelFile;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import uz.pdp.pdp_food_delivery.rest.dto.excelFile.ExcelFileDto;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderCreateDto;
@@ -22,6 +25,7 @@ import java.util.UUID;
 
 @Service
 public class ExcelFileService extends AbstractService<ExcelFileMapper, ExcelFileRepository>{
+
 
     private final MealOrderService mealOrderService;
 
@@ -43,34 +47,41 @@ public class ExcelFileService extends AbstractService<ExcelFileMapper, ExcelFile
             boolean created = file.createNewFile();
             if (created) {
 
-                try (FileOutputStream outputStream = new FileOutputStream(file.getPath())) {
+                try (FileOutputStream outputStream = new FileOutputStream(file.getAbsolutePath())) {
 
-                    XSSFSheet xssfSheet = workbook.createSheet("Posts");
-                    XSSFRow xssfRow = xssfSheet.createRow(3);
+                    XSSFSheet xssfSheet = workbook.createSheet("Orders");
+                    XSSFRow xssfRow = xssfSheet.createRow(4);
 
-                    xssfRow.createCell(0).setCellValue("Full");
+                    xssfRow.createCell(0).setCellValue("Full name");
                     xssfRow.createCell(1).setCellValue("Phone number");
                     xssfRow.createCell(2).setCellValue("Department");
                     xssfRow.createCell(3).setCellValue("Meal name");
-//                    xssfRow.createCell(4).setCellValue("Meal price");
-                    int counter = 0;
-                    for (MealOrderCreateDto createDto : dto) {
+                    xssfRow.createCell(4).setCellValue("Meal price");
 
-                        XSSFRow row = xssfSheet.createRow(counter + 2);
-                        row.createCell(0).setCellValue(createDto.getUserDto().getFullName());
-                        row.createCell(1).setCellValue(createDto.getUserDto().getPhoneNumber());
-                        row.createCell(2).setCellValue(createDto.getUserDto().getDepartment().toString());
-                        row.createCell(3).setCellValue(createDto.getMealDto().getName());
-//                        row.createCell(4).setCellValue(createDto.getMealDto().getPrice());
+                     Double price= 0d;
+
+                    for (int i=0; dto.size()-1 > i; i++) {
+
+                        XSSFRow row = xssfSheet.createRow(i + 2);
+                        row.createCell(0).setCellValue(dto.get(i).getUserDto().getFullName());
+                        row.createCell(1).setCellValue(dto.get(i).getUserDto().getPhoneNumber());
+                        row.createCell(2).setCellValue(dto.get(i).getUserDto().getDepartment().toString());
+                        row.createCell(3).setCellValue(dto.get(i).getMealDto().getName());
+                        row.createCell(4).setCellValue(dto.get(i).getMealDto().getPrice());
+                        price+=dto.get(i).getMealDto().getPrice();
                     }
+                    XSSFRow row = xssfSheet.createRow(dto.size()-1 + 3);
+                    row.createCell(4).setCellValue("Umumiy summa : " + price);
+
                     workbook.write(outputStream);
 
-                    ExcelFile excelFile = new ExcelFile(fileName, file.getAbsolutePath(), ".xlsx");
-                    repository.save(excelFile);
-                    excelFileDto=mapper.toDto(excelFile);
-                    return excelFileDto;
                 }
             }
+
+            ExcelFile excelFile = new ExcelFile(fileName, file.getAbsolutePath(), "xlsx");
+            repository.save(excelFile);
+            excelFileDto=mapper.toDto(excelFile);
+            return excelFileDto;
 
         } catch (IOException e) {
             e.printStackTrace();
