@@ -14,7 +14,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/meal/")
-public class MealController extends AbstractController<MealService> {
+public class
+MealController extends AbstractController<MealService> {
 
     public MealController(MealService service) {
         super(service);

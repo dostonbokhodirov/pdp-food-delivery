@@ -27,8 +27,28 @@ spring:
 
 springdoc:
   swagger-ui:
-    path: sw
+    path: /swagger-ui
+    enabled: true
+  api-docs:
+    path: /api/docs
 
+api:
+  info:
+    title: Review Service API
+    description: API to fetch review details for product
+    version: 1.0.0
+    terms-of-service: http://boom.com/terms/
+    contact:
+      name: Review Service API Team
+      email: apiteam@example.com
+      url: http://boom.com/team
+    license:
+      name: Apache 2.0
+      url: http://www.apache.org/licenses/LICENSE-2.0.html
 
-
-
+service:
+  prop:
+    protocol: http
+    ip: localhost
+    port: 9090
+    url: boom.uz

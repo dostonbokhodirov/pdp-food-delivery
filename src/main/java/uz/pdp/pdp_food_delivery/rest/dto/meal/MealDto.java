@@ -14,7 +14,7 @@ public class MealDto extends GenericDto {
 
     private String photoPath;
 
-    private String price;
+    private Double price;
 
     private String name;
 
