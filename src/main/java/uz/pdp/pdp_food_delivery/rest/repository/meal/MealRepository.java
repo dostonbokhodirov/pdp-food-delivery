@@ -16,7 +16,8 @@ public interface MealRepository extends JpaRepository<Meal, Long>, BaseRepositor
 
     Optional<Meal> findByIdAndDeleted(Long id, boolean isDeleted);
 
-   // @Query(value = "select m.* from meal.meal m where m.photo_id = :photoId", nativeQuery = true)
-    Optional<Meal> findByPhotoId(@Param(value = "photoId") String photoId);
+    @Query(value = "select m.* from meal.meal m where m.photo_id = :photoId", nativeQuery = true)
+    Meal findByPhotoId(@Param(value = "photoId") String photoId);
 
+    Optional<Meal> findByPhotoPath(String photoPath);
 }

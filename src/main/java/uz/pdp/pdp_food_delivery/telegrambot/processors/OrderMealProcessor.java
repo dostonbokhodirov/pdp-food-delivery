@@ -24,6 +24,9 @@ import uz.pdp.pdp_food_delivery.telegrambot.enums.MenuState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.SearchState;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @Component
@@ -57,8 +60,11 @@ public class OrderMealProcessor {
             sendPhoto.setCaption(callbackHandlerProcessor.getMealMessage(DailyMealName.getDailyMealsNames(chatId), chatId).toString());
             sendPhoto.setReplyMarkup(
                     InlineBoard.dailyMealMenu(meals, State.getLimitState(chatId), offset.getSearchOffset(chatId), chatId));
+
             sendPhoto.setPhoto(new InputFile(meals.get(0).getPhotoId()));
             bot.executeMessage(sendPhoto);
+
+
         }
     }
 

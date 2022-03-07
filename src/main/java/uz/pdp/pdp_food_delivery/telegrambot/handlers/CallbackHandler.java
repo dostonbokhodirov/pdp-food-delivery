@@ -3,8 +3,10 @@ package uz.pdp.pdp_food_delivery.telegrambot.handlers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
@@ -32,6 +34,7 @@ import uz.pdp.pdp_food_delivery.telegrambot.processors.CallbackHandlerProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.OrderMealProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
+import java.io.File;
 import java.time.LocalDate;
 
 import static uz.pdp.pdp_food_delivery.telegrambot.states.State.setState;
@@ -119,6 +122,13 @@ public class CallbackHandler extends AbstractHandler {
         } else if (data.startsWith("add_")) {
             String splitData = data.substring(4);
             MealDto mealDto = mealService.get(Long.valueOf(splitData));
+
+            if (mealDto.getPhotoId() == null) {
+                SendPhoto sendPhoto = new SendPhoto();
+                sendPhoto.setChatId(chatId);
+                mealDto.setPhotoId(mealService.updateMealPhotoId(mealDto.getPhotoPath(),sendPhoto));
+            }
+
             dailyMealService.create(new DailyMealCreateDto(mealDto.getName(), LocalDate.now(), mealDto.getPhotoId()));
             SendMessage sendMessage = new SendMessage(chatId, mealDto.getName());
             bot.executeMessage(sendMessage);
