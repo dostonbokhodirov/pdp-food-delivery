@@ -1,13 +1,12 @@
 package uz.pdp.pdp_food_delivery.rest.service.base;
 
 
-import org.springframework.stereotype.Service;
 import uz.pdp.pdp_food_delivery.rest.dto.GenericDto;
 
 import java.util.List;
 
-@Service
-public interface GenericService<D extends GenericDto> {
+
+public interface GenericService<D extends GenericDto> extends BaseService {
 
     List<D> getAll();
 

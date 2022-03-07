@@ -13,18 +13,27 @@ import uz.pdp.pdp_food_delivery.rest.mapper.BaseMapper;
 
 import java.util.List;
 
-@Component
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
-public interface MealMapper extends BaseMapper {
+@Mapper(componentModel = "spring")
+public interface MealMapper extends BaseMapper<
+        Meal,
+        MealDto,
+        MealCreateDto,
+        MealUpdateDto
+        > {
 
 
     List<MealDto> toDto(List<Meal> meals);
 
-    @Mapping(target = "photoPath", ignore = true)
+    @Mapping(target = "picture", ignore = true)
     Meal fromCreateDto(MealCreateDto mealCreateDto);
 
     MealDto toDto(Meal meal);
 
+    @Override
+    @Mapping(target = "picture", ignore = true)
+    Meal fromUpdateDto(MealUpdateDto mealUpdateDto);
+
+    @Mapping(target = "picture", ignore = true)
     void fromUpdateDto(MealUpdateDto mealUpdateDto, @MappingTarget Meal meal);
 
 }

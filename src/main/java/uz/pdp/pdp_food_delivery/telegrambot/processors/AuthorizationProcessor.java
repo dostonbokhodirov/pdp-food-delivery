@@ -97,7 +97,7 @@ public class AuthorizationProcessor {
                 SendMessage sendMessage = new SendMessage();
                 sendMessage.setReplyMarkup(MarkupBoard.sharePhoneNumber());
                 sendMessage.setChatId(chatId);
-                sendMessage.setText("Share your Phonenumber: ");
+                sendMessage.setText("Share your Phone number: ");
                 setState(chatId, UState.PHONE_NUMBER);
                 bot.executeMessage(sendMessage);
             }
@@ -140,7 +140,7 @@ public class AuthorizationProcessor {
             bot.executeMessage(sendMessage1);
             SendMessage sendMessage = new SendMessage();
             sendMessage.setChatId(admin.getChatId());
-            sendMessage.setText(currentUser.getFullName() + "wants to Join your department,\nWill you confirm?");
+            sendMessage.setText(currentUser.getFullName() + " wants to Join your department,\nWill you confirm?");
             sendMessage.setReplyMarkup(InlineBoard.accept(chatId));
 
             bot.executeMessage(sendMessage);

@@ -12,17 +12,25 @@ import uz.pdp.pdp_food_delivery.rest.mapper.BaseMapper;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface DailyMealMapper extends BaseMapper {
+public interface DailyMealMapper extends BaseMapper<
+        DailyMeal,
+        DailyMealDto,
+        DailyMealCreateDto,
+        DailyMealUpdateDto> {
 
 
-    List<MealDto> toDto(List<DailyMeal> dailyMeals);
-
-
-    DailyMeal fromCreateDto(DailyMealCreateDto dailyMealCreateDto);
-
-    DailyMeal fromUpdateDto(DailyMealUpdateDto dailyMealUpdateDto);
-
-    List<DailyMealDto> toDtoMeal(List<DailyMeal> dailyMeals);
 
     DailyMealDto toDto(DailyMeal dailyMeal);
+
+    @Override
+    List<DailyMealDto> toDto(List<DailyMeal> e);
+
+    @Override
+    DailyMeal fromCreateDto(DailyMealCreateDto dailyMealCreateDto);
+
+    @Override
+    DailyMeal fromUpdateDto(DailyMealUpdateDto dailyMealUpdateDto);
+
+    List<MealDto> toMealDto(List<DailyMeal> dailyMeals);
+
 }

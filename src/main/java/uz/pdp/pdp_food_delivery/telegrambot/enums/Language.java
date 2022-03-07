@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * @author Doston Bokhodirov, Sat 10:29 AM. 12/25/2021
+ * @author Mutalov Jasur, Sat 10:29 AM. 12/25/2021
  */
 @Getter
 @AllArgsConstructor
