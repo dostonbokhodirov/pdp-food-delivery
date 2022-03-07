@@ -27,7 +27,7 @@ public class PdpFoodDeliveryApplication {
         SpringApplication.run(PdpFoodDeliveryApplication.class, args);
     }
 
-    //    @Bean
+    //@Bean
     CommandLineRunner run() {
         return args -> {
             userService.create(new AuthUserCreateDto("admin", "+998973130080", "Saydali@gmail.com",
