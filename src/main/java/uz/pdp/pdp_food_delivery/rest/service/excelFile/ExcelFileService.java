@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ExcelFileService extends AbstractService<ExcelFileMapper, ExcelFileRepository>{
+public class ExcelFileService extends AbstractService<ExcelFileMapper, ExcelFileRepository> {
 
     private final MealOrderService mealOrderService;
 
@@ -66,7 +66,7 @@ public class ExcelFileService extends AbstractService<ExcelFileMapper, ExcelFile
 
                     ExcelFile excelFile = new ExcelFile(fileName, file.getAbsolutePath(), ".xlsx");
                     repository.save(excelFile);
-                    excelFileDto=mapper.toDto(excelFile);
+                    excelFileDto = mapper.toDto(excelFile);
                     return excelFileDto;
                 }
             }

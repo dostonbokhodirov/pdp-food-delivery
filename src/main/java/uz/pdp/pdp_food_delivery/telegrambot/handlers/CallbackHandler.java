@@ -62,6 +62,7 @@ public class CallbackHandler extends AbstractHandler {
             sendMessage.setReplyMarkup(new ForceReplyKeyboard());
             setState(chatId, UState.FULL_NAME);
             deleteMessage(message, chatId);
+            State.setLanguageState(chatId, Language.getByCode(data));
             bot.executeMessage(sendMessage);
         } else if (data.startsWith("accept_")) {
             String acceptedUser = data.substring(7);

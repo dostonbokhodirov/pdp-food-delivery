@@ -41,7 +41,7 @@ public class MessageHandler extends AbstractHandler {
             orderMealProcessor.process(message);
         } else if ("Daily Meals".equals(text)) {
             dailyMealProcessor.process(message);
-        } else if ("/start".equals(text) && !existChatId) {
+        } else if (("/start".equals(text) && !existChatId) || !State.getState(chatId).equals(UState.AUTHORIZED)) {
             AuthUser user = new AuthUser();
             user.setChatId(chatId);
             repository.save(user);
