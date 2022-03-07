@@ -21,6 +21,6 @@ public class DailyMeal extends Auditable {
     @Column(nullable = false)
     private LocalDate date;
 
-    @Column(name = "photo_id", nullable = false)
+    @Column(name = "photo_id", nullable = true)
     private String photoId;
 }

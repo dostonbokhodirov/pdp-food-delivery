@@ -12,6 +12,7 @@ import uz.pdp.pdp_food_delivery.rest.entity.meal.DailyMeal;
 import uz.pdp.pdp_food_delivery.rest.mapper.dailymeal.DailyMealMapper;
 import uz.pdp.pdp_food_delivery.rest.repository.dailymeal.DailyMealRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
+import uz.pdp.pdp_food_delivery.rest.service.base.BaseService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 
@@ -19,21 +20,28 @@ import java.util.List;
 
 @Service
 public class DailyMealService extends AbstractService<DailyMealMapper, DailyMealRepository>
-        implements GenericCrudService<DailyMealCreateDto, DailyMealUpdateDto>, GenericService<DailyMealDto> {
+        implements GenericCrudService<DailyMealCreateDto, DailyMealUpdateDto>, GenericService<DailyMealDto>, BaseService {
 
 
     public DailyMealService(DailyMealMapper mapper, DailyMealRepository repository) {
         super(mapper, repository);
     }
 
+
+    public void truncate() { //cronjob ulash kerak
+        repository.truncate();
+    }
+
+
     @Override
     public void delete(Long id) {
-
+        repository.deleteById(id);
     }
 
     @Override
     public void update(DailyMealUpdateDto dailyMealUpdateDto) {
-
+        DailyMeal dailyMeal = mapper.fromUpdateDto(dailyMealUpdateDto);
+        repository.save(dailyMeal); // update yozish kk
     }
 
     @Override
@@ -45,7 +53,8 @@ public class DailyMealService extends AbstractService<DailyMealMapper, DailyMeal
 
     @Override
     public List<DailyMealDto> getAll() {
-        return null;
+        List<DailyMeal> dailyMeals = repository.findAll();
+        return mapper.toDtoMeal(dailyMeals);
     }
 
     @Override

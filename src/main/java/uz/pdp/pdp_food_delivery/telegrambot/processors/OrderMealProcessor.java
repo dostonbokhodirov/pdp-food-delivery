@@ -8,7 +8,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
+import uz.pdp.pdp_food_delivery.rest.repository.meal.MealRepository;
 import uz.pdp.pdp_food_delivery.rest.service.dailymeal.DailyMealService;
+import uz.pdp.pdp_food_delivery.rest.service.meal.MealService;
 import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
 import uz.pdp.pdp_food_delivery.telegrambot.buttons.InlineBoard;
 import uz.pdp.pdp_food_delivery.telegrambot.config.DailyMealName;
@@ -19,6 +21,9 @@ import uz.pdp.pdp_food_delivery.telegrambot.enums.MenuState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.SearchState;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @Component
@@ -29,6 +34,7 @@ public class OrderMealProcessor {
     private final CallbackHandlerProcessor callbackHandlerProcessor;
     private final DailyMealService dailyMealService;
     private final Offset offset;
+    private final MealService mealService;
 
     public void process(Message message) {
         String chatId = message.getChatId().toString();
@@ -51,8 +57,11 @@ public class OrderMealProcessor {
             sendPhoto.setCaption(callbackHandlerProcessor.getMealMessage(DailyMealName.getDailyMealsNames(chatId), chatId).toString());
             sendPhoto.setReplyMarkup(
                     InlineBoard.dailyMealMenu(meals, State.getLimitState(chatId), offset.getSearchOffset(chatId), chatId));
+
             sendPhoto.setPhoto(new InputFile(meals.get(0).getPhotoId()));
             bot.executeMessage(sendPhoto);
+
+
         }
     }
 }

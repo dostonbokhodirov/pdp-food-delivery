@@ -3,7 +3,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/pdp_food_delivery
     username: postgres
-    password: iPhone0303
+    password: 19801980
   jpa:
     show-sql: true
     hibernate:
@@ -21,11 +21,10 @@ spring:
       password: admin123
 
 bot:
-  name: pdpfood_bot
-  token: 1803505474:AAEfm8S7-qB9xnDj9hKSeME_e1LWOtT_XUk
+  name: food_service
+  token: 5283213329:AAHTpDtGV8Q1SOndVvQvizP_HdlrbMfHpb8
 
 springdoc:
   swagger-ui:
     path: sw
-
 

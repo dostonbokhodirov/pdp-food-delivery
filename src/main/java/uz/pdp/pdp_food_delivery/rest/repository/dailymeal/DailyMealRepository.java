@@ -13,4 +13,9 @@ public interface DailyMealRepository extends JpaRepository<DailyMeal, Long>, Bas
 
     @Query(value = "select d.name from daily_meal.daily_meal d", nativeQuery = true)
     List<String> getAllName();
+
+
+    @Query(value = "truncate table daily_meal.daily_meal",nativeQuery = true)
+    void truncate();
+
 }

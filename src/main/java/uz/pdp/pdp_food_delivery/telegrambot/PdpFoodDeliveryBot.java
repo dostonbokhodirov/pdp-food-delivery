@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
@@ -57,9 +58,9 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
     }
 
 
-    public Integer executeMealPicture(SendPhoto msg) {
+    public Message executeMealPicture(SendPhoto msg) {
         try {
-            return execute(msg).getMessageId();
+            return execute(msg);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
