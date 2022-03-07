@@ -29,6 +29,7 @@ public class PdpFoodDeliveryBot extends TelegramLongPollingBot {
     private final AuthUserRepository authUserRepository;
 
 
+
     @Value("${bot.name}")
     private String botUsername;
 

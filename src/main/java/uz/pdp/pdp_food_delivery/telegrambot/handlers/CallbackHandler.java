@@ -29,6 +29,7 @@ import uz.pdp.pdp_food_delivery.telegrambot.enums.SearchState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.UState;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.base.AbstractHandler;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.CallbackHandlerProcessor;
+import uz.pdp.pdp_food_delivery.telegrambot.processors.OrderMealProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
 import java.time.LocalDate;
@@ -47,6 +48,7 @@ public class CallbackHandler extends AbstractHandler {
     private final DailyMealService dailyMealService;
     private final Offset offset;
     private final CallbackHandlerProcessor callbackHandlerProcessor;
+    private final OrderMealProcessor orderMealProcessor;
 
     @Override
     public void handle(Update update) {
@@ -54,6 +56,17 @@ public class CallbackHandler extends AbstractHandler {
         Message message = callbackQuery.getMessage();
         String data = callbackQuery.getData();
         String chatId = message.getChatId().toString();
+// this  method for cron job
+        if (data.equals("Order")){
+            orderMealProcessor.process(update);
+        }else if(data.equals("Yes")){
+            orderMealProcessor.setOrderMealsByDone();
+            deleteMessage(message,chatId);
+        }else if (data.equals("No")){
+            deleteMessage(message,chatId);
+        }
+//
+
         if ("uz".equals(data) || "ru".equals(data) || "en".equals(data)) {
             AuthUser user = authUserRepository.getByChatId(chatId);
             user.setLanguage(Language.getByCode(data));
@@ -110,6 +123,8 @@ public class CallbackHandler extends AbstractHandler {
             SendMessage sendMessage = new SendMessage(chatId, mealDto.getName());
             bot.executeMessage(sendMessage);
         }
+
+
 
     }
 

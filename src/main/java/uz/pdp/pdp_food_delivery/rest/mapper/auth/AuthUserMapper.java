@@ -13,7 +13,7 @@ import java.util.List;
 
 //@Component
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
-public interface AuthUserMapper extends BaseMapper<
+public interface  AuthUserMapper extends BaseMapper<
         AuthUser,
         AuthUserDto,
         AuthUserCreateDto,

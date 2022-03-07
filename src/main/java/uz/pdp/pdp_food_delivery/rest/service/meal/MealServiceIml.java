@@ -11,6 +11,8 @@ import uz.pdp.pdp_food_delivery.rest.mapper.meal.MealMapper;
 import uz.pdp.pdp_food_delivery.rest.repository.meal.MealRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,18 +31,16 @@ public class MealServiceIml extends AbstractService<MealMapper, MealRepository>
     @Override
     public Long create(MealCreateDto mealCreateDto) {
         Meal meal = mapper.fromCreateDto(mealCreateDto);
-        Upload upload = fileUploadService.store(mealCreateDto.getPicture());
-        meal.setPicture(upload.getPath());
+        meal.setDate(LocalDate.now());
         repository.save(meal);
         return meal.getId();
     }
 
     @Override
     public Long create(MealCreateDto mealCreateDto, Long sesId) {
-
         Meal meal = mapper.fromCreateDto(mealCreateDto);
-        Upload mealPicture = fileUploadService.store(mealCreateDto.getPicture());
-        meal.setPicture(mealPicture.getPath());
+        String upload = fileUploadService.upload(mealCreateDto.getPicture());
+        meal.setPicture(upload);
         meal.setCreatedBy(sesId);
         repository.save(meal);
         return meal.getId();
@@ -76,7 +76,7 @@ public class MealServiceIml extends AbstractService<MealMapper, MealRepository>
         Meal meal=mealOptional.get();
         mapper.fromUpdateDto(mealUpdateDto, meal);
         if (Objects.nonNull(mealUpdateDto.getPicture())) {
-            meal.setPicture(fileUploadService.store(mealUpdateDto.getPicture()).getPath());
+            meal.setPicture(fileUploadService.upload(mealUpdateDto.getPicture()));
         }
         repository.save(meal);
     }
@@ -87,7 +87,7 @@ public class MealServiceIml extends AbstractService<MealMapper, MealRepository>
         Meal meal=mealOptional.get();
         mapper.fromUpdateDto(mealUpdateDto, meal);
         if (Objects.nonNull(mealUpdateDto.getPicture())) {
-            meal.setPicture(fileUploadService.store(mealUpdateDto.getPicture()).getPath());
+            meal.setPicture(fileUploadService.upload(mealUpdateDto.getPicture()));
         }
         meal.setUpdatedBy(sesId);
         repository.save(meal);
@@ -98,16 +98,14 @@ public class MealServiceIml extends AbstractService<MealMapper, MealRepository>
 
     @Override
     public List<MealDto> getAll() {
-
-
-        return null;
+        List<Meal> meals = repository.findAll();
+        return mapper.toDto(meals);
     }
 
     @Override
     public MealDto get(Long id) {
         Optional<Meal> meal = repository.findById(id);
-
-        return null;
+        return mapper.toDto(meal.get());
     }
 
     @Override

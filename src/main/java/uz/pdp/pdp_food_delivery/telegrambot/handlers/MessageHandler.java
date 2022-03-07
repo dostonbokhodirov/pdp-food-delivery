@@ -31,6 +31,7 @@ public class MessageHandler extends AbstractHandler {
         Message message = update.getMessage();
         String text = message.getText();
         boolean existChatId = repository.existsByChatId(chatId);
+
         if (State.getAddMealState(chatId).equals(AddMealState.FILE)) {
             addMealProcessor.process(message, State.getAddMealState(chatId));
             return;

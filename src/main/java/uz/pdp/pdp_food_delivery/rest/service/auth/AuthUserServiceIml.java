@@ -6,12 +6,14 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -38,12 +40,9 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class AuthUserServiceIml extends AbstractService<AuthUserMapper, AuthUserRepository>
         implements AuthUserService {
 
+
     public AuthUserServiceIml(AuthUserMapper mapper, AuthUserRepository repository) {
         super(mapper, repository);
-    }
-
-    public void save(Message message) {
-
     }
 
 
@@ -191,7 +190,7 @@ public class AuthUserServiceIml extends AbstractService<AuthUserMapper, AuthUser
     @Override
     public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
         AuthUser user = repository.findByPhoneNumber(phone);
-        return org.springframework.security.core.userdetails.User.builder()
+        return User.builder()
                 .username(user.getPhoneNumber())
                 .password(user.getPassword())
                 .authorities(Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())))

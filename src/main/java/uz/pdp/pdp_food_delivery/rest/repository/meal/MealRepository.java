@@ -8,6 +8,7 @@ import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 import uz.pdp.pdp_food_delivery.rest.entity.meal.Meal;
 import uz.pdp.pdp_food_delivery.rest.repository.BaseRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository

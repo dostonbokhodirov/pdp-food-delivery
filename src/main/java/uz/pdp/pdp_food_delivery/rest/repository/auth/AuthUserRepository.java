@@ -43,10 +43,10 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
     AuthUser getByChatId(String chatId);
 
 
-    @Query(value = "select u.chat_id from users.user  u left join meal_order.meal_order mo on  u.id <> mo.user_id;", nativeQuery = true)
+    @Query(value = "select u.chat_id from users.user  u left join meal_order.meal_order mo on  u.id = mo.user_id where mo.meal_id is null;", nativeQuery = true)
     Optional<List<Long>> getUserIdByNoMealOrder();
 
-    @Query(value = "select mo.chat_id from meal_order.meal_order mo where mo.done='f';", nativeQuery = true)
+    @Query(value = "select u.chat_id from users.user u inner join meal_order.meal_order mo on mo.user_id=u.id where mo.done='f';", nativeQuery = true)
     Optional<List<Long>> getUserIdByMealOrder();
 
 
@@ -54,6 +54,8 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
 
     @Query(value = "select u.* from users.user u where u.chat_id = :chatId", nativeQuery = true)
     AuthUser findByChatId(@Param(value = "chatId") String chatId);
+
+
     @Query(value = "select u.role from users.user u where u.chat_id =:chatId",nativeQuery = true)
     String  getRoleByChatId(String chatId);
 }

@@ -61,7 +61,8 @@ public class MealOrderService extends AbstractService<MealOrderMapper, MealOrder
 
     @Override
     public void update(MealOrderUpdateDto updateDto) {
-
+        MealOrder mealOrder = mapper.fromUpdateDto(updateDto);
+        repository.save(mealOrder);
     }
 
     @Override
