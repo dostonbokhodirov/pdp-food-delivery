@@ -6,8 +6,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/food_delivery
-    username: postgres
-    password: 2001
+    username: doston
+    password: doston123
   jpa:
     show-sql: true
     hibernate:

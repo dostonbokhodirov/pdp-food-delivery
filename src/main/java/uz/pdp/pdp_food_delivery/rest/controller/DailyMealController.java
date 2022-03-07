@@ -21,11 +21,11 @@ public class DailyMealController extends AbstractController<DailyMealService> {
         super(service);
     }
 
-    @RequestMapping(value = "/truncate",method = RequestMethod.DELETE)
-    public ResponseEntity<HttpStatus>  truncate() {
-        service.truncate();
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @RequestMapping(value = "/truncate",method = RequestMethod.DELETE)
+//    public ResponseEntity<HttpStatus>  truncate() {
+//        service.truncate();
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<Long> create(@RequestBody DailyMealCreateDto dto) {

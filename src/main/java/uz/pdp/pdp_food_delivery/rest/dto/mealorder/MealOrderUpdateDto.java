@@ -7,5 +7,5 @@ import uz.pdp.pdp_food_delivery.rest.dto.GenericDto;
 @Setter
 public class MealOrderUpdateDto extends GenericDto {
     private boolean done;
-    private Long updatedBy;
+    private String chatId;
 }

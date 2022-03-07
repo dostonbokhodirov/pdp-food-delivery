@@ -58,7 +58,8 @@ public class MarkupBoard {
         KeyboardRow row1 = new KeyboardRow();
         row.add(new KeyboardButton("Add Meal"));
         row.add(new KeyboardButton("Order"));
-        row1.add(new KeyboardButton("Daily Meals"));
+        row.add(new KeyboardButton("File"));
+        row1.add(new KeyboardButton("Add Daily Meals"));
         row1.add(new KeyboardButton("Monitoring"));
         board.setResizeKeyboard(true);
         board.setSelective(true);
