@@ -3,8 +3,10 @@ package uz.pdp.pdp_food_delivery.telegrambot.handlers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
@@ -29,8 +31,10 @@ import uz.pdp.pdp_food_delivery.telegrambot.enums.SearchState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.UState;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.base.AbstractHandler;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.CallbackHandlerProcessor;
+import uz.pdp.pdp_food_delivery.telegrambot.processors.OrderMealProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
+import java.io.File;
 import java.time.LocalDate;
 
 import static uz.pdp.pdp_food_delivery.telegrambot.states.State.setState;
@@ -47,6 +51,7 @@ public class CallbackHandler extends AbstractHandler {
     private final DailyMealService dailyMealService;
     private final Offset offset;
     private final CallbackHandlerProcessor callbackHandlerProcessor;
+    private final OrderMealProcessor orderMealProcessor;
 
     @Override
     public void handle(Update update) {
@@ -54,9 +59,21 @@ public class CallbackHandler extends AbstractHandler {
         Message message = callbackQuery.getMessage();
         String data = callbackQuery.getData();
         String chatId = message.getChatId().toString();
+// this  method for cron job
+        if (data.equals("Order")){
+            orderMealProcessor.process(update);
+        }else if(data.equals("Yes")){
+            orderMealProcessor.setOrderMealsByDone(chatId);
+            deleteMessage(message,chatId);
+        }else if (data.equals("No")){
+            deleteMessage(message,chatId);
+        }
+//
+
         if ("uz".equals(data) || "ru".equals(data) || "en".equals(data)) {
             AuthUser user = authUserRepository.getByChatId(chatId);
             user.setLanguage(Language.getByCode(data));
+            State.setLanguageState(chatId,Language.getByCode(data));
             authUserRepository.save(user);
             SendMessage sendMessage = new SendMessage(chatId, "Enter your Fullname: ");
             sendMessage.setReplyMarkup(new ForceReplyKeyboard());
@@ -74,6 +91,7 @@ public class CallbackHandler extends AbstractHandler {
             } else {
                 AuthUser user = authUserRepository.getByChatId(acceptedUser);
                 user.setRole(Role.USER);
+                user.setActive(true);
                 State.setState(acceptedUser, UState.AUTHORIZED);
                 State.setMenuState(acceptedUser, MenuState.UNDEFINED);
                 authUserRepository.save(user);
@@ -105,10 +123,19 @@ public class CallbackHandler extends AbstractHandler {
         } else if (data.startsWith("add_")) {
             String splitData = data.substring(4);
             MealDto mealDto = mealService.get(Long.valueOf(splitData));
+
+            if (mealDto.getPhotoId() == null) {
+                SendPhoto sendPhoto = new SendPhoto();
+                sendPhoto.setChatId(chatId);
+                mealDto.setPhotoId(mealService.updateMealPhotoId(mealDto.getPhotoPath(),sendPhoto));
+            }
+
             dailyMealService.create(new DailyMealCreateDto(mealDto.getName(), LocalDate.now(), mealDto.getPhotoId()));
             SendMessage sendMessage = new SendMessage(chatId, mealDto.getName());
             bot.executeMessage(sendMessage);
         }
+
+
 
     }
 

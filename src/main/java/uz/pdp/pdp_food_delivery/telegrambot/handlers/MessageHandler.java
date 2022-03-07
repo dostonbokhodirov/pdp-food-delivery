@@ -12,6 +12,8 @@ import uz.pdp.pdp_food_delivery.telegrambot.handlers.base.AbstractHandler;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.*;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
+import java.util.Objects;
+
 @Component
 @RequiredArgsConstructor
 public class MessageHandler extends AbstractHandler {
@@ -30,23 +32,27 @@ public class MessageHandler extends AbstractHandler {
         String text = message.getText();
         boolean existChatId = repository.existsByChatId(chatId);
 
-
         if (State.getAddMealState(chatId).equals(AddMealState.FILE)) {
             addMealProcessor.process(message, State.getAddMealState(chatId));
             return;
         }
-        if ("Add Meal".equals(text)) {
+        if ("/start".equals(text)) {
+            if (!existChatId) {
+                AuthUser user = new AuthUser();
+                user.setChatId(chatId);
+                repository.save(user);
+                State.setState(chatId, UState.ANONYMOUS);
+            }
+        }
+
+        if (Objects.isNull(repository.getRoleByChatId(chatId))) {
+            processor.process(message);
+        } else if ("Add Meal".equals(text)) {
             addMealProcessor.process(message, State.getAddMealState(chatId));
         } else if ("Order".equals(text)) {
             orderMealProcessor.process(message);
         } else if ("Daily Meals".equals(text)) {
             dailyMealProcessor.process(message);
-        } else if (("/start".equals(text) && !existChatId) || !State.getState(chatId).equals(UState.AUTHORIZED)) {
-            AuthUser user = new AuthUser();
-            user.setChatId(chatId);
-            repository.save(user);
-            State.setState(chatId, UState.ANONYMOUS);
-            processor.process(message);
         } else {
             menuProcessor.menu(message);
         }
