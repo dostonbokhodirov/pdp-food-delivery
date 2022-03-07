@@ -13,8 +13,10 @@ import uz.pdp.pdp_food_delivery.rest.entity.meal.Meal;
 import uz.pdp.pdp_food_delivery.rest.mapper.meal.MealMapper;
 import uz.pdp.pdp_food_delivery.rest.repository.meal.MealRepository;
 import uz.pdp.pdp_food_delivery.rest.service.base.AbstractService;
+import uz.pdp.pdp_food_delivery.rest.service.base.BaseService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
+import uz.pdp.pdp_food_delivery.rest.service.utils.UploadPhotoService;
 import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
 
 import java.io.File;
@@ -26,19 +28,14 @@ import java.util.Optional;
 
 @Service
 public class MealService extends AbstractService<MealMapper, MealRepository>
-        implements GenericCrudService<
-        Meal,
-        MealDto,
-        MealCreateDto,
-        MealUpdateDto>,
-        GenericService<MealDto> {
+        implements GenericCrudService<MealCreateDto, MealUpdateDto>, GenericService<MealDto>, BaseService {
 
-    private final FileUploadService fileUploadService;
+    private final UploadPhotoService uploadPhotoService;
     private final PdpFoodDeliveryBot bot;
 
-    public MealService(MealMapper mapper, MealRepository repository, FileUploadService fileUploadService, PdpFoodDeliveryBot bot) {
+    public MealService(MealMapper mapper, MealRepository repository, UploadPhotoService uploadPhotoService, PdpFoodDeliveryBot bot) {
         super(mapper, repository);
-        this.fileUploadService = fileUploadService;
+        this.uploadPhotoService = uploadPhotoService;
         this.bot = bot;
     }
 
@@ -56,7 +53,7 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
     public Long create(MealCreateDto mealCreateDto, Long sesId) {
 
         Meal meal = mapper.fromCreateDto(mealCreateDto);
-        meal.setPicture(fileUploadService.upload(mealCreateDto.getPicture()));
+        meal.setPhotoPath(uploadPhotoService.upload(mealCreateDto.getPicture()));
         meal.setCreatedBy(sesId);
 
         repository.save(meal);
@@ -99,7 +96,7 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
         mapper.fromUpdateDto(mealUpdateDto, meal);
 
         if (Objects.nonNull(mealUpdateDto.getPicture())) {
-            meal.setPicture(fileUploadService.upload(mealUpdateDto.getPicture()));
+            meal.setPhotoPath(uploadPhotoService.upload(mealUpdateDto.getPicture()));
             meal.setPhotoId(null);
         }
 
@@ -113,7 +110,7 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
         mapper.fromUpdateDto(mealUpdateDto, meal);
 
         if (Objects.nonNull(mealUpdateDto.getPicture())) {
-            meal.setPicture(fileUploadService.upload(mealUpdateDto.getPicture()));
+            meal.setPhotoPath(uploadPhotoService.upload(mealUpdateDto.getPicture()));
             meal.setPhotoId(null);
         }
         meal.setUpdatedBy(sesId);
@@ -124,7 +121,7 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
 
     public String updateMealPhotoId(String photoPath, SendPhoto sendPhoto) {
 
-        Optional<Meal> mealOptional = repository.findByPicture(photoPath);
+        Optional<Meal> mealOptional = repository.findByPhotoPath(photoPath);
         Meal meal = mealOptional.get();
 
         sendPhoto.setPhoto(new InputFile(new File(photoPath)));
@@ -167,5 +164,3 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
         return mapper.toDto(meal);
     }
 }
-
-

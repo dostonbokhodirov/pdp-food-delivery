@@ -24,9 +24,6 @@ public class MealCreateDto implements BaseDto {
 
 
 
-
-
-
     public MealCreateDto(String photoId, String name) {
         this.photoId = photoId;
         this.name = name;

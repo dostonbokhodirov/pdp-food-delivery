@@ -36,6 +36,7 @@ import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.Objects;
 
 import static uz.pdp.pdp_food_delivery.telegrambot.states.State.setState;
 
@@ -122,15 +123,17 @@ public class CallbackHandler extends AbstractHandler {
         } else if (data.startsWith("add_")) {
             String splitData = data.substring(4);
             MealDto mealDto = mealService.get(Long.valueOf(splitData));
+            SendMessage sendMessage = new SendMessage(chatId, mealDto.getName());
 
-            if (mealDto.getPhotoId() == null) {
+            if (Objects.nonNull(dailyMealService.get(mealDto.getName()))) {
+                sendMessage.setText("this meal was added to today`s daily");
+            } else if (mealDto.getPhotoId() == null) {
                 SendPhoto sendPhoto = new SendPhoto();
                 sendPhoto.setChatId(chatId);
-                mealDto.setPhotoId(mealService.updateMealPhotoId(mealDto.getPhotoPath(),sendPhoto));
-            }
+                mealDto.setPhotoId(mealService.updateMealPhotoId(mealDto.getPhotoPath(), sendPhoto));
+            } else
+                dailyMealService.create(new DailyMealCreateDto(mealDto.getName(), LocalDate.now(), mealDto.getPhotoId()));
 
-            dailyMealService.create(new DailyMealCreateDto(mealDto.getName(), LocalDate.now(), mealDto.getPhotoId()));
-            SendMessage sendMessage = new SendMessage(chatId, mealDto.getName());
             bot.executeMessage(sendMessage);
         }
 
