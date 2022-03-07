@@ -63,7 +63,7 @@ public class CallbackHandler extends AbstractHandler {
         if (data.equals("Order")){
             orderMealProcessor.process(update);
         }else if(data.equals("Yes")){
-            orderMealProcessor.setOrderMealsByDone();
+            orderMealProcessor.setOrderMealsByDone(chatId);
             deleteMessage(message,chatId);
         }else if (data.equals("No")){
             deleteMessage(message,chatId);
@@ -90,7 +90,7 @@ public class CallbackHandler extends AbstractHandler {
             } else {
                 AuthUser user = authUserRepository.getByChatId(acceptedUser);
                 user.setRole(Role.USER);
-                //user.setActive(true);
+                user.setActive(true);
                 State.setState(acceptedUser, UState.AUTHORIZED);
                 State.setMenuState(acceptedUser, MenuState.UNDEFINED);
                 authUserRepository.save(user);

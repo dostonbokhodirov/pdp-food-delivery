@@ -8,10 +8,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import uz.pdp.pdp_food_delivery.rest.dto.dailymeal.DailyMealUpdateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderUpdateDto;
-import uz.pdp.pdp_food_delivery.rest.repository.mealorder.MealOrderRepository;
 import uz.pdp.pdp_food_delivery.rest.service.dailymeal.DailyMealService;
 import uz.pdp.pdp_food_delivery.rest.service.mealorder.MealOrderService;
 import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
@@ -24,9 +22,6 @@ import uz.pdp.pdp_food_delivery.telegrambot.enums.MenuState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.SearchState;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 @Component
@@ -94,9 +89,10 @@ public class OrderMealProcessor {
         }
     }
 
-    public void setOrderMealsByDone(){
+    public void setOrderMealsByDone(String chatId){
         MealOrderUpdateDto dto= new MealOrderUpdateDto();
         dto.setDone(true);
+        dto.setChatId(chatId);
         mealOrderService.update(dto);
     }
 }

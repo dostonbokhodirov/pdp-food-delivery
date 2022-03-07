@@ -97,7 +97,7 @@ public class AuthorizationProcessor {
                 SendMessage sendMessage = new SendMessage();
                 sendMessage.setReplyMarkup(MarkupBoard.sharePhoneNumber());
                 sendMessage.setChatId(chatId);
-                sendMessage.setText("Share your Phonenumber: ");
+                sendMessage.setText("Share your Phone number: ");
                 setState(chatId, UState.PHONE_NUMBER);
                 bot.executeMessage(sendMessage);
             }

@@ -43,7 +43,7 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
     AuthUser getByChatId(String chatId);
 
 
-    @Query(value = "select u.chat_id from users.user  u left join meal_order.meal_order mo on  u.id = mo.user_id where mo.meal_id is null;", nativeQuery = true)
+    @Query(value = "select u.chat_id from users.user  u left join meal_order.meal_order mo on  u.id = mo.user_id where mo.meal_id is null and u.active='t';", nativeQuery = true)
     Optional<List<Long>> getUserIdByNoMealOrder();
 
     @Query(value = "select u.chat_id from users.user u inner join meal_order.meal_order mo on mo.user_id=u.id where mo.done='f';", nativeQuery = true)
