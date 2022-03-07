@@ -57,6 +57,10 @@ public class DailyMealService extends AbstractService<
         DailyMeal dailyMeal = repository.findById(id).orElseThrow(() -> new RuntimeException("daily meal not found"));
         return mapper.toDto(dailyMeal);
     }
+    public DailyMealDto get(String name) {
+        DailyMeal dailyMeal = repository.findByName(name).orElseThrow(() -> new RuntimeException("daily meal not found"));
+        return mapper.toDto(dailyMeal);
+    }
 
     public List<MealDto> getAllByLimit(Pageable pageable) {
         Page<DailyMeal> all = repository.findAll(pageable);
