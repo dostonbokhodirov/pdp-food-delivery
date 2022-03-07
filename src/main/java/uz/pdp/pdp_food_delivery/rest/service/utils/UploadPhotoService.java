@@ -1,23 +1,35 @@
 package uz.pdp.pdp_food_delivery.rest.service.utils;
 
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.telegram.telegrambots.meta.api.methods.GetFile;
+import org.telegram.telegrambots.meta.api.objects.File;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UploadPhotoService {
 
     private String UPLOAD_DIRECTORY = "src/main/resources/mealPicture/";
-    public String chatIdForUploadsPhoto = "633442276";
+    private final PdpFoodDeliveryBot bot;
 
     public String upload(MultipartFile mealPhoto) {
 
@@ -31,17 +43,21 @@ public class UploadPhotoService {
         }
         return photoPath;
     }
-    public void getPhoto(HttpServletResponse response, String path) {
 
-        String[] dir = path.split("/");
-        String pictureName = dir[dir.length - 1];
-        response.setHeader("Content-Disposition", "filename:\"" + pictureName + "\"");
-        response.setContentType("image/" + StringUtils.getFilenameExtension(pictureName));
-        try (FileInputStream fileInputStream = new FileInputStream(path)) {
-            FileCopyUtils.copy(fileInputStream, response.getOutputStream());
+    public void uploadFromTelegram(Message message) {
+        String photoId = message.getPhoto().get(0).getFileId();
+        GetFile getFile = new GetFile();
+        getFile.setFileId(photoId);
+        try {
+            URL url = new URL("https://api.telegram.org/bot" + bot.getBotToken() + "/getFile?file_id=" + photoId);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        try {
+            InputStream inputStream = new URL("https://api.telegram.org/bot" + bot.getBotToken() + "/" + photoId).openStream(); //TODO chala
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
 
+    }
 }

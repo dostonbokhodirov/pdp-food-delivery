@@ -119,7 +119,7 @@ public class MealService extends AbstractService<MealMapper, MealRepository>
 
     }
 
-    public String updateMealPhotoId(String photoPath,SendPhoto sendPhoto) {
+    public String updateMealPhotoId(String photoPath, SendPhoto sendPhoto) {
 
         Optional<Meal> mealOptional = repository.findByPhotoPath(photoPath);
         Meal meal = mealOptional.get();

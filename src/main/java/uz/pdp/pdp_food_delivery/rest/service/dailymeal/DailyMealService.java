@@ -16,6 +16,7 @@ import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DailyMealService extends AbstractService<DailyMealMapper, DailyMealRepository>
@@ -54,11 +55,18 @@ public class DailyMealService extends AbstractService<DailyMealMapper, DailyMeal
         return mapper.toDto(dailyMeal);
     }
 
+    public DailyMealDto get(String name) {
+        Optional<DailyMeal> dailyMealOptional = repository.findByName(name);
+        DailyMealDto dto = mapper.toDto(dailyMealOptional.get());
+        return dto;
+    }
+
     public List<MealDto> getAllByLimit(Pageable pageable) {
         Page<DailyMeal> all = repository.findAll(pageable);
         List<DailyMeal> dailyMeals = all.getContent();
         return mapper.toDto(dailyMeals);
     }
+
 
     public List<String> getAllName() {
         return repository.getAllName();
