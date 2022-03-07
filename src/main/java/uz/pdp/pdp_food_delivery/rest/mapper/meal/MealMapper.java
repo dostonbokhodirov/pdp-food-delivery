@@ -17,6 +17,7 @@ import java.util.List;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface MealMapper extends BaseMapper {
 
+
     List<MealDto> toDto(List<Meal> meals);
 
     @Mapping(target = "photoPath", ignore = true)

@@ -28,7 +28,7 @@ public abstract class Auditable implements BaseEntity {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @CreatedDate
+    //    @CreatedDate
     @CreationTimestamp
     @Column(name = "created_at", columnDefinition = "TIMESTAMP default NOW()")
     private LocalDateTime createdAt;
@@ -36,10 +36,11 @@ public abstract class Auditable implements BaseEntity {
     @Column(name = "created_by")
     private Long createdBy;
 
-    @LastModifiedDate
+    //    @LastModifiedDate
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
 
     @Column(name = "updated_by")
     private Long updatedBy;
