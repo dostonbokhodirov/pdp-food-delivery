@@ -1,6 +1,5 @@
 package uz.pdp.pdp_food_delivery.rest.service.mealorder;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderDto;
@@ -61,8 +60,7 @@ public class MealOrderService extends AbstractService<MealOrderMapper, MealOrder
 
     @Override
     public void update(MealOrderUpdateDto updateDto) {
-        MealOrder mealOrder = mapper.fromUpdateDto(updateDto);
-        repository.save(mealOrder);
+        repository.updateMealOrderDone(updateDto.getChatId());
     }
 
     @Override

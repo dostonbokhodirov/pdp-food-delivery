@@ -1,7 +1,3 @@
-bot:
-  name: "PDP Food Delivery Bot"
-  token: "5227670217:AAHEpHh_2JAq3m7qB4bbJ2B9xudS5sAzNt4"
-
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -11,7 +7,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
@@ -24,6 +20,9 @@ spring:
       name: admin
       password: admin123
 
+bot:
+  name: helloformyselfhdasf_bot
+  token: 5106087420:AAFRtjHk6zov-qLhB2wN7IWVPE5K60HM1pw
 
 springdoc:
   swagger-ui:
