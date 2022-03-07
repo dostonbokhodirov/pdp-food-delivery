@@ -19,9 +19,12 @@ import uz.pdp.pdp_food_delivery.rest.config.security.filters.CustomAuthenticatio
 import uz.pdp.pdp_food_delivery.rest.config.security.filters.CustomAuthorizationFilter;
 import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 
+import static uz.pdp.pdp_food_delivery.rest.config.security.utils.SecurityUtils.WHITE_LIST;
+
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
+
     private final AuthUserService userService;
     private final PasswordEncoder passwordEncoder;
 
@@ -33,11 +36,13 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        http.cors().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
-                .antMatchers("/**","/auth/login/**", "/auth/token/refresh/**")
-                .permitAll();
-        http.authorizeRequests().anyRequest().authenticated();
+                .antMatchers(WHITE_LIST)
+                .permitAll()
+                .anyRequest().authenticated();
+
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

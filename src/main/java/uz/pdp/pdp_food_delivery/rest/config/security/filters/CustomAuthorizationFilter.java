@@ -33,40 +33,42 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        if (request.getServletPath().equals("/auth/login") /*||
-                request.getServletPath().equals("/auth/token/refresh")*/) {
-            filterChain.doFilter(request, response);
-        } else {
-            String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-                try {
-                    //jwt taken
-                    String token = authorizationHeader.substring("Bearer ".length());
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            try {
+                //jwt taken
+                String token = authorizationHeader.substring("Bearer ".length());
 
-                    DecodedJWT decodedJWT = JwtUtils.getVerifier().verify(token);
+                DecodedJWT decodedJWT = JwtUtils.getVerifier().verify(token);
 
-                    String username = decodedJWT.getSubject();
+                String username = decodedJWT.getSubject();
 
-                    String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
+                String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
 
-                    Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                    Arrays.stream(roles).forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    filterChain.doFilter(request, response);
-                } catch (Exception exception) {
-                    log.error("Error logging in: {}", exception.getMessage());
-                    response.setHeader("error", exception.getMessage());
-                    response.setStatus(HttpStatus.FORBIDDEN.value());
-                    Map<String, String> error = new HashMap<>();
-                    error.put("error_message", exception.getMessage());
-                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                    new ObjectMapper().writeValue(response.getOutputStream(), error);
-//                    throw new InvalidTokenException(exception.getMessage());
-                }
-            } else {
+                Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+                Arrays.stream(roles).forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
+
+                UsernamePasswordAuthenticationToken authenticationToken = new
+                        UsernamePasswordAuthenticationToken(username, null, authorities);
+
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
                 filterChain.doFilter(request, response);
+
+
+            } catch (Exception exception) {
+                log.error("Error logging in: {}", exception.getMessage());
+                response.setHeader("error", exception.getMessage());
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                Map<String, String> error = new HashMap<>();
+                error.put("error_message", exception.getMessage());
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), error);
+//                    throw new InvalidTokenException(exception.getMessage());
             }
+        } else {
+            filterChain.doFilter(request, response);
         }
     }
 }
