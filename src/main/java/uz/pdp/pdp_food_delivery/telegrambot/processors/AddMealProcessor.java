@@ -37,6 +37,9 @@ public class AddMealProcessor {
         } else if (addBookState.equals(AddMealState.FILE)) {
             if (message.hasPhoto()) {
                 String photoId = message.getPhoto().get(0).getFileId();
+                List<PhotoSize> photo = message.getPhoto();
+                PhotoSize photoSize = photo.get(0);
+
                 TargetMeal.setMealId(chatId, photoId);
                 mealService.create(new MealCreateDto(photoId, message.getCaption()));
 //                SendMessage sendMessage = new SendMessage(chatId,

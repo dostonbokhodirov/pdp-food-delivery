@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import uz.pdp.pdp_food_delivery.rest.config.security.utils.JwtUtils;
 import uz.pdp.pdp_food_delivery.rest.dto.auth.LoginDto;
 import uz.pdp.pdp_food_delivery.rest.exceptions.BadRequestException;
+import uz.pdp.pdp_food_delivery.rest.response.AppErrorDto;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -37,14 +38,14 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
-        super.setFilterProcessesUrl("/auth/login");
+        super.setFilterProcessesUrl("/api/login");
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             LoginDto loginDto = new ObjectMapper().readValue(request.getReader(), LoginDto.class);
-            log.info("Phone is: {}", loginDto.getPhone());
+            log.info("Username is: {}", loginDto.getPhone());
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(loginDto.getPhone(), loginDto.getPassword());
             return authenticationManager.authenticate(authenticationToken);
@@ -63,6 +64,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withExpiresAt(JwtUtils.getExpiry())
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .withClaim("ceo", "Muslim")
                 .sign(JwtUtils.getAlgorithm());
 
         String refreshToken = JWT.create()
@@ -77,12 +79,14 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         tokens.put("refresh_token", refreshToken);
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        response.setStatus(HttpStatus.NOT_FOUND.value());
-        new ObjectMapper().writeValue(response.getOutputStream(), "User not found");
+        AppErrorDto appError = new AppErrorDto(HttpStatus.BAD_REQUEST, "Bad Request", request.getRequestURL().toString());
+        new ObjectMapper().writeValue(response.getOutputStream(), appError);
     }
 }

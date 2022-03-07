@@ -5,15 +5,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserCreateDto;
 import uz.pdp.pdp_food_delivery.rest.enums.Department;
 import uz.pdp.pdp_food_delivery.rest.enums.Role;
 import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @OpenAPIDefinition
+@EnableScheduling
 public class PdpFoodDeliveryApplication {
+
 
     @Autowired
     AuthUserService userService;
@@ -21,10 +25,11 @@ public class PdpFoodDeliveryApplication {
     PasswordEncoder passwordEncoder;
 
     public static void main(String[] args) {
+
         SpringApplication.run(PdpFoodDeliveryApplication.class, args);
     }
 
-    //    @Bean
+//        @Bean
     CommandLineRunner run() {
         return args -> {
             userService.create(new AuthUserCreateDto("admin", "+998973130080", "Saydali@gmail.com",
