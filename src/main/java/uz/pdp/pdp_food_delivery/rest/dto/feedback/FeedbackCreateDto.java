@@ -16,4 +16,9 @@ public class FeedbackCreateDto implements BaseDto {
 
     private Type type;
 
+    public FeedbackCreateDto(String message, Long user) {
+        this.message = message;
+        this.user = user;
+        this.type = Type.ADVICE;
+    }
 }

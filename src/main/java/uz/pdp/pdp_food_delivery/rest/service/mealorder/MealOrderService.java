@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @Service
 public class MealOrderService extends AbstractService<MealOrderMapper, MealOrderRepository>
-        implements GenericCrudService<MealOrder,MealOrderDto,MealOrderCreateDto, MealOrderUpdateDto> {
+        implements GenericCrudService<MealOrder, MealOrderDto, MealOrderCreateDto, MealOrderUpdateDto> {
 
     private final AuthUserRepository userRepository;
     private final MealRepository mealRepository;
@@ -75,14 +75,13 @@ public class MealOrderService extends AbstractService<MealOrderMapper, MealOrder
     }
 
 
-    public List<MealOrderCreateDto> findOrderForExcelFile(LocalDateTime date) {
+    public List<MealOrderDto> findOrderForExcelFile(LocalDateTime date) {
 
         Date sqlDate = Date.valueOf(date.toLocalDate());
 
         List<MealOrder> orders = repository.findByDate(sqlDate);
 
-        List<MealOrderCreateDto> dto = mapper.toCreateDto(orders);
-        return dto;
+        return mapper.toDto(orders);
     }
 
 

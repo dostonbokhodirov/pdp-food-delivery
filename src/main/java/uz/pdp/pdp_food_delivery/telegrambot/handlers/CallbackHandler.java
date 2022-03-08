@@ -126,7 +126,7 @@ public class CallbackHandler extends AbstractHandler {
             MealDto mealDto = mealService.get(Long.valueOf(splitData));
             SendMessage sendMessage = new SendMessage(chatId, mealDto.getName());
 
-            if (Objects.nonNull(dailyMealService.get(mealDto.getName()))) {
+            if (Objects.nonNull(dailyMealService.get(mealDto.getId()))) {
                 sendMessage.setText("this meal was added to today`s daily");
             } else if (mealDto.getPhotoId() == null) {
                 SendPhoto sendPhoto = new SendPhoto();

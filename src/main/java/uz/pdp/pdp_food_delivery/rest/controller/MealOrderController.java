@@ -36,8 +36,8 @@ public class MealOrderController extends AbstractController<MealOrderService> {
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public ResponseEntity<List<MealOrderCreateDto>> getAll(@RequestBody LocalDateTime date){
-        List<MealOrderCreateDto> orders = service.findOrderForExcelFile(date);
+    public ResponseEntity<List<MealOrderDto>> getAll(@RequestBody LocalDateTime date){
+        List<MealOrderDto> orders = service.findOrderForExcelFile(date);
         return new ResponseEntity<>(orders);
     }
 

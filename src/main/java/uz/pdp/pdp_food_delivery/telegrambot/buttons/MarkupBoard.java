@@ -47,6 +47,7 @@ public class MarkupBoard {
     public static ReplyKeyboardMarkup menuUser() {
         KeyboardRow row = new KeyboardRow();
         row.add(new KeyboardButton("Order"));
+        row.add(new KeyboardButton("FeedBack"));
         board.setSelective(true);
         board.setResizeKeyboard(true);
         board.setKeyboard(List.of(row));
@@ -58,8 +59,9 @@ public class MarkupBoard {
         KeyboardRow row1 = new KeyboardRow();
         row.add(new KeyboardButton("Add Meal"));
         row.add(new KeyboardButton("Order"));
-        row.add(new KeyboardButton("File"));
+//        row.add(new KeyboardButton("File"));
         row1.add(new KeyboardButton("Add Daily Meals"));
+        row1.add(new KeyboardButton("FeedBack"));
         row1.add(new KeyboardButton("Monitoring"));
         board.setResizeKeyboard(true);
         board.setSelective(true);

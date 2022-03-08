@@ -7,6 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import uz.pdp.pdp_food_delivery.rest.dto.excelFile.ExcelFileDto;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderCreateDto;
+import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderDto;
 import uz.pdp.pdp_food_delivery.rest.entity.excelFile.ExcelFile;
 import uz.pdp.pdp_food_delivery.rest.mapper.excelFile.ExcelFileMapper;
 import uz.pdp.pdp_food_delivery.rest.repository.exccelFile.ExcelFileRepository;
@@ -32,11 +33,11 @@ public class ExcelFileService extends AbstractService<ExcelFileMapper, ExcelFile
 
     public ExcelFileDto getExcelFile(LocalDateTime date) {
 
-        List<MealOrderCreateDto> dto = mealOrderService.findOrderForExcelFile(date);
+        List<MealOrderDto> dto = mealOrderService.findOrderForExcelFile(date);
         ExcelFileDto excelFileDto;
 
         XSSFWorkbook workbook = new XSSFWorkbook();
-        String fileName = date.toString() + UUID.randomUUID();
+        String fileName = date.toLocalDate().toString() + UUID.randomUUID().toString();
         File file = new File("src/main/resources/excelFileStorage/" + fileName + ".xlsx");
 
         try {
@@ -54,7 +55,7 @@ public class ExcelFileService extends AbstractService<ExcelFileMapper, ExcelFile
                     xssfRow.createCell(3).setCellValue("Meal name");
 //                    xssfRow.createCell(4).setCellValue("Meal price");
                     int counter = 0;
-                    for (MealOrderCreateDto createDto : dto) {
+                    for (MealOrderDto createDto : dto) {
 
                         XSSFRow row = xssfSheet.createRow(counter + 2);
                         row.createCell(0).setCellValue(createDto.getUserDto().getFullName());

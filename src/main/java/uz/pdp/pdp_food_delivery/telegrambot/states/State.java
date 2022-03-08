@@ -1,6 +1,5 @@
 package uz.pdp.pdp_food_delivery.telegrambot.states;
 
-import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserCreateDto;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.*;
 
 import java.util.HashMap;
@@ -17,6 +16,7 @@ public class State {
     private static final Map<String, Integer> limitState = new HashMap<>();
     private static final Map<String, Language> languageState = new HashMap<>();
     private static final Map<String, AddMealState> mealState = new HashMap<>();
+    private static final Map<String, FeedbackState> feedbackState = new HashMap<>();
 
 
     public synchronized static void setState(String chatId, UState state) {
@@ -44,7 +44,7 @@ public class State {
     }
 
     public static UState getState(String chatId) {
-        if (Objects.isNull(userState.get(chatId))){
+        if (Objects.isNull(userState.get(chatId))) {
             State.setState(chatId, UState.ANONYMOUS);
         }
         return userState.get(chatId);
@@ -110,6 +110,17 @@ public class State {
 
     public static void setAddMealState(String chatId, AddMealState state) {
         mealState.put(chatId, state);
+    }
+
+    public static FeedbackState getFeedbackState(String chatId) {
+        if (Objects.isNull(feedbackState.get(chatId))) {
+            setFeedbackState(chatId, FeedbackState.UNDEFINED);
+        }
+        return feedbackState.get(chatId);
+    }
+
+    public static void setFeedbackState(String chatId, FeedbackState state) {
+        feedbackState.put(chatId, state);
     }
 
 }

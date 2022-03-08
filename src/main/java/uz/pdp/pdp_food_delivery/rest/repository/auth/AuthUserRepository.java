@@ -11,7 +11,6 @@ import uz.pdp.pdp_food_delivery.rest.enums.Department;
 import uz.pdp.pdp_food_delivery.rest.enums.Role;
 import uz.pdp.pdp_food_delivery.rest.repository.BaseRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,7 +55,7 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
     AuthUser findByChatId(@Param(value = "chatId") String chatId);
 
 
-    @Query(value = "select u.role from users.user u where u.chat_id =:chatId",nativeQuery = true)
-    String  getRoleByChatId(String chatId);
+    @Query(value = "select u.role from users.user u where u.chat_id = :chatId", nativeQuery = true)
+    String getRoleByChatId(String chatId);
 }
 

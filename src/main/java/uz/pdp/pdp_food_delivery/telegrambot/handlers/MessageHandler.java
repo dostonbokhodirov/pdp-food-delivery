@@ -31,6 +31,7 @@ public class MessageHandler extends AbstractHandler {
     private final OrderMealProcessor orderMealProcessor;
     private final AddMealProcessor addMealProcessor;
     private final DailyMealProcessor dailyMealProcessor;
+    private final FeedBackProcessor feedBackProcessor;
     private final ExcelFileService excelFileService;
     private final PdpFoodDeliveryBot bot;
 
@@ -62,7 +63,10 @@ public class MessageHandler extends AbstractHandler {
             orderMealProcessor.process(message);
         } else if ("Add Daily Meals".equals(text)) {
             dailyMealProcessor.process(message);
-        } else if ("File".equals(text)) {
+        } else if ("FeedBack".equals(text)) {
+            feedBackProcessor.process(message);
+        }
+        else if ("File".equals(text)) {
             ExcelFileDto excelFile = excelFileService.getExcelFile(LocalDateTime.now());
             SendDocument sendDocument = new SendDocument();
             sendDocument.setChatId(chatId);

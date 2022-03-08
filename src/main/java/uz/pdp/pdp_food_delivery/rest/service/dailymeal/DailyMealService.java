@@ -16,6 +16,7 @@ import uz.pdp.pdp_food_delivery.rest.service.base.GenericCrudService;
 import uz.pdp.pdp_food_delivery.rest.service.base.GenericService;
 
 import java.util.List;
+
 @Service
 public class DailyMealService extends AbstractService<
         DailyMealMapper, DailyMealRepository> implements GenericCrudService<
@@ -54,11 +55,12 @@ public class DailyMealService extends AbstractService<
 
     @Override
     public DailyMealDto get(Long id) {
-        DailyMeal dailyMeal = repository.findById(id).orElseThrow(() -> new RuntimeException("daily meal not found"));
+        DailyMeal dailyMeal = repository.findById(id).orElse(null);
         return mapper.toDto(dailyMeal);
     }
+
     public DailyMealDto get(String name) {
-        DailyMeal dailyMeal = repository.findByName(name).orElseThrow(() -> new RuntimeException("daily meal not found"));
+        DailyMeal dailyMeal = repository.findByName(name).orElse(null);
         return mapper.toDto(dailyMeal);
     }
 
