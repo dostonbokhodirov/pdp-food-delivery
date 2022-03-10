@@ -164,7 +164,7 @@ public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRep
                 tokens.put("access_token", access_token);
                 tokens.put("refresh_token", refresh_token);
 
-                //sets response type
+                //sets response feedbackType
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);

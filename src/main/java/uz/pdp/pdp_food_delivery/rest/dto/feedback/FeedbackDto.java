@@ -3,8 +3,7 @@ package uz.pdp.pdp_food_delivery.rest.dto.feedback;
 import lombok.Getter;
 import lombok.Setter;
 import uz.pdp.pdp_food_delivery.rest.dto.GenericDto;
-import uz.pdp.pdp_food_delivery.rest.entity.AuthUser;
-import uz.pdp.pdp_food_delivery.rest.enums.Type;
+import uz.pdp.pdp_food_delivery.rest.enums.FeedbackType;
 
 @Getter
 @Setter
@@ -14,6 +13,6 @@ public class FeedbackDto extends GenericDto {
 
     private Long user;
 
-    private Type type;
+    private FeedbackType feedbackType;
 
 }

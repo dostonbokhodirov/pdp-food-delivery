@@ -10,8 +10,8 @@ import uz.pdp.pdp_food_delivery.rest.dto.feedback.FeedbackCreateDto;
 import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 import uz.pdp.pdp_food_delivery.rest.service.feedback.FeedbackService;
 import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
-import uz.pdp.pdp_food_delivery.telegrambot.buttons.MarkupBoard;
-import uz.pdp.pdp_food_delivery.telegrambot.emojis.Emojis;
+import uz.pdp.pdp_food_delivery.telegrambot.buttons.InlineBoard;
+import uz.pdp.pdp_food_delivery.telegrambot.config.TargetFeedback;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.FeedbackState;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
@@ -20,7 +20,7 @@ import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 public class FeedBackProcessor {
 
     private final PdpFoodDeliveryBot bot;
-    private final FeedbackService feedbackService;
+
     private final AuthUserService authUserService;
 
 
@@ -34,27 +34,21 @@ public class FeedBackProcessor {
         } else if (State.getFeedbackState(chatId).equals(FeedbackState.SENT)) {
             if (message.hasText()) {
                 AuthUserDto userDto = authUserService.getByChatId(chatId);
-                feedbackService.create(new FeedbackCreateDto(message.getText(), userDto.getId()));
 //                SendMessage sendMessage = new SendMessage(chatId,
 //                        Emojis.ADD + " " + LangConfig.get(chatId, "photo.uploaded"));
                 SendMessage sendMessage = new SendMessage(chatId,
                         "Choose type");
-//                sendMessage.setReplyMarkup(MarkupBoard.feedbackButtons());
+                sendMessage.setReplyMarkup(InlineBoard.feedbackButtons(chatId));
                 bot.executeMessage(sendMessage);
+                TargetFeedback.setTargetFeedback(chatId, new FeedbackCreateDto(message.getText(), userDto.getId()));
                 State.setFeedbackState(chatId, FeedbackState.TYPE);
 //                uploadPhotoService.uploadFromTelegram(message); TODO chala
             } else {
 //                SendMessage sendMessage = new SendMessage(chatId, LangConfig.get(chatId, "upload.photo.again"));
-                SendMessage sendMessage = new SendMessage(chatId, "send text message");
+                SendMessage sendMessage = new SendMessage(chatId, "send text message:");
                 sendMessage.setReplyMarkup(new ForceReplyKeyboard());
                 bot.executeMessage(sendMessage);
             }
-        } else if (State.getFeedbackState(chatId).equals(FeedbackState.TYPE)) {
-//            feedbackService.updateTypeById();
-            SendMessage sendMessage = new SendMessage(chatId,
-                    Emojis.ADD + "added");
-            bot.executeMessage(sendMessage);
-            State.setFeedbackState(chatId, FeedbackState.UNDEFINED);
         }
     }
 }

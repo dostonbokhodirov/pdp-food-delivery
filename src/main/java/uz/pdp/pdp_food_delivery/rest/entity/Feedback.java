@@ -3,9 +3,8 @@ package uz.pdp.pdp_food_delivery.rest.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.DynamicUpdate;
 import uz.pdp.pdp_food_delivery.rest.entity.base.Auditable;
-import uz.pdp.pdp_food_delivery.rest.enums.Type;
+import uz.pdp.pdp_food_delivery.rest.enums.FeedbackType;
 
 import javax.persistence.*;
 
@@ -21,6 +20,6 @@ public class Feedback extends Auditable {
     private AuthUser user;
 
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private FeedbackType feedbackType;
 
 }

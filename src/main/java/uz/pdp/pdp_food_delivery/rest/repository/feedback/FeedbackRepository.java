@@ -16,7 +16,7 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long>, BaseR
 
     @Transactional
     @Modifying
-    @Query(value = "update feedback.feedback f set f.message = :#{#dto.message}, f.type = :#{#dto.type}}", nativeQuery = true)
+    @Query(value = "update feedback.feedback f set f.message = :#{#dto.message}, f.feedbackType = :#{#dto.feedbackType}}", nativeQuery = true)
     void update(@Param(value = "dto") Feedback feedback);
 
 

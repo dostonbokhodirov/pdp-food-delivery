@@ -6,35 +6,34 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
 import uz.pdp.pdp_food_delivery.rest.dto.auth.AuthUserDto;
 import uz.pdp.pdp_food_delivery.rest.dto.dailymeal.DailyMealCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.dailymeal.DailyMealDto;
+import uz.pdp.pdp_food_delivery.rest.dto.feedback.FeedbackCreateDto;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
 import uz.pdp.pdp_food_delivery.rest.dto.mealorder.MealOrderCreateDto;
 import uz.pdp.pdp_food_delivery.rest.entity.AuthUser;
+import uz.pdp.pdp_food_delivery.rest.enums.FeedbackType;
 import uz.pdp.pdp_food_delivery.rest.enums.Role;
 import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
 import uz.pdp.pdp_food_delivery.rest.service.auth.AuthUserService;
 import uz.pdp.pdp_food_delivery.rest.service.dailymeal.DailyMealService;
+import uz.pdp.pdp_food_delivery.rest.service.feedback.FeedbackService;
 import uz.pdp.pdp_food_delivery.rest.service.meal.MealService;
 import uz.pdp.pdp_food_delivery.rest.service.mealorder.MealOrderService;
 import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
 import uz.pdp.pdp_food_delivery.telegrambot.buttons.MarkupBoard;
 import uz.pdp.pdp_food_delivery.telegrambot.config.Offset;
-import uz.pdp.pdp_food_delivery.telegrambot.enums.Language;
-import uz.pdp.pdp_food_delivery.telegrambot.enums.MenuState;
-import uz.pdp.pdp_food_delivery.telegrambot.enums.SearchState;
-import uz.pdp.pdp_food_delivery.telegrambot.enums.UState;
+import uz.pdp.pdp_food_delivery.telegrambot.config.TargetFeedback;
+import uz.pdp.pdp_food_delivery.telegrambot.enums.*;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.base.AbstractHandler;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.CallbackHandlerProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.OrderMealProcessor;
 import uz.pdp.pdp_food_delivery.telegrambot.states.State;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -50,6 +49,7 @@ public class CallbackHandler extends AbstractHandler {
     private final MealOrderService mealOrderService;
     private final AuthUserService authUserService;
     private final DailyMealService dailyMealService;
+    private final FeedbackService feedbackService;
     private final Offset offset;
     private final CallbackHandlerProcessor callbackHandlerProcessor;
     private final OrderMealProcessor orderMealProcessor;
@@ -61,20 +61,20 @@ public class CallbackHandler extends AbstractHandler {
         String data = callbackQuery.getData();
         String chatId = message.getChatId().toString();
 // this  method for cron job
-        if (data.equals("Order")){
+        if (data.equals("Order")) {
             orderMealProcessor.process(update);
-        }else if(data.equals("Yes")){
+        } else if (data.equals("Yes")) {
             orderMealProcessor.setOrderMealsByDone(chatId);
-            deleteMessage(message,chatId);
-        }else if (data.equals("No")){
-            deleteMessage(message,chatId);
+            deleteMessage(message, chatId);
+        } else if (data.equals("No")) {
+            deleteMessage(message, chatId);
         }
 //
 
         if ("uz".equals(data) || "ru".equals(data) || "en".equals(data)) {
             AuthUser user = authUserRepository.getByChatId(chatId);
             user.setLanguage(Language.getByCode(data));
-            State.setLanguageState(chatId,Language.getByCode(data));
+            State.setLanguageState(chatId, Language.getByCode(data));
             authUserRepository.save(user);
             SendMessage sendMessage = new SendMessage(chatId, "Enter your Fullname: ");
             sendMessage.setReplyMarkup(new ForceReplyKeyboard());
@@ -136,8 +136,17 @@ public class CallbackHandler extends AbstractHandler {
                 dailyMealService.create(new DailyMealCreateDto(mealDto.getName(), LocalDate.now(), mealDto.getPhotoId()));
 
             bot.executeMessage(sendMessage);
+        } else if (data.startsWith("feedback_")) {
+            String splitData = data.substring(9);
+            FeedbackType feedbackType = FeedbackType.valueOf(splitData);
+            FeedbackCreateDto dto = TargetFeedback.getTargetFeedback(chatId);
+            dto.setFeedbackType(feedbackType);
+            TargetFeedback.setTargetFeedback(chatId, dto);
+            feedbackService.create(TargetFeedback.getTargetFeedback(chatId));
+            State.setFeedbackState(chatId, FeedbackState.UNDEFINED);
+            SendMessage sendMessage = new SendMessage(chatId, "feedback saved");
+            bot.executeMessage(sendMessage);
         }
-
 
 
     }

@@ -3,6 +3,7 @@ package uz.pdp.pdp_food_delivery.telegrambot.buttons;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import uz.pdp.pdp_food_delivery.rest.dto.meal.MealDto;
+import uz.pdp.pdp_food_delivery.rest.enums.FeedbackType;
 import uz.pdp.pdp_food_delivery.telegrambot.emojis.Emojis;
 
 import java.util.ArrayList;
@@ -26,8 +27,9 @@ public class InlineBoard {
         board.setKeyboard(Arrays.asList(getRow(uz), getRow(ru), getRow(en)));
         return board;
     }
-//
-    public static InlineKeyboardMarkup accept(String chatId){
+
+    //
+    public static InlineKeyboardMarkup accept(String chatId) {
         InlineKeyboardButton accept = new InlineKeyboardButton(Emojis.ADD + " Confirm");
         accept.setCallbackData("accept_" + chatId);
         InlineKeyboardButton no = new InlineKeyboardButton(Emojis.REMOVE + " Ignore");
@@ -123,7 +125,18 @@ public class InlineBoard {
         yes.setCallbackData("Yes");
         InlineKeyboardButton no = new InlineKeyboardButton("No");
         no.setCallbackData("No");
-        board.setKeyboard(Arrays.asList(getRow(no),getRow(yes)));
+        board.setKeyboard(Arrays.asList(getRow(no), getRow(yes)));
+        return board;
+    }
+
+    public static InlineKeyboardMarkup feedbackButtons(String chatId) {
+        List<List<InlineKeyboardButton>> feedbackList = new ArrayList<>();
+        for (FeedbackType feedbackType : FeedbackType.values()) {
+            InlineKeyboardButton button = new InlineKeyboardButton(feedbackType.toString());
+            button.setCallbackData("feedback_" + feedbackType);
+            feedbackList.add(getRow(button));
+        }
+        board.setKeyboard(feedbackList);
         return board;
     }
 }

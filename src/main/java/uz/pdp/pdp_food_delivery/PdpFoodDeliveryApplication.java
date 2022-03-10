@@ -23,7 +23,6 @@ public class PdpFoodDeliveryApplication {
     PasswordEncoder passwordEncoder;
 
     public static void main(String[] args) {
-
         SpringApplication.run(PdpFoodDeliveryApplication.class, args);
     }
 
