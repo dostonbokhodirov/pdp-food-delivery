@@ -63,6 +63,7 @@ public class CallbackHandler extends AbstractHandler {
 // this  method for cron job
         if (data.equals("Order")) {
             orderMealProcessor.process(update);
+            deleteMessage(message, chatId);
         } else if (data.equals("Yes")) {
             orderMealProcessor.setOrderMealsByDone(chatId);
             deleteMessage(message, chatId);
@@ -106,8 +107,10 @@ public class CallbackHandler extends AbstractHandler {
             }
         } else if (data.equals("prev")) {
             callbackHandlerProcessor.prevMessage(callbackQuery);
+            deleteMessage(message, chatId);
         } else if (data.equals("next")) {
             callbackHandlerProcessor.nextMessage(callbackQuery);
+            deleteMessage(message, chatId);
         } else if (data.equals("cancel")) {
             offset.setSearchOffset(chatId, 0);
             deleteMessage(message, chatId);
@@ -121,6 +124,7 @@ public class CallbackHandler extends AbstractHandler {
             mealOrderService.create(new MealOrderCreateDto(authUserDto, mealDto));
             SendMessage sendMessage = new SendMessage(chatId, mealDto.getName());
             bot.executeMessage(sendMessage);
+            deleteMessage(message, chatId);
         } else if (data.startsWith("add_")) {
             String splitData = data.substring(4);
             MealDto mealDto = mealService.get(Long.valueOf(splitData));
@@ -134,8 +138,8 @@ public class CallbackHandler extends AbstractHandler {
                 mealDto.setPhotoId(mealService.updateMealPhotoId(mealDto.getPhotoPath(), sendPhoto));
             } else
                 dailyMealService.create(new DailyMealCreateDto(mealDto.getName(), LocalDate.now(), mealDto.getPhotoId()));
-
             bot.executeMessage(sendMessage);
+            deleteMessage(message, chatId);
         } else if (data.startsWith("feedback_")) {
             String splitData = data.substring(9);
             FeedbackType feedbackType = FeedbackType.valueOf(splitData);
@@ -146,6 +150,7 @@ public class CallbackHandler extends AbstractHandler {
             State.setFeedbackState(chatId, FeedbackState.UNDEFINED);
             SendMessage sendMessage = new SendMessage(chatId, "feedback saved");
             bot.executeMessage(sendMessage);
+            deleteMessage(message, chatId);
         }
 
 

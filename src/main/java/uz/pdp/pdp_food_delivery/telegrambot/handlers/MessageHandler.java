@@ -12,6 +12,7 @@ import uz.pdp.pdp_food_delivery.rest.repository.auth.AuthUserRepository;
 import uz.pdp.pdp_food_delivery.rest.service.excelFile.ExcelFileService;
 import uz.pdp.pdp_food_delivery.telegrambot.PdpFoodDeliveryBot;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.AddMealState;
+import uz.pdp.pdp_food_delivery.telegrambot.enums.FeedbackState;
 import uz.pdp.pdp_food_delivery.telegrambot.enums.UState;
 import uz.pdp.pdp_food_delivery.telegrambot.handlers.base.AbstractHandler;
 import uz.pdp.pdp_food_delivery.telegrambot.processors.*;
@@ -63,7 +64,7 @@ public class MessageHandler extends AbstractHandler {
             orderMealProcessor.process(message);
         } else if ("Add Daily Meals".equals(text)) {
             dailyMealProcessor.process(message);
-        } else if ("FeedBack".equals(text)) {
+        } else if ("FeedBack".equals(text) || !State.getFeedbackState(chatId).equals(FeedbackState.UNDEFINED)) {
             feedBackProcessor.process(message);
         }
         else if ("File".equals(text)) {
